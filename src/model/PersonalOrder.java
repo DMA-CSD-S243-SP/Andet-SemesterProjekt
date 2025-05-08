@@ -29,7 +29,11 @@ public class PersonalOrder
 	//Constructor of PersonalOrder
 	public PersonalOrder(TableOrder tableOrder) 
 	{
-		this.listOfAllDiscounts = new ArrayList<>();
+		
+		listOfAllDiscounts = new ArrayList<>();
+		personalOrderLineList = new ArrayList<>();
+		listOfSelectionOption = new ArrayList<>();
+		listOfAddOnOptions = new ArrayList<>();
 		//TODO: this.tableOrder = tablerOrder
 	}
 	
@@ -102,7 +106,7 @@ public class PersonalOrder
 	 */
 	public void removeDiscount(Discount discount)
 	{
-		this.listOfAllDiscounts.remove(discount);
+		this.personalOrderLineList.remove(discount);
 	}
 	
 	
