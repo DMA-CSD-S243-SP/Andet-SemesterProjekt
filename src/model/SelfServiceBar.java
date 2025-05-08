@@ -25,8 +25,6 @@ public class SelfServiceBar extends MenuItem
 	/**
 	 * Constructs a new SelfServiceBar instance, which uses the specified parameters of
 	 * its' super-class / parent class MenuItem, along with its own unique parameters aswell.
-	 *
-	 * @param tableOrderId the unique identifier for this table order
 	 * 
 	 * @param barType the type of the self service bar this is, options are SALADBAR or SOFTICEBAR
 	 * @param lunchPrice the price of this item during the specified lunch hours
