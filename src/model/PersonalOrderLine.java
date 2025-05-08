@@ -1,60 +1,69 @@
 package model;
 
+
 /**
  * @author Line Bertelsen
  * @date 08.05.25 14.14
  */
-
-
 public class PersonalOrderLine
 {
+	//private double addtionalPrice;
+/*	//Line: Attributes i've added
+	private AddOnOption addOnOption;
+	private SelectionOption selectionOption;
+*/
 	//Attributes/Instance variables
 	private MenuItem menuItem;
 	private int quantityOfMenuItem;
-	//private double addtionalPrice;
 	private EnumStatusType status;
 	private String notes;
 	
-	//Line: Attributes i've added
-	private AddOnOption addOnOption;
-	private SelectionOption selectionOption;
 	
-	public PersonalOrderLine(MenuItem menuitem)
+	public PersonalOrderLine(MenuItem menuItem)
 	{
 		this.menuItem = menuItem;
 	}
 	
+	
 	public MenuItem getMenuItem()
 	{
-		return this.getMenuItem();
-		//Question: Hvordan henter vi en menuItem object. Det her virker forkert.
+		return this.menuItem;
 	}
+	
 	
 	public int getQuantityOfMenuItems()
 	{
-		return quantityOfMenuItem;
+		return this.quantityOfMenuItem;
 	}
 	
-	public int getAdditionalPrice()
-	{
-		return this.addOnOption.getAdditionalPrice;
-		//Question: Når vi henter additionalPrice i personalOrderline. Hent vi det kun fra addOnOption eller også fra selectionOptions
-	}
 	
 	public EnumStatusType getStatus()
 	{
-		return status;
-		//TODO:
+		return this.status;
 	}
+	
+	
+	public String getNotes()
+	{
+		return this.notes;
+	}
+	
+	
+	public double getAdditionalPrice()
+	{
+		//Question: Når vi henter additionalPrice i personalOrderline. Hent vi det kun fra addOnOption eller også fra selectionOptions?
+		return this.getAdditionalPrice();
+	}
+	
 	
 	public void addAddOnOption(AddOnOption addOnOption)
 	{
-		this.addOnOption = addOnOption;
+//		addOnOption = addOnOption;
 	}
 	
 	
 	public void addSelectionOption(SelectionOption selectionOption)
 	{
-		this.selectionOption = selectionOption;
+//		selectionOption = selectionOption;
 	}
 }
