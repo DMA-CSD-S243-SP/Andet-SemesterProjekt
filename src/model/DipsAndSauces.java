@@ -6,10 +6,6 @@ package model;
  * Represents a dip or a sauce menu item that can be ordered at a bone's
  * restaurant.
  * 
- * 
- * This class extends the abstract MenuItem class and includes information
- * about whether the item is a sauce or a dip, along with a fixed price.
- * 
  * This class is a child/sub-class extending the abstract MenuItem class, and 
  * includes information on whether the item is a sauce or a dip, along with a 
  * fixed price for the dip as well as the sauce.
