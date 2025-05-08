@@ -22,18 +22,19 @@ public class PersonalOrder
 	private List<SelectionOption> listOfSelectionOption;
 	private List<AddOnOption> listOfAddOnOptions;
 	
-	//TODO: TableOrder tableOrder;
-	//TODO: MainCourse mainCourse;
-	//TODO: MenuItem menuItem
+	//Line: Attributes i've added
+	private TableOrder tableOrder;
+	private MainCourse mainCourse;
+	private MenuItem menuItem;
 	
 	//Constructor of PersonalOrder
 	public PersonalOrder(TableOrder tableOrder) 
 	{
 		
-		listOfAllDiscounts = new ArrayList<>();
+		
 		personalOrderLineList = new ArrayList<>();
-		listOfSelectionOption = new ArrayList<>();
-		listOfAddOnOptions = new ArrayList<>();
+		
+		
 		//TODO: this.tableOrder = tablerOrder
 	}
 	
@@ -140,11 +141,21 @@ public class PersonalOrder
 		
 		//Adds list of addOnOptions to the list listOfAddOnOptions
 		this.listOfSelectionOption.addAll(listOfSelectionOption);
+		
+		//PersonalOrderLine.addOnOption();
+		//PersonalOrderLine.addSelectionOption();
 	}
 	
+	
+	/**
+	 * Adds a all menuItems to the personal order
+	 * Like potatoDish and sideOrderItem
+	 * 
+	 * @param menuItem
+	 */
 	public void addMenuItemLine(MenuItem menuItem)
 	{
-		this.menuItem = menuItem;
+		this.personalOrderLineList.addAll(menuItem);
 	}
 	
 	/**
@@ -158,4 +169,5 @@ public class PersonalOrder
 			menuItemLine.remove(menuItem);
 		}
 	}
+
 }
