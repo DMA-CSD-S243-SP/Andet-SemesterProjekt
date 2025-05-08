@@ -49,7 +49,7 @@ public class SelfServiceBar extends MenuItem
      */
     public EnumBarType getBarType()
     {
-        return barType;
+        return this.barType;
     }
 
 
@@ -74,7 +74,7 @@ public class SelfServiceBar extends MenuItem
      */
     public double getLunchPrice()
     {
-        return lunchPrice;
+        return this.lunchPrice;
     }
 
 
@@ -99,7 +99,7 @@ public class SelfServiceBar extends MenuItem
      */
     public double getEveningPrice()
     {
-        return eveningPrice;
+        return this.eveningPrice;
     }
 
 
