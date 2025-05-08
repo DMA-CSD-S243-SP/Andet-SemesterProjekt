@@ -24,9 +24,10 @@ public class PersonalOrderLine
 		this.menuItem = menuItem;
 	}
 	
-	public int getMenuItemId()
+	public MenuItem getMenuItem()
 	{
-		return this.menuItem.getMenuItemId();
+		return this.getMenuItem();
+		//Question: Hvordan henter vi en menuItem object. Det her virker forkert.
 	}
 	
 	public int getQuantityOfMenuItems()
