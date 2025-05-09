@@ -43,6 +43,15 @@ public class PersonalOrderLine
 	}
 	
 	
+	/**
+	 * The getNotes method collect kitchenNotes
+	 * 
+	 * If a customer has chosen an addOnOption or selectionOption, the kitchenNotes is added in the personalOrderLine.
+	 * KitchenNotes is the notes which the kitchen receives if an extra option has been chosen.
+	 * If no extra options has been added, this will be empty.
+	 * 
+	 * @return kitchenNotes from addOnOptions of selectionOption
+	 */
 	public String getNotes()
 	{
 		return this.notes;
