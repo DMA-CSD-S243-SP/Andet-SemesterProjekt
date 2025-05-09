@@ -8,7 +8,7 @@ package model;
  * includes information on the item fixed price and the quantity per serving for a side dish.
  * 
  * @author Line Bertelsen
- * @version 09.05.25 - 09:50
+ * @version 09.05.25 - 10.03
  */
 public class SideDish extends MenuItem
 {
@@ -16,10 +16,18 @@ public class SideDish extends MenuItem
 	private int quantiyPerServing;
 	private double fixedPrice;
 	
-	
+	/**
+	 * Constructs a new SideDish instance, which uses the specified parameters of
+	 * its' super-class / parent class MenuItem, along with its own unique parameters aswell.
+	 * This initializes the item having quantity per serving and a fixed price.
+	 * 
+     * @param fixedPrice the constant price of that specific side dish category regardless of the time of day it is
+     * @param quantiyPerServing the quantity per serving assign to this instance of SideDish 
+     */
 	public SideDish(int quantiyPerServing, double fixedPrice)
 	{
 		// Calls the superclass constructor (MenuItem) to initialize inherited attributes.
+		// Isnt being used yet
         super();
 		
 		this.quantiyPerServing = quantiyPerServing;
@@ -39,7 +47,7 @@ public class SideDish extends MenuItem
 	
 	/**
 	 * The set method takes a parameter quantiyPerServing and assigns it to the this.quantiyPerServing variable.
-	 * @param quantiyPerServing
+	 * @param quantiyPerServing the quantity per serving assign to this instance of SideDish
 	 */
 	public void setQuantityPerserving(int quantiyPerServing)
 	{
