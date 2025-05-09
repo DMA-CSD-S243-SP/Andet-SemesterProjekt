@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
  * 
  * 
  * @author Line Bertelsen & Christoffer Søndergaard
- * @version 08-05-2025 - 11:31
+ * @version 09-05-2025 - 09:10
  */
 public class TableOrder
 {
@@ -64,7 +64,7 @@ public class TableOrder
 	 * @param isRequestingService true if the guests are requesting service,
 	 * else it is set to false
 	 */
-	public void setIsRequestingService(boolean isRequestingService)
+	public void setRequestingService(boolean isRequestingService)
 	{
 		this.isRequestingService = isRequestingService;
 	}
@@ -79,7 +79,7 @@ public class TableOrder
 	 * @param isSentToKitchen is set to true if the table has sent out the table
 	 * else it is false.
 	 */
-	public void setIsSentToKitchen(boolean isSentToKitchen)
+	public void setSentToKitchen(boolean isSentToKitchen)
 	{
 		this.isSentToKitchen = isSentToKitchen;
 	}
@@ -93,7 +93,7 @@ public class TableOrder
      *
      * @param isTableOrderClosed true if the table order is finalized and closed; false otherwise
      */
-	public void setIsTableOrderClosed(boolean isTableOrderClosed)
+	public void setTableOrderClosed(boolean isTableOrderClosed)
 	{
 		this.isTableOrderClosed = isTableOrderClosed;
 	}
