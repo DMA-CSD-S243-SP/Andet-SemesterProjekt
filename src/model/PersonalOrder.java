@@ -6,16 +6,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 /**
- * @author Line Bertelsen
- * @date 08.05.25 10.14
+ * Represents a guest’s individual and personal order, at a Bone’s restaurant.
+ * 
+ * A PersonalOrder of one or usually multiple PersonalOrderLine instances, which each 
+ * represents a specific MenuItem that the guest has ordered, along with the quantity
+ * of said MenuItem instance, possible customized options, and preparation status for
+ * the specific PersonalOrderLine instance.
+ * 
+ * The PersonalOrder class is used to contain all of a single guest's food and drink
+ * MenuItems in seperation from other guests' at the table. The total cost of a PersonalOrder
+ * is calculated by summing up each PersonalOrderLine instance cost.
+ * 
+ * Each PersonalOrder instance are associated with a TableOrder, which holds all of the
+ * PersonalOrders for the guests at the specific table.
+ * 
+ * 
+ * @author Line Bertelsen & Christoffer Søndergaard
+ * @version 11-05-2025 - 21:01
  */
 public class PersonalOrder
 {
+// OLD - 	private double totalPersonalOrderPrice;
 	/*
 //	private List<SelectionOption> listOfSelectionOption;
 //	private List<AddOnOption> listOfAddOnOptions;
-	
 	//Line: Attributes i've added
 	private TableOrder tableOrder;
 	private MainCourse mainCourse;
@@ -28,8 +44,7 @@ public class PersonalOrder
 	private int PersonalOrderId;
 	private int customerAge;
 	private String customerName;
-	private double totalPersonalOrderPrice;
-	
+
 	//Lists
 	private List<Discount> listOfAllDiscounts;
 	private List<PersonalOrderLine> personalOrderLineList;
@@ -182,12 +197,39 @@ public class PersonalOrder
 	{
 		// Dummy Code Block
 		
-		
-		
 /*		for(MenuItem menuItem : menuItemLine)
 		{
 			menuItemLine.remove(menuItem);
 		}
 */
+	}
+	
+	
+	
+	/**
+	 * Calculates and returns the total price of all the PersonalOrderLines
+	 * that are associated with this PersonalOrder instance.
+	 * 
+	 * This method iterates through every PersonalOrderLine that is contained within this 
+	 * Personal Order instance's personalOrderLineList, and calculates the sum of them all.
+	 * The total is used to determine how much each guest's personal order costs, and will
+	 * also be used to summarize the total cost of a TableOrder instance.
+	 *
+	 * @return the total summed price for this guest’s personal order
+	 */
+	public double getTotalPersonalOrderPrice()
+	{
+		// Creates a variable called totalPrice and sets its value to 0.00
+		double totalPrice = 0.00;
+		
+		// Iterates through the list of personal order lines
+	    for (PersonalOrderLine personalOrderLine : personalOrderLineList)
+	    {
+	    	// Adds the current PersonalOrderLine instances' price to the current value of the totalPrice
+	    	totalPrice = totalPrice + personalOrderLine.getPersonalOrderLinePrice();
+	    }
+	    
+	    // TODO: Later add calculations for the various types of discount when that use case is being handled
+	    return totalPrice;
 	}
 }
