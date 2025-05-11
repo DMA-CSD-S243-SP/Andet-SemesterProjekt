@@ -20,6 +20,8 @@ public abstract class MenuItem
     private int menuItemId;
     private int preparationTime;
     
+    private double basePrice;
+    
     private String name;
     private String description;
 
@@ -79,6 +81,37 @@ public abstract class MenuItem
     public void setPreparationTime(int preparationTime)
     {
         this.preparationTime = preparationTime;
+    }
+    
+    
+    /**
+	 * Gets the base price of this menu item.
+	 * 
+	 * The base price represents the base or starting cost of a menu item before
+	 * any additional costs e.g. from customization of a MenuCourse such as 
+	 * 'garlic butter' on a ribeye steak is added.
+	 *
+	 * @return the original unadjusted price of this menu item
+	 */
+    public double getBasePrice()
+    {
+        return this.basePrice;
+    }
+
+    
+	/**
+	 * Sets the base price cost of this menu item.
+	 * 
+	 * The base price defines the starting / standard cost of the item before any 
+	 * pricing adjustments are made. The base price represents the base or starting cost of a menu item before
+	 * any additional costs e.g. from customization of a MenuCourse such as 
+	 * 'garlic butter' on a ribeye steak is added.
+	 * 
+	 * @param basePrice the price to set as the starting value for this item
+	 */
+    public void setBasePrice(double basePrice)
+    {
+        this.basePrice = basePrice;
     }
     
 
