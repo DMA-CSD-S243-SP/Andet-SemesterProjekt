@@ -1,7 +1,5 @@
 package database;
 
-import java.util.List;
-
 import model.Restaurant;
 
 /**
@@ -12,18 +10,12 @@ import model.Restaurant;
 public interface RestaurantImpl
 {
 	/**
-	 * TODO
-	 * 
-	 * @return - a list of all restaurants in the database
-	 */
-	List<Restaurant> findAllRestaurants();
-	
-	/**
 	 * this method will search through the database using the search criteria from the parameterlist
 	 * make a clone of using the data found and return that. 
 	 * 
 	 * @param restaurantCode
 	 * @return
+	 * @throws DataAccessException 
 	 */
-	Restaurant findRestaurantByCode(String restaurantCode);
+	Restaurant findRestaurantByCode(String restaurantCode) throws DataAccessException;
 }
