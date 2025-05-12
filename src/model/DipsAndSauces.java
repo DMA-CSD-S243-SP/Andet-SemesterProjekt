@@ -12,7 +12,7 @@ package model;
  * 
  * 
  * @author Christoffer Søndergaard
- * @version 08-05-2025 - 14:34
+ * @version 12-05-2025 - 15:09
  */
 public class DipsAndSauces extends MenuItem
 {
@@ -82,4 +82,30 @@ public class DipsAndSauces extends MenuItem
     {
     	this.fixedPrice = fixedPrice;
     }
+    
+    
+	/**
+	 * Gets the lunch price of this DipsAndSauces instance.
+	 * This method essentially retrieves the value of the instance's fixedPrice attribute.
+	 *
+	 * @return the price of purchasing this DipsAndSauces during lunch time hours
+	 */
+	@Override
+	public double getLunchPrice()
+	{
+		return this.fixedPrice;
+	}
+
+
+	/**
+	 * Gets the evening price of this DipsAndSauces instance.
+	 * This method essentially retrieves the value of the instance's fixedPrice attribute.
+	 *
+	 * @return the price of purchasing this DipsAndSauces during evening time hours
+	 */
+	@Override
+	public double getEveningPrice()
+	{
+		return this.fixedPrice;
+	}
 }
