@@ -5,14 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import model.AddOnOption;
 import model.DipsAndSauces;
 import model.Drink;
-import model.Employee;
 import model.EnumBarType;
 import model.MainCourse;
 import model.MenuItem;
 import model.MultipleChoiceMenu;
 import model.PotatoDish;
+import model.SelectionOption;
 import model.SelfServiceBar;
 import model.SideDish;
 
@@ -23,7 +24,7 @@ import model.SideDish;
  * It implements the employeeDaoImpl, meaning it implements its methods
  * 
  * @author Line Bertelsen
- * @version 12.05.2025 - 12:10
+ * @version 12.05.2025 - 17.20
  */
 
 public class MenuItemDB implements MenuItemImpl
@@ -85,26 +86,26 @@ public class MenuItemDB implements MenuItemImpl
 	
 	//MULTIPLE CHOICE MENU
 	// Selects a row from the table menuItem in the database, based on the given MenuItemID
-	private static final String FIND_MULTIPLECHOICEMENU_BY_CHOICEMENUID_QUERY = "SELECT * FROM MultipleChoiceMenu WHERE ChoiceMenuId = ?";
+	private static final String FIND_MULTIPLECHOICEMENU_BY_MAINCOURSEID_QUERY = "SELECT * FROM MultipleChoiceMenu WHERE mainCourseId = ?";
 		
 	// PreparedStatement for retrieving an MultipleChoiceMenu based on the menuItemID
-	private PreparedStatement statementMultipleChoiceMenuByChoiceMenuId;
+	private PreparedStatement statementMultipleChoiceMenuByMainCourseId;
 	
 	
 	//SELECTION OPTION
 	// Selects a row from the table menuItem in the database, based on the given choiceMenuId
-	private static final String FIND_SELECTIONOPTION_BY_CHOICEMENUID_QUERY = "SELECT * FROM Option WHERE ChoiceMenuId = ?";
+	private static final String FIND_SELECTIONOPTION_BY_MAINCOURSEID_QUERY = "SELECT * FROM SelectionOption WHERE choiceMenuId IN (SELECT choiceMenuId FROM MultipleChoiceMenu WHERE mainCourseId = ?)";
 	
 	// PreparedStatement for retrieving an SelectionOption based on the choiceMenuId
-	private PreparedStatement statementSelectionOptionByChoiceMenuId;
+	private PreparedStatement statementSelectionOptionByMainCourseId;
 	
 	
 	//ADD ON OPTION
 	// Selects a row from the table menuItem in the database, based on the given menuItemId
-	private static final String FIND_ADDONOPTION_BY_MENUITEMID_QUERY = "SELECT * FROM AddOnOption WHERE menuItemId = ?";
+	private static final String FIND_ADDONOPTION_BY_MAINCOURSEID_QUERY = "SELECT * FROM AddOnOption WHERE mainCourseId = ?";
 				
 	// PreparedStatement for retrieving an SelectionOption based on the menuItemId
-	private PreparedStatement statementAddOnOptionByMenuItemId;
+	private PreparedStatement statementAddOnOptionByMainCourseId;
 
 	
 	/**
@@ -137,13 +138,13 @@ public class MenuItemDB implements MenuItemImpl
 		statementFindMainCourseMenuId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_MAINCOURSE_BY_MENUITEMID_QUERY);
 		
 		// MULTIPLE CHOICE MENU - Prepares the SQL statement for retrieving a MultipleChoiceMenu by its choiceMenuId
-		statementMultipleChoiceMenuByChoiceMenuId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_MULTIPLECHOICEMENU_BY_CHOICEMENUID_QUERY);
+		statementMultipleChoiceMenuByMainCourseId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_MULTIPLECHOICEMENU_BY_MAINCOURSEID_QUERY);
 		
 		// SELECTION OPTION - Prepares the SQL statement for retrieving a SelcetionOption by its choiceMenuId
-		statementSelectionOptionByChoiceMenuId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_SELECTIONOPTION_BY_CHOICEMENUID_QUERY);
+		statementSelectionOptionByMainCourseId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_SELECTIONOPTION_BY_MAINCOURSEID_QUERY);
 				
 		// ADD ON OPTION - Prepares the SQL statement for retrieving a AddOnOption by its menuItemID
-		statementAddOnOptionByMenuItemId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_ADDONOPTION_BY_MENUITEMID_QUERY);
+		statementAddOnOptionByMainCourseId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_ADDONOPTION_BY_MAINCOURSEID_QUERY);
 	}
 
 	
@@ -368,7 +369,7 @@ public class MenuItemDB implements MenuItemImpl
 		}
 	
 	@Override
-	public MultipleChoiceMenu findMultipleChoiceMenuByChoiceMenuId(int choiceMenuId) throws DataAccessException
+	public MultipleChoiceMenu findMultipleChoiceMenuByMainCourseId(int mainCourseId) throws DataAccessException
 	{
 		// Gets a connection to the database
 		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
@@ -376,13 +377,13 @@ public class MenuItemDB implements MenuItemImpl
 		try
 		{
 			// Prepares a SQL statement to find and retrieve an MultipleChoiceMenu with a matching employee id
-			statementMultipleChoiceMenuByChoiceMenuId = databaseConnection.prepareStatement(FIND_MULTIPLECHOICEMENU_BY_CHOICEMENUID_QUERY);
+			statementMultipleChoiceMenuByMainCourseId = databaseConnection.prepareStatement(FIND_MULTIPLECHOICEMENU_BY_MAINCOURSEID_QUERY);
 
 			// Adds the choiceMenuId provided in the method's parameter to the String instead of the placeholder
-			statementMultipleChoiceMenuByChoiceMenuId.setInt(1, choiceMenuId);
+			statementMultipleChoiceMenuByMainCourseId.setInt(1, mainCourseId);
 
 			// Executes the query, and stores the retrieved data in the variable named resultSet, which is a ResultSet object
-			ResultSet resultSet = statementMultipleChoiceMenuByChoiceMenuId.executeQuery();
+			ResultSet resultSet = statementMultipleChoiceMenuByMainCourseId.executeQuery();
 
 			// Creates and initializes an MultipleChoiceMenu object as null, which will later be populated with Employee specific data
 			MultipleChoiceMenu multipleChoiceMenu = null;
@@ -401,7 +402,7 @@ public class MenuItemDB implements MenuItemImpl
 		catch (SQLException exception)
 		{
 			// If an SQL error occurs a custom exception is thrown with the specified details
-			throw new DataAccessException("Unable to find an MultipleChoiceMenu object with an choiceMenuId matching: " + choiceMenuId, exception);
+			throw new DataAccessException("Unable to find an MultipleChoiceMenu object with an choiceMenuId matching: " + mainCourseId, exception);
 		}
 
 	}
@@ -426,31 +427,118 @@ public class MenuItemDB implements MenuItemImpl
 	}
 	
 	@Override
-	public MultipleChoiceMenu findSelectionOptionByChoiceMenuId(int choiceMenuId) throws DataAccessException
+	public SelectionOption findSelectionOptionByMainCourseId(int mainCourseId) throws DataAccessException
 	{
-		//TODO:
-		return null;	
+		// Gets a connection to the database
+		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
+
+		try
+		{
+			// Prepares a SQL statement to find and retrieve an MultipleChoiceMenu with a matching employee id
+			statementSelectionOptionByMainCourseId = databaseConnection.prepareStatement(FIND_SELECTIONOPTION_BY_MAINCOURSEID_QUERY);
+
+			// Adds the choiceMenuId provided in the method's parameter to the String instead of the placeholder
+			statementSelectionOptionByMainCourseId.setInt(1, mainCourseId);
+
+			// Executes the query, and stores the retrieved data in the variable named resultSet, which is a ResultSet object
+			ResultSet resultSet = statementSelectionOptionByMainCourseId.executeQuery();
+
+			// Creates and initializes an MultipleChoiceMenu object as null, which will later be populated with Employee specific data
+			SelectionOption selectionOption = null;
+
+			// Iterates through the resultSet while there are still more rows in the database's table
+			if (resultSet.next())
+			{
+				// Converts the retrieved database row into an MultipleChoiceMenu object using the buildMultipleChoiceMenuObject method
+				selectionOption = buildSelectionOptionObject(resultSet);
+			}
+
+			// Returns the MultipleChoiceMenu with a matching choiceMenuId or null if no multipleChoiceMenu has the specified choiceMenuId
+			return selectionOption;
+		}
+
+		catch (SQLException exception)
+		{
+			// If an SQL error occurs a custom exception is thrown with the specified details
+			throw new DataAccessException("Unable to find an MultipleChoiceMenu object with an choiceMenuId matching: " + mainCourseId, exception);
+		}	
 	}
 	 
 	
-	private MultipleChoiceMenu buildSelectionOptionObject(ResultSet resultSet) throws SQLException
+	private SelectionOption buildSelectionOptionObject(ResultSet resultSet) throws SQLException
 	{
-		return null;
-		//TODO:
+		// Creates a AddOnOption object stored within the SelectionOption variable based off of the method's provided resultSet
+		SelectionOption selectionOption = new SelectionOption(
+				resultSet.getString("description"),
+				resultSet.getString("kitchenNotes"),
+				resultSet.getDouble("additionalPrice")
+				);		
+
+		return selectionOption;	
 	}
 
+	
+	/**
+     * Builds a specific AddOnOption object from a database resultSet.
+     * 
+     * @param resultSet the result set containing AddOnOption data
+     * @return an AddOnOption object with the extracted data
+     * @throws SQLException if accessing the resultSet fails
+     */
 	@Override
-	public MenuItem findAddOnOptionByMenuItemId(int menuItemId) throws DataAccessException
+	public AddOnOption findAddOnOptionByMainCourseId(int mainCourseId) throws DataAccessException
 	{
-		//TODO:
-		return null;	
+		// Gets a connection to the database
+		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
+
+		try
+		{
+			// Prepares a SQL statement to find and retrieve an MultipleChoiceMenu with a matching employee id
+			statementAddOnOptionByMainCourseId = databaseConnection.prepareStatement(FIND_ADDONOPTION_BY_MAINCOURSEID_QUERY);
+
+			// Adds the choiceMenuId provided in the method's parameter to the String instead of the placeholder
+			statementAddOnOptionByMainCourseId.setInt(1, mainCourseId);
+
+			// Executes the query, and stores the retrieved data in the variable named resultSet, which is a ResultSet object
+			ResultSet resultSet = statementAddOnOptionByMainCourseId.executeQuery();
+
+			// Creates and initializes an MultipleChoiceMenu object as null, which will later be populated with Employee specific data
+			AddOnOption addOnOption = null;
+
+			// Iterates through the resultSet while there are still more rows in the database's table
+			if (resultSet.next())
+			{
+				// Converts the retrieved database row into an MultipleChoiceMenu object using the buildMultipleChoiceMenuObject method
+				addOnOption = buildAddOnOptionObject(resultSet);
+			}
+
+			// Returns the MultipleChoiceMenu with a matching choiceMenuId or null if no multipleChoiceMenu has the specified choiceMenuId
+			return addOnOption;
+		}
+
+		catch (SQLException exception)
+		{
+			// If an SQL error occurs a custom exception is thrown with the specified details
+			throw new DataAccessException("Unable to find an AddOnOption object with an menuItemId matching: " + mainCourseId, exception);
+		}
 	}
 	 
-	private MenuItem buildAddOnOptionObject(ResultSet resultSet) throws SQLException
+	/**
+     * Builds a specific AddOnOption object from a database result set.
+     * 
+     * @param resultSet the result set containing AddOnOption data
+     * @return an AddOnOption object with the extracted data
+     * @throws SQLException if accessing the result set fails
+     */
+	private AddOnOption buildAddOnOptionObject(ResultSet resultSet) throws SQLException
 	{
-		return null;
-		//TODO:
+		// Creates a AddOnOption object stored within the addOnOption variable based off of the method's provided resultSet
+		AddOnOption addOnOption = new AddOnOption(
+				resultSet.getString("description"),
+				resultSet.getString("kitchenNotes"),
+				resultSet.getDouble("additionalPrice")
+				);		
+
+		return addOnOption;	
 	}
-
-
 }
