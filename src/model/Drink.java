@@ -8,14 +8,15 @@ package model;
  * drink is alcoholic and is refillable and the price.
  * 
  * 
- * @author Anders Trankjær
- * @version 09-05-2025 - 9:30
+ * @author Anders Trankjær & Christoffer Søndergaard
+ * @version 12-05-2025 - 15:03
  */
 public class Drink extends MenuItem 
 {
 	private boolean isAlcoholic;
 	private boolean isRefill;
 	private double price;
+
 
 	/**
 	 * the constructor for this subclass calls the constructor for the superclass to
@@ -34,6 +35,7 @@ public class Drink extends MenuItem
 		this.price = price;
 	}
 
+	
 	/**
 	 * @return isAlcoholic
 	 */
@@ -42,6 +44,7 @@ public class Drink extends MenuItem
 		return isAlcoholic;
 	}
 
+	
 	/**
 	 * @param isAlcoholic the new isAlcoholic to be set
 	 */
@@ -49,6 +52,7 @@ public class Drink extends MenuItem
 	{
 		this.isAlcoholic = isAlcoholic;
 	}
+	
 
 	/**
 	 * @return isRefill
@@ -58,6 +62,7 @@ public class Drink extends MenuItem
 		return isRefill;
 	}
 
+	
 	/**
 	 * @param isRefill the new isRefill to be set
 	 */
@@ -66,6 +71,7 @@ public class Drink extends MenuItem
 		this.isRefill = isRefill;
 	}
 
+	
 	/**
 	 * @return price
 	 */
@@ -74,11 +80,38 @@ public class Drink extends MenuItem
 		return price;
 	}
 
+	
 	/**
 	 * @param newPrice the new price to be set
 	 */
 	public void setPrice(double newPrice) 
 	{
 		this.price = newPrice;
+	}
+	
+	
+	/**
+	 * Gets the lunch price of this Drink instance.
+	 * This method essentially retrieves the value of the instance's price attribute.
+	 *
+	 * @return the price of purchasing this Drink during lunch time hours
+	 */
+	@Override
+	public double getLunchPrice()
+	{
+		return this.price;
+	}
+
+
+	/**
+	 * Gets the evening price of this Drink instance.
+	 * This method essentially retrieves the value of the instance's price attribute.
+	 *
+	 * @return the price of purchasing this Drink during evening time hours
+	 */
+	@Override
+	public double getEveningPrice()
+	{
+		return this.price;
 	}
 }
