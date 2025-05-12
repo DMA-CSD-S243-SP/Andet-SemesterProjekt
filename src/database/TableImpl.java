@@ -16,5 +16,5 @@ public interface TableImpl
 	 * @param tableCode the code used in the search
 	 * @return a clone of a table that matches the search parameters
 	 */
-	Table findTableByCode(String tableCode);
+	Table findTableByCode(String tableCode) throws DataAccessException;
 }
