@@ -6,10 +6,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import model.DipsAndSauces;
+import model.Drink;
 import model.EnumBarType;
+import model.MainCourse;
 import model.MenuItem;
 import model.PotatoDish;
 import model.SelfServiceBar;
+import model.SideDish;
 
 /**
  * This class is responsible for accessing and managing employee objects stored
@@ -18,33 +22,66 @@ import model.SelfServiceBar;
  * It implements the employeeDaoImpl, meaning it implements its methods
  * 
  * @author Line Bertelsen
- * @version 11.05.2025 - 21:10
+ * @version 12.05.2025 - 12:10
  */
 
 public class MenuItemDB implements MenuItemImpl
 {
-	// Selects a row from the table menuItem in the database, based on the given menuItemID
+	//MENU ITEM
+	// Selects a row from the table MenuItem in the database, based on the given menuItemID
 	private static final String FIND_MENUITEM_BY_MENUITEMID_QUERY = "SELECT * FROM MenuItem WHERE menuItemID = ?";
 	
 	// PreparedStatement for retrieving an menuItem based on the menuItemID
 	private PreparedStatement statementFindMenuItemById;
 	
-	private static final String FIND_SELFSERVEBAR_BY_MENUITEMID_QUERY = "SELECT * FROM SelfServiceBar WHERE menuItemID = ?";
-	private PreparedStatement statementFindSelfServiceBarByMenuId;
 	
-	private static final String FIND_DIPANDSAUCES_BY_MENUITEMID_QUERY = "SELECT * FROM DipAndSauces WHERE menuItemID = ?";
+	//SELF SERVE BAR
+	// Selects a row from the table SelfServeBar in the database, based on the given menuItemID
+	private static final String FIND_SELFSERVEBAR_BY_MENUITEMID_QUERY = "SELECT * FROM SelfServeBar WHERE menuItemID = ?";
+	
+	// PreparedStatement for retrieving an SelfServeBar based on the menuItemID
+	private PreparedStatement statementFindSelfServeBarByMenuId;
+	
+	
+	//DIPs AND SAUCES
+	// Selects a row from the table DipAndSauces in the database, based on the given menuItemID
+	private static final String FIND_DIPSANDSAUCES_BY_MENUITEMID_QUERY = "SELECT * FROM DipsAndSauces WHERE menuItemID = ?";
+	
+	// PreparedStatement for retrieving an DipAndSauces based on the menuItemID
 	private PreparedStatement statementFindDipsAndSaucesByMenuId;
 	
+	
+	//POTATODISH
+	// Selects a row from the table PotatoDish in the database, based on the given menuItemID
 	private static final String FIND_POTATODISH_BY_MENUITEMID_QUERY = "SELECT * FROM PotatoDish WHERE menuItemID = ?";
+	
+	// PreparedStatement for retrieving an PotatoDish based on the menuItemID
 	private PreparedStatement statementFindPotatoDishByMenuId;
 	
+	
+	//SIDEDISH
+	// Selects a row from the table SideDish in the database, based on the given menuItemID
 	private static final String FIND_SIDEDISH_BY_MENUITEMID_QUERY = "SELECT * FROM SideDish WHERE menuItemID = ?";
+	
+	// PreparedStatement for retrieving an SideDish based on the menuItemID
 	private PreparedStatement statementFindSideDishByMenuId;
 	
+	
+	//DRINK
+	// Selects a row from the table Drink in the database, based on the given menuItemID
 	private static final String FIND_DRINK_BY_MENUITEMID_QUERY = "SELECT * FROM Drink WHERE menuItemID = ?";
+	// PreparedStatement for retrieving an Drink based on the menuItemID
 	private PreparedStatement statementFindDrinkByMenuId;
 	
 	
+	//MAIN COURSE
+	// Selects a row from the table MainCourse in the database, based on the given menuItemID
+	private static final String FIND_MAINCOURSE_BY_MENUITEMID_QUERY = "SELECT * FROM MainCourse WHERE menuItemID = ?";
+	
+	// PreparedStatement for retrieving an MainCourse based on the menuItemID
+	private PreparedStatement statementFindMainCourseMenuId;
+	
+	//MULTIPLE CHOICE MENU
 	// Selects a row from the table menuItem in the database, based on the given MenuItemID
 	private static final String FIND_MULTIPLECHOICEMENU_BY_CHOICEMENUID_QUERY = "SELECT * FROM MultipleChoiceMenu WHERE ChoiceMenuId = ?";
 		
@@ -52,13 +89,15 @@ public class MenuItemDB implements MenuItemImpl
 	private PreparedStatement statementMultipleChoiceMenuByChoiceMenuId;
 	
 	
+	//SELECTION OPTION
 	// Selects a row from the table menuItem in the database, based on the given choiceMenuId
 	private static final String FIND_SELECTIONOPTION_BY_CHOICEMENUID_QUERY = "SELECT * FROM Option WHERE ChoiceMenuId = ?";
-			
+	
 	// PreparedStatement for retrieving an SelectionOption based on the choiceMenuId
 	private PreparedStatement statementSelectionOptionByChoiceMenuId;
 	
 	
+	//ADD ON OPTION
 	// Selects a row from the table menuItem in the database, based on the given menuItemId
 	private static final String FIND_ADDONOPTION_BY_MENUITEMID_QUERY = "SELECT * FROM AddOnOption WHERE menuItemId = ?";
 				
@@ -74,22 +113,31 @@ public class MenuItemDB implements MenuItemImpl
 	 */
 	public MenuItemDB() throws SQLException
 	{
-		// Prepares the SQL statement for retrieving a MenuItem by its MenuItemId
+		// MENU ITEM - Prepares the SQL statement for retrieving a MenuItem by its MenuItemId
 		statementFindMenuItemById = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_MENUITEM_BY_MENUITEMID_QUERY);
 		
-		// Prepares the SQL statement for retrieving a MenuItem by its MenuItemId
-		statementFindSelfServiceBarByMenuId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_SELFSERVEBAR_BY_MENUITEMID_QUERY);
+		// SELF SERVE BAR - Prepares the SQL statement for retrieving a SelfServeBar by its MenuItemId
+		statementFindSelfServeBarByMenuId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_SELFSERVEBAR_BY_MENUITEMID_QUERY);
 		
-		// Prepares the SQL statement for retrieving a MenuItem by its MenuItemId
+		// DIP AND SAURCES - Prepares the SQL statement for retrieving a DipsAndSauces by its MenuItemId
+		statementFindDipsAndSaucesByMenuId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_DIPSANDSAUCES_BY_MENUITEMID_QUERY); 
+		
+		// POTATO DISH - Prepares the SQL statement for retrieving a PotatoDish by its MenuItemId
 		statementFindPotatoDishByMenuId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_POTATODISH_BY_MENUITEMID_QUERY);
 		
-		// Prepares the SQL statement for retrieving a MultipleChoiceMenu by its menuItemId
+		// SIDE DISH - Prepares the SQL statement for retrieving a SideDish by its MenuItemId
+		statementFindSideDishByMenuId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_SIDEDISH_BY_MENUITEMID_QUERY);
+		
+		// DRINK - Prepares the SQL statement for retrieving a Drink by its MenuItemId
+		statementFindDrinkByMenuId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_DRINK_BY_MENUITEMID_QUERY);
+		
+		//MULTIPLE CHOICE MENU - Prepares the SQL statement for retrieving a MultipleChoiceMenu by its choiceMenuId
 		statementMultipleChoiceMenuByChoiceMenuId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_MULTIPLECHOICEMENU_BY_CHOICEMENUID_QUERY);
 		
-		// Prepares the SQL statement for retrieving a SelcetionOption by its choiceMenuId
+		// SELECTION OPTION - Prepares the SQL statement for retrieving a SelcetionOption by its choiceMenuId
 		statementSelectionOptionByChoiceMenuId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_SELECTIONOPTION_BY_CHOICEMENUID_QUERY);
 				
-		// Prepares the SQL statement for retrieving a AddOnOption by its menuItemID
+		// ADD ON OPTION - Prepares the SQL statement for retrieving a AddOnOption by its menuItemID
 		statementAddOnOptionByMenuItemId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_ADDONOPTION_BY_MENUITEMID_QUERY);
 	}
 
@@ -161,15 +209,15 @@ public class MenuItemDB implements MenuItemImpl
 		MenuItem menuItem = null; 
 		
 		
-		//SELF SERVICE BAR
-		// Check if the item type is "SelfServiceBar" and build the corresponding object
+		// SELF SERVICE BAR
+		// Check if the item type is "SelfServeBar" and build the corresponding object
 		if(itemType.equals("SelfServiceBar"))
 		{
-			// Sets the menu item ID parameter in the prepared statement for the SelfServiceBar-specific query
-			statementFindSelfServiceBarByMenuId.setInt(1, menuItemId);
+			// Sets the menu item ID parameter in the prepared statement for the SelfServiceBar query
+			statementFindSelfServeBarByMenuId.setInt(1, menuItemId);
 		       
 		    // Executes the query to retrieve additional SelfServiceBar-specific fields
-		    ResultSet resultSetSelfServiceBar = statementFindSelfServiceBarByMenuId.executeQuery();
+		    ResultSet resultSetSelfServiceBar = statementFindSelfServeBarByMenuId.executeQuery();
 
 		    // Checks if SelfServiceBar-specific data was found
 		    if (resultSetSelfServiceBar.next()) 
@@ -192,21 +240,43 @@ public class MenuItemDB implements MenuItemImpl
 		     }
 		}
 		
+		
+		// DIP AND SAUCES
+		// Check if the item type "DipAndSauces" and build the corresponding object
+		else if(itemType.equals("DipsAndSauces"))
+		{
+			// Sets the menu item ID parameter in the prepared statement for the DipsAndSauces query
+			statementFindDipsAndSaucesByMenuId.setInt(1, menuItemId);
+		       
+		    // Executes the query to retrieve additional DipsAndSauces fields
+		    ResultSet resultSetDipAndSauces = statementFindDipsAndSaucesByMenuId.executeQuery();
+
+		    // Checks if PotatoDish-specific data was found
+		    if (resultSetDipAndSauces.next()) 
+		    { 
+		           
+		    	// Reads specific attributes for PotatoDish from its result set
+		        boolean isSauce = resultSetDipAndSauces.getBoolean("isSauce");
+		        double fixedPrice = resultSetDipAndSauces.getDouble("fixedPrice");
+
+		        // Constructs a new DipsAndSauces object with both shared and specific attributes
+		        menuItem = new DipsAndSauces(isSauce, fixedPrice);
+		     }
+		}
+		
 		//POTATO DISH
 		// Check if the item type is "PotatoDish" and build the corresponding object
 		else if (itemType.equals("PotatoDish")) 
 		{
-		        
-		  	// Sets the menu item ID parameter in the prepared statement for the PotatoDish-specific query
+		  	// Sets the menu item ID parameter in the prepared statement for the PotatoDish query
 		   	statementFindPotatoDishByMenuId.setInt(1, menuItemId);
 		       
-		    // Executes the query to retrieve additional PotatoDish-specific fields
+		    // Executes the query to retrieve additional PotatoDish fields
 		    ResultSet resultSetPotatoDish = statementFindPotatoDishByMenuId.executeQuery();
 
 		    // Checks if PotatoDish-specific data was found
 		    if (resultSetPotatoDish.next()) 
-		    { 
-		           
+		    {  
 		    	// Reads specific attributes for PotatoDish from its result set
 		        boolean isPremium = resultSetPotatoDish.getBoolean("isPremium");
 		        double fixedPrice = resultSetPotatoDish.getDouble("fixedPrice");
@@ -214,11 +284,79 @@ public class MenuItemDB implements MenuItemImpl
 		        // Constructs a new PotatoDish object with both shared and specific attributes
 		        menuItem = new PotatoDish(isPremium, fixedPrice);
 		     }
-
 		}
 		
-		    // Returns the fully built MenuItem (or subclass) object
-		    return menuItem;
+		//SIDEDISH
+		// Check if the item type is "SideDish" and build the corresponding object
+		else if (itemType.equals("SideDish")) 
+		{				        
+		  	// Sets the menu item ID parameter in the prepared statement for the SideDish query
+		   	statementFindSideDishByMenuId.setInt(1, menuItemId);
+				       
+		    // Executes the query to retrieve additional SideDish fields
+		    ResultSet resultSetSideDish = statementFindSideDishByMenuId.executeQuery();
+
+		    // Checks if SideDish data was found
+		    if (resultSetSideDish.next()) 
+		    {         
+		    	// Reads specific attributes for SideDish from its result set
+		        int quantityPerServing = resultSetSideDish.getInt("quantityPerServing");
+		        double fixedPrice = resultSetSideDish.getDouble("fixedPrice");
+
+		        // Constructs a new SideDish object with both shared and specific attributes
+				menuItem = new SideDish(quantityPerServing, fixedPrice);
+		     }
+		 }
+		
+		//DRINK
+		// Check if the item type is "Drink" and build the corresponding object
+		else if (itemType.equals("Drink")) 
+		{				        
+		  	// Sets the menu item ID parameter in the prepared statement for the Drink query
+		   	statementFindDrinkByMenuId.setInt(1, menuItemId);
+						       
+		    // Executes the query to retrieve additional Drink fields
+		    ResultSet resultSetDrink = statementFindDrinkByMenuId.executeQuery();
+
+		    // Checks if Drink data was found
+		    if (resultSetDrink.next()) 
+		    {         
+		    	// Reads specific attributes for Drink from its result set
+		        boolean isAlcoholic = resultSetDrink.getBoolean("isAlcoholic");
+		        boolean isRefill = resultSetDrink.getBoolean("isRefill");
+		        double price = resultSetDrink.getDouble("price");
+
+		        // Constructs a new Drink object with both shared and specific attributes
+				menuItem = new Drink(isAlcoholic, isRefill, price);
+			 }
+		 }
+		
+		
+		//MAINCOURCE
+		// Check if the item type is "Drink" and build the corresponding object
+		else if (itemType.equals("MainCourse")) 
+		{				        
+			// Sets the menu item ID parameter in the prepared statement for the Drink query
+			statementFindMainCourseMenuId.setInt(1, menuItemId);
+
+			// Executes the query to retrieve additional Drink fields
+			ResultSet resultSetMainCourse = statementFindMainCourseMenuId.executeQuery();
+
+			// Checks if Drink data was found
+			if (resultSetMainCourse.next()) 
+			{         
+				// Reads specific attributes for Drink from its result set
+				String introductionDescription = resultSetMainCourse.getString("introductionDescription");
+				double lunchPrice = resultSetMainCourse.getDouble("lunchPrice");
+				double eveningPrice = resultSetMainCourse.getDouble("eveningPrice");
+
+				// Constructs a new Drink object with both shared and specific attributes
+				menuItem = new MainCourse(introductionDescription, lunchPrice, eveningPrice);
+			}
+		}
+		
+		 // Returns the fully build MenuItem (or subclass) object
+		 return menuItem;
 		    
 		}
 	
