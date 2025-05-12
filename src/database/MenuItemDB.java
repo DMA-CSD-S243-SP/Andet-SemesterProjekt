@@ -1,6 +1,5 @@
 package database;
 
-import java.lang.classfile.AnnotationValue.OfAnnotation;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,9 +7,11 @@ import java.sql.SQLException;
 
 import model.DipsAndSauces;
 import model.Drink;
+import model.Employee;
 import model.EnumBarType;
 import model.MainCourse;
 import model.MenuItem;
+import model.MultipleChoiceMenu;
 import model.PotatoDish;
 import model.SelfServiceBar;
 import model.SideDish;
@@ -81,6 +82,7 @@ public class MenuItemDB implements MenuItemImpl
 	// PreparedStatement for retrieving an MainCourse based on the menuItemID
 	private PreparedStatement statementFindMainCourseMenuId;
 	
+	
 	//MULTIPLE CHOICE MENU
 	// Selects a row from the table menuItem in the database, based on the given MenuItemID
 	private static final String FIND_MULTIPLECHOICEMENU_BY_CHOICEMENUID_QUERY = "SELECT * FROM MultipleChoiceMenu WHERE ChoiceMenuId = ?";
@@ -131,7 +133,10 @@ public class MenuItemDB implements MenuItemImpl
 		// DRINK - Prepares the SQL statement for retrieving a Drink by its MenuItemId
 		statementFindDrinkByMenuId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_DRINK_BY_MENUITEMID_QUERY);
 		
-		//MULTIPLE CHOICE MENU - Prepares the SQL statement for retrieving a MultipleChoiceMenu by its choiceMenuId
+		// MAIN COURSE - Prepares the SQL statement for retrieving a MainCourse by its MenuItemId
+		statementFindMainCourseMenuId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_MAINCOURSE_BY_MENUITEMID_QUERY);
+		
+		// MULTIPLE CHOICE MENU - Prepares the SQL statement for retrieving a MultipleChoiceMenu by its choiceMenuId
 		statementMultipleChoiceMenuByChoiceMenuId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_MULTIPLECHOICEMENU_BY_CHOICEMENUID_QUERY);
 		
 		// SELECTION OPTION - Prepares the SQL statement for retrieving a SelcetionOption by its choiceMenuId
@@ -264,6 +269,7 @@ public class MenuItemDB implements MenuItemImpl
 		     }
 		}
 		
+		
 		//POTATO DISH
 		// Check if the item type is "PotatoDish" and build the corresponding object
 		else if (itemType.equals("PotatoDish")) 
@@ -286,6 +292,7 @@ public class MenuItemDB implements MenuItemImpl
 		     }
 		}
 		
+		
 		//SIDEDISH
 		// Check if the item type is "SideDish" and build the corresponding object
 		else if (itemType.equals("SideDish")) 
@@ -307,6 +314,7 @@ public class MenuItemDB implements MenuItemImpl
 				menuItem = new SideDish(quantityPerServing, fixedPrice);
 		     }
 		 }
+		
 		
 		//DRINK
 		// Check if the item type is "Drink" and build the corresponding object
@@ -356,32 +364,76 @@ public class MenuItemDB implements MenuItemImpl
 		}
 		
 		 // Returns the fully build MenuItem (or subclass) object
-		 return menuItem;
-		    
+		 return menuItem; 
 		}
 	
 	@Override
-	public MenuItem findMultipleChoiceMenuByChoiceMenuId(int choiceMenuId) throws DataAccessException
+	public MultipleChoiceMenu findMultipleChoiceMenuByChoiceMenuId(int choiceMenuId) throws DataAccessException
 	{
-		//TODO:
-		return null;	
+		// Gets a connection to the database
+		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
+
+		try
+		{
+			// Prepares a SQL statement to find and retrieve an MultipleChoiceMenu with a matching employee id
+			statementMultipleChoiceMenuByChoiceMenuId = databaseConnection.prepareStatement(FIND_MULTIPLECHOICEMENU_BY_CHOICEMENUID_QUERY);
+
+			// Adds the choiceMenuId provided in the method's parameter to the String instead of the placeholder
+			statementMultipleChoiceMenuByChoiceMenuId.setInt(1, choiceMenuId);
+
+			// Executes the query, and stores the retrieved data in the variable named resultSet, which is a ResultSet object
+			ResultSet resultSet = statementMultipleChoiceMenuByChoiceMenuId.executeQuery();
+
+			// Creates and initializes an MultipleChoiceMenu object as null, which will later be populated with Employee specific data
+			MultipleChoiceMenu multipleChoiceMenu = null;
+
+			// Iterates through the resultSet while there are still more rows in the database's table
+			if (resultSet.next())
+			{
+				// Converts the retrieved database row into an MultipleChoiceMenu object using the buildMultipleChoiceMenuObject method
+				multipleChoiceMenu = buildMultipleChoiceMenuObject(resultSet);
+			}
+
+			// Returns the MultipleChoiceMenu with a matching choiceMenuId or null if no multipleChoiceMenu has the specified choiceMenuId
+			return multipleChoiceMenu;
+		}
+
+		catch (SQLException exception)
+		{
+			// If an SQL error occurs a custom exception is thrown with the specified details
+			throw new DataAccessException("Unable to find an MultipleChoiceMenu object with an choiceMenuId matching: " + choiceMenuId, exception);
+		}
+
 	}
-	 
-	private MenuItem buildMultipleChoiceMenuObject(ResultSet resultSet) throws SQLException
+	
+	
+	/**
+     * Builds a specific MutipleChoiceMenu object from a database result set.
+     * 
+     * @param resultSet the result set containing MutipleChoiceMenu data
+     * @return an MutipleChoiceMenu object with the extracted data
+     * @throws SQLException if accessing the result set fails
+     */
+	private MultipleChoiceMenu buildMultipleChoiceMenuObject(ResultSet resultSet) throws SQLException
 	{
-		return null;
-		//TODO:
+		// Creates a MutipleChoiceMenu object stored within the mutipleChoiceMenu variable based off of the method's provided resultSet
+		MultipleChoiceMenu multipleChoiceMenu = new MultipleChoiceMenu(
+			resultSet.getString("selectionDescription")			
+			);		
+			
+		return multipleChoiceMenu;
+
 	}
 	
 	@Override
-	public MenuItem findSelectionOptionByChoiceMenuId(int choiceMenuId) throws DataAccessException
+	public MultipleChoiceMenu findSelectionOptionByChoiceMenuId(int choiceMenuId) throws DataAccessException
 	{
 		//TODO:
 		return null;	
 	}
 	 
 	
-	private MenuItem buildSelectionOptionObject(ResultSet resultSet) throws SQLException
+	private MultipleChoiceMenu buildSelectionOptionObject(ResultSet resultSet) throws SQLException
 	{
 		return null;
 		//TODO:
