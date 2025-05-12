@@ -1,6 +1,7 @@
 package database;
 
 import model.MenuItem;
+import model.MultipleChoiceMenu;
 
 /**
  * An interface that defines a contract for accessing MenuItemImpl,
@@ -12,7 +13,7 @@ import model.MenuItem;
  * findMenuItemByMenuItemId, findMultipleChoiceMenuByChoiceMenuId, findSelectionOptionByChoiceMenuId and findAddOnOptionByMenuItemId.
  * 
  * @author Line Bertelsen
- * @version 12.05.25 - 08.30
+ * @version 12.05.25 - 16.00
  */
 
 public interface MenuItemImpl
@@ -35,7 +36,7 @@ public interface MenuItemImpl
      * @return the MultipleChoiceMenu object that matches the provided ID
      * @throws DataAccessException if there is an issue accessing the data
      */
-	MenuItem findMultipleChoiceMenuByChoiceMenuId(int choiceMenuId) throws DataAccessException;
+	MultipleChoiceMenu findMultipleChoiceMenuByChoiceMenuId(int choiceMenuId) throws DataAccessException;
 	
 	/**
      * Method creates a shallow clone of the selectionOption that has the given unique ID. 
@@ -45,7 +46,7 @@ public interface MenuItemImpl
      * @return the SelectionOption object that matches the provided ID
      * @throws DataAccessException if there is an issue accessing the data
      */
-	MenuItem findSelectionOptionByChoiceMenuId(int choiceMenuId) throws DataAccessException;
+	MultipleChoiceMenu findSelectionOptionByChoiceMenuId(int choiceMenuId) throws DataAccessException;
 	
 	/**
      * Method creates a shallow clone of the addOnOption that has the given unique ID. 
