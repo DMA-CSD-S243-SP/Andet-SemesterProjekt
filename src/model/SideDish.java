@@ -7,14 +7,15 @@ package model;
  * This class is a child/sub-class extending the abstract MenuItem class, and 
  * includes information on the item fixed price and the quantity per serving for a side dish.
  * 
- * @author Line Bertelsen
- * @version 09.05.25 - 10.03
+ * @author Line Bertelsen & Christoffer Søndergaard
+ * @version 12-05-2025 - 15:14
  */
 public class SideDish extends MenuItem
 {
 	//Attributes/Intances variables
 	private int quantiyPerServing;
 	private double fixedPrice;
+
 	
 	/**
 	 * Constructs a new SideDish instance, which uses the specified parameters of
@@ -73,4 +74,29 @@ public class SideDish extends MenuItem
 		this.fixedPrice = fixedPrice;
 	}
 	
+	
+	/**
+	 * Gets the lunch price of this SideDish instance.
+	 * This method essentially retrieves the value of the instance's fixedPrice attribute.
+	 *
+	 * @return the price of purchasing this SideDish during lunch time hours
+	 */
+	@Override
+	public double getLunchPrice()
+	{
+		return this.fixedPrice;
+	}
+
+
+	/**
+	 * Gets the evening price of this SideDish instance.
+	 * This method essentially retrieves the value of the instance's fixedPrice attribute.
+	 *
+	 * @return the price of purchasing this SideDish during evening time hours
+	 */
+	@Override
+	public double getEveningPrice()
+	{
+		return this.fixedPrice;
+	}
 }
