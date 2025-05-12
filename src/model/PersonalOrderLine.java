@@ -11,23 +11,16 @@ package model;
  * 
  * 
  * @author Line Bertelsen & Christoffer Søndergaard
- * @version 11-05-2025 - 20:41
+ * @version 12-05-2025 - 10:54
  */
 public class PersonalOrderLine
 {
-	//private double addtionalPrice;
-/*	//Line: Attributes i've added
-	private AddOnOption addOnOption;
-	private SelectionOption selectionOption;
-*/
-
-	
 	// The menu item chosen for this specific order line
 	private MenuItem menuItem;
 
-	// The quantity of the selected menu item
-	private int quantityOfMenuItem;
-
+	// The additional price to add to a MenuItem's base cost, if certain additional choices are made
+	private double additionalPrice;
+	
 	// The current status of this particular PersonalOrderLine instance e.g. "waiting to be prepared" 
 	private EnumStatusType status;
 
@@ -36,9 +29,9 @@ public class PersonalOrderLine
 	
 	
 	/**
-	 * Constructs a new PersonalOrderLine using the suppleid MenuItem in the parameter.
+	 * Constructs a new PersonalOrderLine using the supplied MenuItem in the parameter.
 	 * 
-	 * The quantity and status must be set separately.
+	 * The additionalPrice, Notes and status must be set separately.
 	 * The constructor associates the PersonalOrderLine with the MenuItem instance.
 	 * 
 	 * @param menuItem the MenuItem object that this PersonalOrderLine is to be associated with
@@ -57,17 +50,6 @@ public class PersonalOrderLine
 	public MenuItem getMenuItem()
 	{
 		return this.menuItem;
-	}
-	
-	
-	/**
-	 * Returns the number of MenuItems ordered in this PersonalOrderLine.
-	 *
-	 * @return the quantity of the specified MenuItem
-	 */
-	public int getQuantityOfMenuItems()
-	{
-		return this.quantityOfMenuItem;
 	}
 	
 	
@@ -100,9 +82,6 @@ public class PersonalOrderLine
 		// plus the additional costs associated with the price (e.g. +49 for medium spare ribs instead of small)
 		double personalOrderLinePrice = menuItem.getBasePrice() + getAdditionalPrice();
 		
-		// Multiplies the value of the personalOrderLinePrice variable by the amount of MenuItems that has been ordered
-		personalOrderLinePrice = personalOrderLinePrice * this.quantityOfMenuItem;
-		
 		// Returns the value stored within the personalOrderLinePrice variable
 		return personalOrderLinePrice;
 	}
@@ -125,7 +104,8 @@ public class PersonalOrderLine
 	
 	
 	/**
-	 * Adds an AddOnOption to this PersonalOrderLine object.
+	 * Adds an AddOnOption to this PersonalOrderLine objectwith the intent of mutating
+	 * the contents of the PersonalOrderLine instance's notes and additionalPrice attributes.
 	 * 
 	 * This method is intended for being used to set specific upgrades and 
 	 * MenuItem customizations that affect the kitchen notes and pricing of the PersonalOrderLine. 
@@ -134,12 +114,18 @@ public class PersonalOrderLine
 	 */
 	public void addAddOnOption(AddOnOption addOnOption)
 	{
-//		addOnOption = addOnOption;
+		// Adds the additionalPrice from the SelectionOption instance on top of PersonalOrderLine instance's current value of additionalPrice
+		this.additionalPrice = additionalPrice + addOnOption.getAdditionalPrice();
+		
+		// Adds the AddOnOption's kitchen notes to the PersonalOrderLine instance's current contents of the notes string, 
+		// with a space behind each note to make it easily readable for the kitchen staff
+		this.notes = notes + addOnOption.getKitchenNotes() + " ";
 	}
 	
 	
 	/**
-	 * Adds an SelectionOption to this PersonalOrderLine object.
+	 * Adds an SelectionOption to this PersonalOrderLine object, with the intent of mutating
+	 * the contents of the PersonalOrderLine instance's notes and additionalPrice attributes.
 	 * 
 	 * This method is intended for when guests have selected an option from
 	 * a MultipleChoiceMenu that affects the pricing or kitchen notes e.g. "+49   Medium"
@@ -149,7 +135,12 @@ public class PersonalOrderLine
 	 */
 	public void addSelectionOption(SelectionOption selectionOption)
 	{
-//		selectionOption = selectionOption;
+		// Adds the additionalPrice from the SelectionOption instance on top of PersonalOrderLine instance's current value of additionalPrice
+		this.additionalPrice = additionalPrice + selectionOption.getAdditionalPrice();
+		
+		// Adds the SelectionOption's kitchen notes to the PersonalOrderLine instance's current contents of the notes string, 
+		// with a space behind each note to make it easily readable for the kitchen staff
+		this.notes = notes + selectionOption.getKitchenNotes() + " ";
 	}
 	
 	
@@ -158,14 +149,10 @@ public class PersonalOrderLine
 	 * price. The additional price comes from pricing that is added on top to reflect upgrades or extras often
 	 * associated with the customization of MainCourse instances.
 	 *
-	 * @return the additional cost to add to the base price
+	 * @return the additional cost to add on top of the MenuItem's base price
 	 */
 	public double getAdditionalPrice()
 	{
-		//Question: Når vi henter additionalPrice i personalOrderline. Hent vi det kun fra addOnOption eller også fra selectionOptions?
-
-		// TODO: The code for this method needs implementing
-		
-		return 0.00;
+		return this.additionalPrice;
 	}
 }
