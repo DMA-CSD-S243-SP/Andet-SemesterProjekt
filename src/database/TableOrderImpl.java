@@ -1,5 +1,7 @@
 package database;
 
+import java.util.List;
+
 import model.TableOrder;
 
 /**
@@ -9,5 +11,7 @@ import model.TableOrder;
 
 public interface TableOrderImpl
 {
+	List <TableOrder> findAllTableOrders() throws DataAccessException;
+
 	TableOrder findTableOrderById(int TableOrderId) throws DataAccessException;
 }
