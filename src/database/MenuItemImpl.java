@@ -3,16 +3,16 @@ package database;
 import model.MenuItem;
 
 /**
- * An interface that defines a contract for accessing table orders,
- * specifically for finding a menu item based on its ID.
+ * An interface that defines a contract for accessing MenuItemImpl,
+ * specifically for finding a menu item, multiple choice menu, selection option and add on option based on its ID.
  * 
  * The contract ensures consistency across all classes that implement the interface. 
  * It guarantees that certain functionality is available 
- * and any class that implements TableOrderImpl must provide a method called findMenuItemById.
- * That method must take an int and return a MenuItem, and it must be able to throw DataAccessException.
+ * and any class that implements MenuItemImpl must provide a four methods called 
+ * findMenuItemByMenuItemId, findMultipleChoiceMenuByChoiceMenuId, findSelectionOptionByChoiceMenuId and findAddOnOptionByMenuItemId.
  * 
  * @author Line Bertelsen
- * @version 11.05.25 - 20:06
+ * @version 12.05.25 - 08.30
  */
 
 public interface MenuItemImpl
@@ -25,5 +25,35 @@ public interface MenuItemImpl
      * @return the MenuItem object that matches the provided ID
      * @throws DataAccessException if there is an issue accessing the data
      */
-	MenuItem findMenuItemById(int menuItemId) throws DataAccessException;
+	MenuItem findMenuItemByMenuItemId(int menuItemId) throws DataAccessException;
+	
+	/**
+     * Method creates a shallow clone of the multipleChoiceMenu that has the given unique ID. 
+     * If no match is found the method returns null. 
+     *
+     * @param multipleChoiceMenu the ID of the multiple choice menu to be retrieved
+     * @return the MultipleChoiceMenu object that matches the provided ID
+     * @throws DataAccessException if there is an issue accessing the data
+     */
+	MenuItem findMultipleChoiceMenuByChoiceMenuId(int choiceMenuId) throws DataAccessException;
+	
+	/**
+     * Method creates a shallow clone of the selectionOption that has the given unique ID. 
+     * If no match is found the method returns null. 
+     *
+     * @param selectionOption the ID of the menu item to be retrieved
+     * @return the SelectionOption object that matches the provided ID
+     * @throws DataAccessException if there is an issue accessing the data
+     */
+	MenuItem findSelectionOptionByChoiceMenuId(int choiceMenuId) throws DataAccessException;
+	
+	/**
+     * Method creates a shallow clone of the addOnOption that has the given unique ID. 
+     * If no match is found the method returns null. 
+     *
+     * @param addOnOption the ID of the menu item to be retrieved
+     * @return the AddOnOption object that matches the provided ID
+     * @throws DataAccessException if there is an issue accessing the data
+     */
+	MenuItem findAddOnOptionByMenuItemId(int menuItemId) throws DataAccessException;
 }
