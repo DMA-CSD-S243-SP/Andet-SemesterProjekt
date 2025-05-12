@@ -13,14 +13,12 @@ package model;
  * 
  * 
  * @author Christoffer Søndergaard
- * @version 08-05-2025 - 13:04
+ * @version 12-05-2025 - 15:09
  */
 public abstract class MenuItem
 {
     private int menuItemId;
     private int preparationTime;
-    
-    private double basePrice;
     
     private String name;
     private String description;
@@ -84,35 +82,26 @@ public abstract class MenuItem
     }
     
     
-    /**
-	 * Gets the base price of this menu item.
-	 * 
-	 * The base price represents the base or starting cost of a menu item before
-	 * any additional costs e.g. from customization of a MenuCourse such as 
-	 * 'garlic butter' on a ribeye steak is added.
-	 *
-	 * @return the original unadjusted price of this menu item
-	 */
-    public double getBasePrice()
-    {
-        return this.basePrice;
-    }
-
-    
 	/**
-	 * Sets the base price cost of this menu item.
-	 * 
-	 * The base price defines the starting / standard cost of the item before any 
-	 * pricing adjustments are made. The base price represents the base or starting cost of a menu item before
-	 * any additional costs e.g. from customization of a MenuCourse such as 
-	 * 'garlic butter' on a ribeye steak is added.
-	 * 
-	 * @param basePrice the price to set as the starting value for this item
+	 * Gets the price of the MenuItem's subclasses / child classes during the lunch time period.
+	 *
+	 * This method must be implemented by all concrete subclasses
+	 * and defines context-dependent pricing.
+	 *
+	 * @return the price for the MenuItem subclass during the lunch hours
 	 */
-    public void setBasePrice(double basePrice)
-    {
-        this.basePrice = basePrice;
-    }
+	public abstract double getLunchPrice();
+
+
+	/**
+	 * Gets the price of the MenuItem's subclass/child class during the evening time period.
+	 *
+	 * Because this is an abstract method, this method must be implemented by all of MenuItem's
+	 * subclasses /child classes.
+	 *
+	 * @return the price for the MenuItem subclass during the evening hours
+	 */
+	public abstract double getEveningPrice();
     
 
     /**
