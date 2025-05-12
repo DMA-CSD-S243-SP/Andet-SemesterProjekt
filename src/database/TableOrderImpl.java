@@ -39,5 +39,5 @@ public interface TableOrderImpl
      * @return the TableOrder object that matches the provided ID
      * @throws DataAccessException if there is an issue accessing the data
      */
-	TableOrder findTableOrderById(int TableOrderId) throws DataAccessException;
+	TableOrder findTableOrderByTableOrderId(int tableOrderId) throws DataAccessException;
 }
