@@ -11,7 +11,7 @@ package model;
  * 
  * 
  * @author Line Bertelsen & Christoffer Søndergaard
- * @version 12-05-2025 - 10:54
+ * @version 12-05-2025 - 15:17
  */
 public class PersonalOrderLine
 {
@@ -78,9 +78,10 @@ public class PersonalOrderLine
 	 */
 	public double getPersonalOrderLinePrice()
 	{
+		// TODO: Update comment
 		// Creates a variable named personalOrderLinePrice and sets the value of the personalOrderLinePrice variable to be equal to the MenuItem's base price, 
 		// plus the additional costs associated with the price (e.g. +49 for medium spare ribs instead of small)
-		double personalOrderLinePrice = menuItem.getBasePrice() + getAdditionalPrice();
+		double personalOrderLinePrice = menuItem.getLunchPrice() + getAdditionalPrice();
 		
 		// Returns the value stored within the personalOrderLinePrice variable
 		return personalOrderLinePrice;
