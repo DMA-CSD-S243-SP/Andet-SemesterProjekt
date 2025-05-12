@@ -1,7 +1,9 @@
 package database;
 
+import model.AddOnOption;
 import model.MenuItem;
 import model.MultipleChoiceMenu;
+import model.SelectionOption;
 
 /**
  * An interface that defines a contract for accessing MenuItemImpl,
@@ -36,7 +38,7 @@ public interface MenuItemImpl
      * @return the MultipleChoiceMenu object that matches the provided ID
      * @throws DataAccessException if there is an issue accessing the data
      */
-	MultipleChoiceMenu findMultipleChoiceMenuByChoiceMenuId(int choiceMenuId) throws DataAccessException;
+	MultipleChoiceMenu findMultipleChoiceMenuByMainCourseId(int mainCourseId) throws DataAccessException;
 	
 	/**
      * Method creates a shallow clone of the selectionOption that has the given unique ID. 
@@ -46,7 +48,7 @@ public interface MenuItemImpl
      * @return the SelectionOption object that matches the provided ID
      * @throws DataAccessException if there is an issue accessing the data
      */
-	MultipleChoiceMenu findSelectionOptionByChoiceMenuId(int choiceMenuId) throws DataAccessException;
+	SelectionOption findSelectionOptionByMainCourseId(int mainCourseId) throws DataAccessException;
 	
 	/**
      * Method creates a shallow clone of the addOnOption that has the given unique ID. 
@@ -56,5 +58,5 @@ public interface MenuItemImpl
      * @return the AddOnOption object that matches the provided ID
      * @throws DataAccessException if there is an issue accessing the data
      */
-	MenuItem findAddOnOptionByMenuItemId(int menuItemId) throws DataAccessException;
+	AddOnOption findAddOnOptionByMainCourseId(int mainCourseId) throws DataAccessException;
 }
