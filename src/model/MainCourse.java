@@ -14,7 +14,7 @@ import java.util.List;
  * @author Anders Trankjær
  * @version 09-05-2025 - 10:30
  */
-public class MainCourse 
+public class MainCourse extends MenuItem
 {
 	private String introductionDescription;
 	private double lunchPrice;
