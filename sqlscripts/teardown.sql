@@ -1,3 +1,4 @@
+-- All tables are deleted in reverse order of how they were added.
 drop table [DiscountPersonalOrder];
 GO;
 drop table [Discount];
@@ -30,6 +31,7 @@ drop table [MenuItem];
 GO;
 drop table [MenuCard];
 GO;
+-- Constraint has to be dropped to be able to delete TableOrder.
 alter table [Object_Table] drop constraint [FK_Object_Table_TableOrder];
 GO;
 drop table [TableOrder];
@@ -39,39 +41,3 @@ GO;
 drop table [Restaurant];
 GO;
 drop table [Employee];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
