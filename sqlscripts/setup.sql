@@ -12,12 +12,15 @@ create table [Employee]
 create table [Restaurant]
 (
 	restaurantCode char(3) not null,
-	name varchar(30) not null,
+	[name] varchar(30) not null,
 	city varchar(30) not null,
 	streetName varchar(30) not null,
 
 	primary key (restaurantCode),
 );
+--A dummy restaurant row is added.
+insert into [Restaurant]	(restaurantCode, [name], city, streetName) 
+values						('000',          '',     '',   ''        );
 
 create table [Object_Table] --table is a keyword, and thus cannot be used as table name.
 (
@@ -51,9 +54,16 @@ create table [TableOrder]
 	--table with code 0000000 should be a dummy table, serving as a catch all for orphaned orders.
 );
 
+--TableOrder and Object_Table most mutually refer to one another. Either constraint require that the óther table exists
+--therefor the constraint in the first made table is added after the second table is created.
 alter table [Object_Table] add constraint [FK_Object_Table_TableOrder] 
 foreign key (tableOrderId) references TableOrder(tableOrderId) --adds foreign key constraint to existing table.
 on delete set null --If the current TableOrder is deleted, then the Table just be missing a current order.
+
+--A dummy Object_Table row is made to give something for TableOrder to default to.
+insert into [Object_Table]	(tableCode, restaurantCode)
+values						('0000000', '000'         );
+--No table Order is added to table, aside from Object_Table: All dependencies of TableOrder cascade delete.
 
 create table [MenuCard]
 (
@@ -204,11 +214,10 @@ create table [PersonalOrderLine]
 	notes varchar(60) not null,
 	status int not null,
 	personalOrderId int not null,
-	menuItemId int,
+	menuItemId int, --orderline isn't removed when a MenuItem is deleted to preserve some historic data
 
 	primary key (personalOrderLineId),
 	constraint FK_PersonalOrderLine_PersonalOrder foreign key (personalOrderId) references PersonalOrder(personalOrderId) on delete cascade,
-	--orderline isn't removed when a MenuItem is deleted to preserve some historic data
 	constraint FK_PersonalOrderLine_MenuItem foreign key (menuItemId) references MenuItem(menuItemId) on delete set null
 );
 
