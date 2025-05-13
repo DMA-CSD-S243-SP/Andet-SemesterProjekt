@@ -26,8 +26,9 @@ public interface TableOrderImpl
 	 * Otherwise associations will be filled in with the information from the
 	 * row that the TableOrders has a key to.
 	 * 
-	 * @param fullAssociation whether the tableOrders associations should be looked up in the database.
-	 * @return A list containing a shallow clone of every tableOrders in the database.
+	 * 
+	 * @return A list containing a shallow clone of every TableOrder in the database.
+	 * @throws DataAccessException if there is an issue accessing the data
 	 */
 	List <TableOrder> findAllTableOrders() throws DataAccessException;
 
