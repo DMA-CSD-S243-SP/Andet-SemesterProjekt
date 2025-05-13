@@ -10,7 +10,7 @@ import model.Table;
 public interface TableImpl
 {
 	/**
-	 * this method creates a clone of the table that has a given tableCode. if no matching product
+	 * this method creates a clone of the table that has a given tableCode. if no matching table
 	 * is found the method returns null. 
 	 * 
 	 * @param tableCode the code used in the search
