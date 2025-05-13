@@ -1,5 +1,6 @@
 package database;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import model.AvailabilityTracker;
@@ -32,7 +33,7 @@ public interface MenuCardImpl
 	 * 
 	 * @throws DataAccessException if there is an issue accessing the data 
 	 */
-	List<MenuCard> findMenuCardsByRestaurantCode(String restaurantCode) throws DataAccessException;
+	List<MenuCard> findMenuCardsByRestaurantCode(String restaurantCode) throws DataAccessException, SQLException;
 	
 	/**
      * Method creates a shallow clone of the menuCard that has the given unique code. 
@@ -42,5 +43,5 @@ public interface MenuCardImpl
      * @return the Restaurant object that matches the provided code
      * @throws DataAccessException if there is an issue accessing the data
      */
-	AvailabilityTracker findAvailabilityTrackerById(int menuCardId) throws DataAccessException;
+	List<AvailabilityTracker>	 findAvailabilityTrackersByMenuCardId(int menuCardId) throws DataAccessException,SQLException;
 }
