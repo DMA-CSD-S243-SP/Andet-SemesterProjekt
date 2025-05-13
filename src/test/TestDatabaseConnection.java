@@ -6,9 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.junit.Test;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import database.DataBaseConnection;
 
@@ -30,7 +30,7 @@ public class TestDatabaseConnection
     @BeforeAll
     public static void setUp()
     {
-        databaseConnection = DataBaseConnection.getInstance();
+    	databaseConnection = DataBaseConnection.getInstance();
     }
 
     
