@@ -1,6 +1,9 @@
 package database;
 
+import java.sql.SQLException;
+
 import model.PersonalOrder;
+import model.PersonalOrderLine;
 
 /**
  * An interface that defines a contract for accessing PersonalOrderImpl,
@@ -25,4 +28,13 @@ public interface PersonalOrderImpl
      * @throws DataAccessException if there is an issue accessing the data
      */
 	PersonalOrder findPersonalOrderById(int personalOrderId) throws DataAccessException;
+
+	
+	/**
+     * Inserts a new PersonalOrderLine into the PersonalOrderLine table in the Database. 
+     *
+     * @param personalOrderLine 
+     * @throws DataAccessException if there is an issue accessing the data
+     */
+	PersonalOrderLine insertSaleOrderToDatabase(PersonalOrderLine personalOrderLine) throws DataAccessException;
 }
