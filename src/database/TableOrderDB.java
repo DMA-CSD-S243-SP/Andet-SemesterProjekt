@@ -10,6 +10,16 @@ import java.util.List;
 import model.AddOnOption;
 import model.TableOrder;
 
+/**
+ * This class is responsible for accessing and managing 
+ * TabelOrder objects stored in a database.
+ * 
+ * It implements the TableOrderImpl, meaning it implements its methods
+ * 
+ * @author Line Bertelsen
+ * @version 13.05.2025 - 10:26
+ */
+
 public class TableOrderDB implements TableOrderImpl
 {
 
