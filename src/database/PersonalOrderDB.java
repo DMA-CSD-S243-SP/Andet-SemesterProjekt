@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import model.AvailabilityTracker;
 import model.PersonalOrder;
 import model.PersonalOrderLine;
+import model.TableOrder;
 
 /**
  * This class is responsible for accessing and managing 
@@ -15,8 +16,8 @@ import model.PersonalOrderLine;
  * 
  * It implements the PersonalOrderImpl, meaning it implements its methods
  * 
- * @author Line Bertelsen
- * @version 13.05.25 - 12:31
+ * @author Line Bertelsen & Anders Trankjær
+ * @version 13.05.25 - 16:55
  */
 public class PersonalOrderDB implements PersonalOrderImpl
 {
@@ -88,8 +89,11 @@ public class PersonalOrderDB implements PersonalOrderImpl
      */
 	private PersonalOrder buildPersonalOrderObject(ResultSet resultSet) throws SQLException
 	{
-		// TODO Auto-generated method stub
-		return null;
+		TableOrder tableOrder = new TableOrder(resultSet.getInt("tableOrderId"));
+		
+		PersonalOrder personalOrder = new PersonalOrder(tableOrder);
+		
+		return personalOrder;
 	}
 	
 	/**
@@ -101,7 +105,8 @@ public class PersonalOrderDB implements PersonalOrderImpl
      */
 	private PersonalOrderLine buildPersonalOrderLineObject(ResultSet resultSet) throws SQLException
 	{
-		// TODO Auto-generated method stub
+		PersonalOrderLine personalOrderLine = new PersonalOrderLine(null);
+		
 		return null;
 	}
 
