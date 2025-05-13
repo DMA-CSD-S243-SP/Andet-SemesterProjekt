@@ -117,4 +117,11 @@ public class PersonalOrderDB implements PersonalOrderImpl
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public PersonalOrder insertPersonalOrder(PersonalOrder personalOrder) throws DataAccessException
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
