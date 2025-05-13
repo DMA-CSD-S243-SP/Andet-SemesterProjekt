@@ -93,7 +93,8 @@ public class MenuItemDB implements MenuItemImpl
 	
 	
 	//SELECTION OPTION
-	// Selects a row from the table menuItem in the database, based on the given choiceMenuId
+	// Selects a row from the table SelectionOption in the database, based on the given choiceMenuId
+	// which is linked to a MultipleChoiceMenu associated with the given mainCourseId
 	private static final String FIND_SELECTIONOPTION_BY_MAINCOURSEID_QUERY = "SELECT * FROM SelectionOption WHERE choiceMenuId IN (SELECT choiceMenuId FROM MultipleChoiceMenu WHERE mainCourseId = ?)";
 	
 	// PreparedStatement for retrieving an SelectionOption based on the choiceMenuId
@@ -101,10 +102,10 @@ public class MenuItemDB implements MenuItemImpl
 	
 	
 	//ADD ON OPTION
-	// Selects a row from the table menuItem in the database, based on the given menuItemId
+	// Selects a row from the table AddOnOption in the database, based on the given MainCourseId
 	private static final String FIND_ADDONOPTION_BY_MAINCOURSEID_QUERY = "SELECT * FROM AddOnOption WHERE mainCourseId = ?";
 				
-	// PreparedStatement for retrieving an SelectionOption based on the menuItemId
+	// PreparedStatement for retrieving an AddOnOption based on the MainCourseId
 	private PreparedStatement statementAddOnOptionByMainCourseId;
 
 	
@@ -368,6 +369,15 @@ public class MenuItemDB implements MenuItemImpl
 		 return menuItem; 
 		}
 	
+	
+
+	/**
+	 * Finds a MultipleChoiceMenu object by searching for a MultipleChoiceMenu with a matching mainCourseId.
+	 * 
+	 * @param mainCourseId the id of the MultipleChoiceMenu to search for
+	 * @return the corresponding MultipleChoiceMenu object, or null if not found
+	 * @throws DataAccessException if retrieval fails
+	 */
 	@Override
 	public MultipleChoiceMenu findMultipleChoiceMenuByMainCourseId(int mainCourseId) throws DataAccessException
 	{
@@ -426,6 +436,15 @@ public class MenuItemDB implements MenuItemImpl
 
 	}
 	
+	/**
+	 * Finds a SelectionOption object whose choiceMenuId is linked to a
+	 * MultipleChoiceMenu entry that belongs to the specified mainCourseId.
+	 *
+	 * @param mainCourseId the ID of the main course to find related selection options for
+	 * @return the corresponding SelectionOption object, or null if not found
+	 * @throws DataAccessException if a database access error occurs
+
+	 */
 	@Override
 	public SelectionOption findSelectionOptionByMainCourseId(int mainCourseId) throws DataAccessException
 	{
@@ -434,26 +453,26 @@ public class MenuItemDB implements MenuItemImpl
 
 		try
 		{
-			// Prepares a SQL statement to find and retrieve an MultipleChoiceMenu with a matching employee id
+			// Prepares a SQL statement to find and retrieve an SelectionOption with a matching mainCourseId
 			statementSelectionOptionByMainCourseId = databaseConnection.prepareStatement(FIND_SELECTIONOPTION_BY_MAINCOURSEID_QUERY);
 
-			// Adds the choiceMenuId provided in the method's parameter to the String instead of the placeholder
+			// Adds the mainCourseId provided in the method's parameter to the String instead of the placeholder
 			statementSelectionOptionByMainCourseId.setInt(1, mainCourseId);
 
 			// Executes the query, and stores the retrieved data in the variable named resultSet, which is a ResultSet object
 			ResultSet resultSet = statementSelectionOptionByMainCourseId.executeQuery();
 
-			// Creates and initializes an MultipleChoiceMenu object as null, which will later be populated with Employee specific data
+			// Creates and initializes an SelectionOption object as null, which will later be populated with SelectionOption specific data
 			SelectionOption selectionOption = null;
 
 			// Iterates through the resultSet while there are still more rows in the database's table
 			if (resultSet.next())
 			{
-				// Converts the retrieved database row into an MultipleChoiceMenu object using the buildMultipleChoiceMenuObject method
+				// Converts the retrieved database row into an SelectionOption object using the buildSelectionOptionObject method
 				selectionOption = buildSelectionOptionObject(resultSet);
 			}
 
-			// Returns the MultipleChoiceMenu with a matching choiceMenuId or null if no multipleChoiceMenu has the specified choiceMenuId
+			// Returns the SelectionOption with a matching mainCourseId or null if no SelectionOption has the specified mainCourseId
 			return selectionOption;
 		}
 
