@@ -43,5 +43,5 @@ public interface MenuCardImpl
      * @return the Restaurant object that matches the provided code
      * @throws DataAccessException if there is an issue accessing the data
      */
-	List<AvailabilityTracker>	 findAvailabilityTrackersByMenuCardId(int menuCardId) throws DataAccessException,SQLException;
+	List<AvailabilityTracker> findAvailabilityTrackersByMenuCardId(int menuCardId) throws DataAccessException,SQLException;
 }
