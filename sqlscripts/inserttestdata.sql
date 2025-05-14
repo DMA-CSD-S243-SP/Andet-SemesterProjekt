@@ -232,3 +232,24 @@ VALUES							  (@Fries, @Elvis_AdultLunchMenu, 1),
 								  (@Aioli, @Elvis_AdultLunchMenu, 1),
 								  (@Spareribs, @Elvis_AdultLunchMenu, 1),
 								  (@BigBoyBurger, @Elvis_AdultLunchMenu, 1);
+
+--   Historic TableOrderData
+INSERT INTO [TableOrder]	(timeOfArrival, isTableOrderClose, paymentType, totalTableOrderPrice, 
+totalAmountPaid, isSentToKitchen, isRequestingService, orderPreparationTime, tableCode)
+VALUES                      ('2025-01-01 017:45:33',  1,                 '',          574,
+574,               1,               0,                   1200,                    '0010001');
+DECLARE @TableOrderOne INT = SCOPE_IDENTITY();
+INSERT INTO [PersonalOrder] (customerAge, customerName, tableOrderId)
+VALUES                      (28,          'Andreas',    @TableOrderOne);
+DECLARE @TOOnePersonalOrderOne INT = SCOPE_IDENTITY();
+INSERT INTO [PersonalOrderLine] (additionalPrice, notes, [status], personalOrderId, menuItemId)
+VALUES (49, '450g', 3, @TOOnePersonalOrderOne, @Spareribs),
+	   (0, '', 3, @TOOnePersonalOrderOne, @SpecialFries),
+	   (0,'', 3, @TOOnePersonalOrderOne, @SoftDrink);
+INSERT INTO [PersonalOrder] (customerAge, customerName, tableOrderId)
+VALUES                      (22,          'Annie',    @TableOrderOne);
+DECLARE @TOOnePersonalOrderTwo INT = SCOPE_IDENTITY();
+INSERT INTO [PersonalOrderLine] (additionalPrice, notes, [status], personalOrderId, menuItemId)
+VALUES (29, 'double veggie', 3, @TOOnePersonalOrderTwo, @BigBoyBurger),
+	   (0, '', 3, @TOOnePersonalOrderTwo, @Fries),
+	   (0,'', 3, @TOOnePersonalOrderTwo, @SoftDrink);
