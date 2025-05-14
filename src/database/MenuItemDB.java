@@ -38,11 +38,11 @@ public class MenuItemDB implements MenuItemImpl
 	
 	
 	//SELF SERVE BAR
-	// Selects a row from the table SelfServeBar in the database, based on the given menuItemID
-	private static final String FIND_SELFSERVEBAR_BY_MENUITEMID_QUERY = "SELECT * FROM SelfServeBar WHERE menuItemID = ?";
+	// Selects a row from the table SelfServiceBar in the database, based on the given menuItemID
+	private static final String FIND_SELFSERVEBAR_BY_MENUITEMID_QUERY = "SELECT * FROM SelfServiceBar WHERE menuItemID = ?";
 	
-	// PreparedStatement for retrieving an SelfServeBar based on the menuItemID
-	private PreparedStatement statementFindSelfServeBarByMenuId;
+	// PreparedStatement for retrieving an SelfServiceBar based on the menuItemID
+	private PreparedStatement statementFindSelfServiceBarByMenuId;
 	
 	
 	//DIPs AND SAUCES
@@ -120,8 +120,8 @@ public class MenuItemDB implements MenuItemImpl
 		// MENU ITEM - Prepares the SQL statement for retrieving a MenuItem by its MenuItemId
 		statementFindMenuItemById = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_MENUITEM_BY_MENUITEMID_QUERY);
 		
-		// SELF SERVE BAR - Prepares the SQL statement for retrieving a SelfServeBar by its MenuItemId
-		statementFindSelfServeBarByMenuId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_SELFSERVEBAR_BY_MENUITEMID_QUERY);
+		// SELF SERVE BAR - Prepares the SQL statement for retrieving a SelfServiceBar by its MenuItemId
+		statementFindSelfServiceBarByMenuId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_SELFSERVEBAR_BY_MENUITEMID_QUERY);
 		
 		// DIP AND SAURCES - Prepares the SQL statement for retrieving a DipsAndSauces by its MenuItemId
 		statementFindDipsAndSaucesByMenuId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_DIPSANDSAUCES_BY_MENUITEMID_QUERY); 
@@ -217,14 +217,14 @@ public class MenuItemDB implements MenuItemImpl
 		
 		
 		// SELF SERVICE BAR
-		// Check if the item type is "SelfServeBar" and build the corresponding object
+		// Check if the item type is "SelfServiceBar" and build the corresponding object
 		if(itemType.equals("SelfServiceBar"))
 		{
 			// Sets the menu item ID parameter in the prepared statement for the SelfServiceBar query
-			statementFindSelfServeBarByMenuId.setInt(1, menuItemId);
+			statementFindSelfServiceBarByMenuId.setInt(1, menuItemId);
 		       
 		    // Executes the query to retrieve additional SelfServiceBar-specific fields
-		    ResultSet resultSetSelfServiceBar = statementFindSelfServeBarByMenuId.executeQuery();
+		    ResultSet resultSetSelfServiceBar = statementFindSelfServiceBarByMenuId.executeQuery();
 
 		    // Checks if SelfServiceBar-specific data was found
 		    if (resultSetSelfServiceBar.next()) 
@@ -364,9 +364,16 @@ public class MenuItemDB implements MenuItemImpl
 				menuItem = new MainCourse(introductionDescription, lunchPrice, eveningPrice);
 			}
 		}
-		
-		 // Returns the fully build MenuItem (or subclass) object
-		 return menuItem; 
+		if (menuItem != null)
+		{
+			menuItem.setDescription(description);
+			menuItem.setMadeByKitchenStaff(isMadeByKitchenStaff);
+			menuItem.setMenuItemId(menuItemId);
+			menuItem.setName(name);
+			menuItem.setPreparationTime(preparationTime);
+		}
+		// Returns the fully build MenuItem (or subclass) object
+		return menuItem; 
 		}
 	
 	
