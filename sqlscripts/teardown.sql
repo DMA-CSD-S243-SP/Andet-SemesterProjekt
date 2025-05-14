@@ -1,43 +1,43 @@
 -- All tables are deleted in reverse order of how they were added.
 drop table [DiscountPersonalOrder];
-GO;
+GO
 drop table [Discount];
-GO;
+GO
 drop table [PersonalOrderLine];
-GO;
+GO
 drop table [PersonalOrder];
-GO;
+GO
 drop table [AvailabilityTracker];
-GO;
+GO
 drop table [SelectionOption];
-GO;
+GO
 drop table [MultipleChoiceMenu];
-GO;
+GO
 drop table [AddOnOption];
-GO;
+GO
 drop table [MainCourse];
-GO;
+GO
 drop table [DipsAndSauces];
-GO;
+GO
 drop table [SideDish];
-GO;
+GO
 drop table [Drink];
-GO;
+GO
 drop table [SelfServiceBar];
-GO;
+GO
 drop table [PotatoDish];
-GO;
+GO
 drop table [MenuItem];
-GO;
+GO
 drop table [MenuCard];
-GO;
+GO
 -- Constraint has to be dropped to be able to delete TableOrder.
 alter table [Object_Table] drop constraint [FK_Object_Table_TableOrder];
-GO;
+GO
 drop table [TableOrder];
-GO;
+GO
 drop table [Object_Table];
-GO;
+GO
 drop table [Restaurant];
-GO;
+GO
 drop table [Employee];
