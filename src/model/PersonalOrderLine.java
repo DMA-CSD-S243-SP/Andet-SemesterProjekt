@@ -78,6 +78,10 @@ public class PersonalOrderLine
 		return this.notes;
 	}
 
+	public void setNotes(String notes)
+	{
+		this.notes = notes;
+	}
 	
 	/**
 	 * Returns the additional price, that should be applied on top of the associated
@@ -92,6 +96,10 @@ public class PersonalOrderLine
 		return this.additionalPrice;
 	}
 	
+	public void setAdditionalPrice(double additionalPrice)
+	{
+		this.additionalPrice = additionalPrice;
+	}
 	
 	/**
 	 * Calculates and returns the total lunch price for this one PersonalOrderLine
@@ -115,6 +123,7 @@ public class PersonalOrderLine
 		return personalOrderLinePrice;
 	}
 
+	
 	
 	/**
 	 * Calculates and returns the total evening price for this one PersonalOrderLine
@@ -145,21 +154,6 @@ public class PersonalOrderLine
 			result = ((PotatoDish) menuItem).isPremiumPotatoDish();
 		}
 		return result;
-	}
-	
-	
-	/**
-	 * Returns the current status of this/these MenuItems on this PersonalOrderLine.
-	 *
-	 * This is used to track whether the MenuItem has been sent to the kitchen, is
-	 * currently being prepared by kitchen personel, is ready to be picked up and
-	 * served by the waiters, or have already been served.
-	 *
-	 * @return the current status of this particular PersonalOrderLine object.
-	 */
-	public EnumStatusType getStatus()
-	{
-		return this.status;
 	}
 
 	
@@ -211,6 +205,26 @@ public class PersonalOrderLine
 		this.notes = notes + selectionOption.getKitchenNotes() + " ";
 	}
 
+	
+	
+	/**
+	 * Returns the current status of this/these MenuItems on this PersonalOrderLine.
+	 *
+	 * This is used to track whether the MenuItem has been sent to the kitchen, is
+	 * currently being prepared by kitchen personel, is ready to be picked up and
+	 * served by the waiters, or have already been served.
+	 *
+	 * @return the current status of this particular PersonalOrderLine object.
+	 */
+	public EnumStatusType getStatus()
+	{
+		return this.status;
+	}
+
+	public void setStatus(EnumStatusType status)
+	{
+		this.status = status;
+	}
 
 
 }
