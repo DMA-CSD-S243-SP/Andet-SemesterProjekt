@@ -9,6 +9,7 @@ import java.util.List;
 
 import model.AvailabilityTracker;
 import model.MenuCard;
+import model.MenuItem;
 import model.MultipleChoiceMenu;
 import model.SelectionOption;
 
@@ -206,8 +207,16 @@ public class MenuCardDB implements MenuCardImpl
 		AvailabilityTracker availabilityTracker = new AvailabilityTracker(
 				resultSet.getBoolean("isAvailable")			
 				);
-		availabilityTracker.setAvailabilityTrackerId(resultSet.getInt("menuCardId"));
-		// TODO: Make this retrieve the corresponding MenuItem and associate it.
+		MenuItem menuItem = null;
+		int menuItemId = resultSet.getInt("menuItemId");
+		try
+		{
+			menuItem = new MenuItemDB().findMenuItemByMenuItemId(menuItemId);
+		} catch (DataAccessException e)
+		{
+			e.printStackTrace();
+		}
+		availabilityTracker.setMenuItem(menuItem);
 		return availabilityTracker;
 	}
 }
