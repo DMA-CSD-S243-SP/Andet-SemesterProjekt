@@ -170,13 +170,9 @@ public class PersonalOrder
 	 * 
 	 * @param menuItem
 	 */
-	public void addMenuItemLine(MenuItem menuItem)
+	public void addPersonalOrderLine(PersonalOrderLine personalOrderLine)
 	{
-		// Dummy Code Block
-
-		/*
-		 * this.personalOrderLineList.add(menuItem);
-		 */
+		this.personalOrderLineList.add(personalOrderLine);
 	}
 
 	/**
@@ -284,5 +280,10 @@ public class PersonalOrder
 		// TODO: Later add calculations for the various types of discount when that use
 		// case is being handled
 		return totalPrice;
+	}
+
+	public void addMenuItemLine(MenuItem menuItem) 
+	{
+		//TODO
 	}
 }
