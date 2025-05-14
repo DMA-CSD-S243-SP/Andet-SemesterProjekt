@@ -70,6 +70,7 @@ public class MenuCardDB implements MenuCardImpl
 			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
 			// Prepare a SQL statement to retrieve all employees
 			statementFindByRestaurantCode = databaseConnection.prepareStatement(FIND_MENUCARDS_BY_RESTAURANTCODE_QUERY);
+			statementFindByRestaurantCode.setString(1, restaurantCode);
 
 			// Executes the prepared statement and stores the result set
 			ResultSet resultSet = statementFindByRestaurantCode.executeQuery();
@@ -77,13 +78,16 @@ public class MenuCardDB implements MenuCardImpl
 			// Converts the result set into a list of Employee objects
 			List<MenuCard> resultListOfMenuCards = buildMenuCardObjects(resultSet);
 
-			// Returns the list of Employee objects
+			
 			databaseConnection.commit();
+			databaseConnection.setAutoCommit(true);
+			// Returns the list of Employee objects
 			return resultListOfMenuCards;
 		}
 		catch (SQLException exception)
 		{
 			databaseConnection.rollback();
+			databaseConnection.setAutoCommit(true);
 			// If an SQL error occurs a custom exception is thrown with the specified details
 			throw new DataAccessException("Unable to find MenuCards objects in the database with a matching restaurant code" + restaurantCode, exception);
 		}
@@ -172,7 +176,7 @@ public class MenuCardDB implements MenuCardImpl
 			List<AvailabilityTracker> availabilityTrackers = new ArrayList<>();
 
 			// Iterates through the resultSet while there are still more rows in the database's table
-			if (resultSet.next())
+			while (resultSet.next())
 			{
 				// Converts the retrieved database row into an AvailabilityTracker object using the buildAvailabilityTrackerObject method
 				availabilityTrackers.add(buildAvailabilityTrackerObject(resultSet));
@@ -201,7 +205,8 @@ public class MenuCardDB implements MenuCardImpl
 		// Creates a AvailabilityTracker object stored within the availabilityTracker variable based off of the method's provided resultSet
 		AvailabilityTracker availabilityTracker = new AvailabilityTracker(
 				resultSet.getBoolean("isAvailable")			
-				);		
+				);
+		availabilityTracker.setAvailabilityTrackerId(resultSet.getInt("menuCardId"));
 		// TODO: Make this retrieve the corresponding MenuItem and associate it.
 		return availabilityTracker;
 	}
