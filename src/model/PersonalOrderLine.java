@@ -17,6 +17,10 @@ public class PersonalOrderLine
 {
 	// The menu item chosen for this specific order line
 	private MenuItem menuItem;
+	
+	// Notes for kitchen staff from customization of MainCourse in the form of
+	// add-ons and selection options
+	private String notes;
 
 	// The additional price to add to a MenuItem's base cost, if certain additional
 	// choices are made
@@ -26,10 +30,9 @@ public class PersonalOrderLine
 	// "waiting to be prepared"
 	private EnumStatusType status;
 
-	// Notes for kitchen staff from customization of MainCourse in the form of
-	// add-ons and selection options
-	private String notes;
 
+
+	
 	/**
 	 * Constructs a new PersonalOrderLine using the supplied MenuItem in the
 	 * parameter.
@@ -48,6 +51,7 @@ public class PersonalOrderLine
 		status = EnumStatusType.WAITINGTOBEPREPARED;
 	}
 
+	
 	/**
 	 * Returns the MenuItem associated with this personal order line.
 	 *
@@ -58,20 +62,37 @@ public class PersonalOrderLine
 		return this.menuItem;
 	}
 
+
 	/**
-	 * Returns the current status of this/these MenuItems on this PersonalOrderLine.
-	 *
-	 * This is used to track whether the MenuItem has been sent to the kitchen, is
-	 * currently being prepared by kitchen personel, is ready to be picked up and
-	 * served by the waiters, or have already been served.
-	 *
-	 * @return the current status of this particular PersonalOrderLine object.
+	 * Returns any kitchen notes associated with this PersonalOrderLine.
+	 * 
+	 * If a guest has chosen an addOnOption, or selectionOption, the kitchenNotes is
+	 * added to the personalOrderLine. KitchenNotes are the notes that the kitchen
+	 * receives if any extra option has been chosen in e.g. a MainCourse.
+	 * 
+	 * @return kitchenNotes the kitchen notes that was associated with a MainCourse
+	 *         in the form of addOnOptions of selectionOption notes.
 	 */
-	public EnumStatusType getStatus()
+	public String getNotes()
 	{
-		return this.status;
+		return this.notes;
 	}
 
+	
+	/**
+	 * Returns the additional price, that should be applied on top of the associated
+	 * MenuItem's base/standard price. The additional price comes from pricing that
+	 * is added on top to reflect upgrades or extras often associated with the
+	 * customization of MainCourse instances.
+	 *
+	 * @return the additional cost to add on top of the MenuItem's base price
+	 */
+	public double getAdditionalPrice()
+	{
+		return this.additionalPrice;
+	}
+	
+	
 	/**
 	 * Calculates and returns the total lunch price for this one PersonalOrderLine
 	 * instance.
@@ -94,6 +115,7 @@ public class PersonalOrderLine
 		return personalOrderLinePrice;
 	}
 
+	
 	/**
 	 * Calculates and returns the total evening price for this one PersonalOrderLine
 	 * instance.
@@ -109,22 +131,38 @@ public class PersonalOrderLine
 
 		return personalOrderLinePrice;
 	}
+	
 
 	/**
-	 * Returns any kitchen notes associated with this PersonalOrderLine.
-	 * 
-	 * If a guest has chosen an addOnOption, or selectionOption, the kitchenNotes is
-	 * added to the personalOrderLine. KitchenNotes are the notes that the kitchen
-	 * receives if any extra option has been chosen in e.g. a MainCourse.
-	 * 
-	 * @return kitchenNotes the kitchen notes that was associated with a MainCourse
-	 *         in the form of addOnOptions of selectionOption notes.
+	 * Returns whether or not this PersonalOrderLine contains a premium PotatoDish.
+	 * @return whether or not this PersonalOrderLine contains a premium PotatoDish.
 	 */
-	public String getNotes()
+	public boolean isPremiumPotatoDish()
 	{
-		return this.notes;
+		boolean result = false; // If it's not even a PotatoDish, then it surely isn't a premium PotatoDish.
+		if (menuItem instanceof PotatoDish) 
+		{
+			result = ((PotatoDish) menuItem).isPremiumPotatoDish();
+		}
+		return result;
+	}
+	
+	
+	/**
+	 * Returns the current status of this/these MenuItems on this PersonalOrderLine.
+	 *
+	 * This is used to track whether the MenuItem has been sent to the kitchen, is
+	 * currently being prepared by kitchen personel, is ready to be picked up and
+	 * served by the waiters, or have already been served.
+	 *
+	 * @return the current status of this particular PersonalOrderLine object.
+	 */
+	public EnumStatusType getStatus()
+	{
+		return this.status;
 	}
 
+	
 	/**
 	 * Adds an AddOnOption to this PersonalOrderLine objectwith the intent of
 	 * mutating the contents of the PersonalOrderLine instance's notes and
@@ -173,30 +211,6 @@ public class PersonalOrderLine
 		this.notes = notes + selectionOption.getKitchenNotes() + " ";
 	}
 
-	/**
-	 * Returns the additional price, that should be applied on top of the associated
-	 * MenuItem's base/standard price. The additional price comes from pricing that
-	 * is added on top to reflect upgrades or extras often associated with the
-	 * customization of MainCourse instances.
-	 *
-	 * @return the additional cost to add on top of the MenuItem's base price
-	 */
-	public double getAdditionalPrice()
-	{
-		return this.additionalPrice;
-	}
 
-	/**
-	 * Returns whether or not this PersonalOrderLine contains a premium PotatoDish.
-	 * @return whether or not this PersonalOrderLine contains a premium PotatoDish.
-	 */
-	public boolean isPremiumPotatoDish()
-	{
-		boolean result = false; // If it's not even a PotatoDish, then it surely isn't a premium PotatoDish.
-		if (menuItem instanceof PotatoDish) 
-		{
-			result = ((PotatoDish) menuItem).isPremiumPotatoDish();
-		}
-		return result;
-	}
+
 }
