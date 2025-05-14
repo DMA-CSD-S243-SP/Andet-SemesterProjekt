@@ -45,11 +45,11 @@ create table [TableOrder]
 	isSentToKitchen bit not null,
 	isRequestingService bit not null,
 	orderPreparationTime int not null,
-	employeeId int not null,
+	employeeId int, -- Can be null, as a TableOrder shouldn't have an assigned employee the moment it's made.
 	tableCode char(7) not null default ('0000000'),
 
 	primary key (tableOrderId),
-	constraint FK_TableOrder_Employee  foreign key (employeeId) references Employee(employeeId),
+	constraint FK_TableOrder_Employee  foreign key (employeeId) references Employee(employeeId) on delete set null,
 	constraint FK_TableOrder_Table_Object foreign key (tableCode) references Object_Table(tableCode) on delete set default,
 	--table with code 0000000 should be a dummy table, serving as a catch all for orphaned orders.
 );
@@ -64,16 +64,6 @@ on delete set null --If the current TableOrder is deleted, then the Table just b
 insert into [Object_Table]	(tableCode, restaurantCode)
 values						('0000000', '000'         );
 --No table Order is added to table, aside from Object_Table: All dependencies of TableOrder cascade delete.
-
-create table [MenuCard]
-(
-	menuCardId int identity(1,1) not null,
-	[name] varchar(30) not null,
-	restaurantCode char(3) not null,
-
-	primary key (menuCardId),
-	constraint FK_MenuCard_Restaurant foreign key (restaurantCode) references Restaurant(restaurantCode),
-);
 
 create table [MenuItem]
 (
@@ -182,6 +172,16 @@ create table [SelectionOption]
 
 	primary key (optionId),
 	constraint FK_SelectionOption_MainCourse foreign key (choiceMenuId) references MultipleChoiceMenu(choiceMenuId) on delete cascade,
+);
+
+create table [MenuCard]
+(
+	menuCardId int identity(1,1) not null,
+	[name] varchar(30) not null,
+	restaurantCode char(3) not null,
+
+	primary key (menuCardId),
+	constraint FK_MenuCard_Restaurant foreign key (restaurantCode) references Restaurant(restaurantCode),
 );
 
 create table [AvailabilityTracker]
