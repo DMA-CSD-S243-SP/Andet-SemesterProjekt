@@ -95,9 +95,6 @@ public class PersonalOrderController
 			//returns all the avalible menuCards for this restaurant by the given restaurantCode
 			return menuCardController.findMenuCardsByRestaurantCode(currentRestaurant);
 			
-			//KOMMUNIKATIONSDIAGRAM metode
-			//return menuCardController.findMenuCardsByRestaurant();
-			
 		} catch (Exception exception)
 		{
 			// If an SQL error occurs a exception is thrown with the specified details
