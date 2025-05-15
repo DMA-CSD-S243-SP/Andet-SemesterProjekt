@@ -19,7 +19,7 @@ import model.Table;
 public class TableDB implements TableImpl
 {
 	//  selects a specific row from table_object
-	private static final String FIND_TABLE_BY_TABLECODE_QUERY = "SELECT * FROM Table_object WHERE tableCode = ?";
+	private static final String FIND_TABLE_BY_TABLECODE_QUERY = "SELECT * FROM Object_table WHERE tableCode = ?";
 		
 	private PreparedStatement statementFindByTableCode; 
 	
@@ -107,9 +107,9 @@ public class TableDB implements TableImpl
 	 * @throws SQLException
 	 */
 	private Table buildTableObject(ResultSet resultSet) throws SQLException
-	{
+	{	
 		Table table = new Table(
-				resultSet.getInt("tableNumber"), 
+				0, //TODO fix 
 				resultSet.getString("tableCode"));
 		return table;
 	}	

@@ -163,6 +163,10 @@ public class PersonalOrder
 		 * 
 		 * //PersonalOrderLine.addOnOption(); //PersonalOrderLine.addSelectionOption();
 		 */
+		
+		PersonalOrderLine mainCourseLine = new PersonalOrderLine(mainCourse);
+		addPersonalOrderLine(mainCourseLine);
+		
 	}
 
 	/**

@@ -34,12 +34,17 @@ public class PersonalOrderController
 	private PersonalOrderDB personalOrderDB;
 	
 	//Constructor
-	public PersonalOrderController()
+	public PersonalOrderController() throws SQLException
 	{
 		// Creates a controller
 		tableController = new TableController();
 		menuCardController = new MenuCardController();
+		
+		personalOrder = new PersonalOrder(null);
+		restaurant = new Restaurant(null, null, null);
+		personalOrderDB = new PersonalOrderDB();
 	}
+	
 	
 	
 	/**
@@ -64,7 +69,7 @@ public class PersonalOrderController
 		catch (DataAccessException exception)
 		{
 			// If an SQL error occurs a exception is thrown with the specified details
-			throw new DataAccessException("Unable to find Table objects in the database with a table code" + tableCode, exception);
+			throw new DataAccessException("Unable to find Table objects in the database with a table code " + tableCode, exception);
 		}
 	}
 	
@@ -110,7 +115,7 @@ public class PersonalOrderController
 	 */
 	public void enterMainCourse(MainCourse mainCourse)
 	{
-		personalOrder.addMainCourseLine(mainCourse, mainCourse.getListOfAddOnOption(), mainCourse.getListOfMultipleChoiceMenu().getFirst().getListOfSelectionOptions());
+		this.mainCourse = mainCourse;
 	}
 	
 	/**
