@@ -17,7 +17,7 @@ import model.TableOrder;
  * It implements the TableOrderImpl, meaning it implements its methods
  * 
  * @author Line Bertelsen
- * @version 13.05.2025 - 10:26
+ * @version 15.05.2025 - 10:08
  */
 
 public class TableOrderDB implements TableOrderImpl
@@ -53,6 +53,7 @@ public class TableOrderDB implements TableOrderImpl
      * 
      * @return a list of all tableOrders
      * @throws DataAccessException if retrieval fails
+	 * @throws SQLException 
      */
 	@Override
 	public List<TableOrder> findAllTableOrders() throws DataAccessException
@@ -62,23 +63,57 @@ public class TableOrderDB implements TableOrderImpl
 
 		try
 		{
+			databaseConnection.setAutoCommit(false);
+			
+			// Reading tableOrders happens many times per day. However it occurs almost exclusively during business
+			// hours, and updating happens rarely, and can usually be scheduled.
+			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+			
 			// Prepare a SQL statement to retrieve all tableOrders
 			statementFindAllTableOrders = databaseConnection.prepareStatement(FIND_AllTABLEORDERS_QUERY);
-
+			
 			// Executes the prepared statement and stores the result set
 			ResultSet resultSetTableOrder = statementFindAllTableOrders.executeQuery();
 
 			// Converts the result set into a list of TableOrder objects
 			List<TableOrder> resultListOfTableOrder = buildTableOrderObjects(resultSetTableOrder);
 
+			databaseConnection.commit();
+			databaseConnection.setAutoCommit(true);
+			
 			// Returns the list of TableOrder objects
 			return resultListOfTableOrder;
 		}
 
-		catch (SQLException exception)
+		catch (SQLException exception1)
 		{
+			
+			//Try catch for rollback
+			try
+			{
+				databaseConnection.rollback();
+			} 
+			
+			catch (Exception exception2)
+			{
+				throw new DataAccessException("", exception2);
+			}
+			
+			
+			//Try catch for setAutoCommit
+			try
+			{
+				databaseConnection.setAutoCommit(true);
+			} 
+			
+			catch (Exception exception3)
+			{
+				throw new DataAccessException("", exception3);
+			}
+			
+			
 			// If an SQL error occurs a custom exception is thrown with the specified details
-			throw new DataAccessException("Unable to find TableOrder objects in the database", exception);
+			throw new DataAccessException("Unable to find TableOrder objects in the database", exception1);
 		}
 	}
 	
@@ -123,6 +158,12 @@ public class TableOrderDB implements TableOrderImpl
 
 		try
 		{
+			databaseConnection.setAutoCommit(false);
+		
+			// Reading tabelOrder happens many of times per day. However it occurs almost exclusively during business
+			// hours, and updating happens rarely, and can usually be scheduled.
+			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+						
 			// Prepares a SQL statement to find and retrieve an MultipleChoiceMenu with a matching employee id
 			statementFindTableOrderByTableOrderId = databaseConnection.prepareStatement(FIND_TABLEORDER_BY_TABLEORDERID_QUERY);
 
@@ -142,14 +183,41 @@ public class TableOrderDB implements TableOrderImpl
 				tableOrder = buildTableOrderObject(resultSet);
 			}
 
+			databaseConnection.commit();
+			databaseConnection.setAutoCommit(true);
+			
 			// Returns the MultipleChoiceMenu with a matching choiceMenuId or null if no multipleChoiceMenu has the specified choiceMenuId
 			return tableOrder;
 		}
 
-		catch (SQLException exception)
+		catch (SQLException exception1)
 		{
+			
+			//Try catch for rollback
+			try
+			{
+				databaseConnection.rollback();
+			} 
+			
+			catch (Exception exception2)
+			{
+				throw new DataAccessException("", exception2);
+			}
+			
+			
+			//Try catch for setAutoCommit
+			try
+			{
+				databaseConnection.setAutoCommit(true);
+			} 
+			
+			catch (Exception exception3)
+			{
+				throw new DataAccessException("", exception3);
+			}
+			
 			// If an SQL error occurs a custom exception is thrown with the specified details
-			throw new DataAccessException("Unable to find an TableOrder object with an tableOrderId matching: " + tableOrderId, exception);
+			throw new DataAccessException("Unable to find an TableOrder object with an tableOrderId matching: " + tableOrderId, exception1);
 		}
 	}
 	
