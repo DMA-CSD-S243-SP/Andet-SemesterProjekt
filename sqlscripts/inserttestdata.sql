@@ -17,24 +17,16 @@ INSERT INTO [Restaurant]	(restaurantCode, [name],city,  streetName	   )
 VALUES                      ('003', 'Snebones',   'Nuuk',    'Imaneq'      ); 
 
 -- Object_Tables
-INSERT INTO [Object_Table]  (tableCode, restaurantCode)
-VALUES                      ('0010001', '001'		  ); 
-INSERT INTO [Object_Table]  (tableCode, restaurantCode)
-VALUES                      ('0010002', '002'		  ); 
-INSERT INTO [Object_Table]  (tableCode, restaurantCode)
-VALUES                      ('0010003', '003'		  ); 
-INSERT INTO [Object_Table]  (tableCode, restaurantCode)
-VALUES                      ('0020001', '002'		  ); 
-INSERT INTO [Object_Table]  (tableCode, restaurantCode)
-VALUES                      ('0020002', '002'		  ); 
-INSERT INTO [Object_Table]  (tableCode, restaurantCode)
-VALUES                      ('0020003', '002'		  ); 
-INSERT INTO [Object_Table]  (tableCode, restaurantCode)
-VALUES                      ('0030001', '003'		  ); 
-INSERT INTO [Object_Table]  (tableCode, restaurantCode)
-VALUES                      ('0030002', '003'		  ); 
-INSERT INTO [Object_Table]  (tableCode, restaurantCode)
-VALUES                      ('0030003', '003'		  ); 
+INSERT INTO [Object_Table]  (tableCode, restaurantCode, tableNumber)
+VALUES                      ('0010001', '001',		    1),
+							('0010002', '001',		    2),
+							('0010003', '001',		    3),
+							('0020001', '002',		    1),
+							('0020002', '002',		    2),
+							('0020003', '002',		    3),
+							('0030001', '003',		    1),
+							('0030002', '003',		    2),
+							('0030003', '003',		    3); 
 
 -- Incomplete TableOrders
 INSERT INTO [TableOrder]	(timeOfArrival, isTableOrderClose, paymentType, totalTableOrderPrice, 
@@ -246,9 +238,12 @@ INSERT INTO [PersonalOrderLine] (additionalPrice, notes, [status], personalOrder
 VALUES (49, '450g', 3, @TOOnePersonalOrderOne, @Spareribs),
 	   (0, '', 3, @TOOnePersonalOrderOne, @SpecialFries),
 	   (0,'', 3, @TOOnePersonalOrderOne, @SoftDrink);
+
 INSERT INTO [PersonalOrder] (customerAge, customerName, tableOrderId)
 VALUES                      (22,          'Annie',    @TableOrderOne);
+
 DECLARE @TOOnePersonalOrderTwo INT = SCOPE_IDENTITY();
+
 INSERT INTO [PersonalOrderLine] (additionalPrice, notes, [status], personalOrderId, menuItemId)
 VALUES (29, 'double veggie', 3, @TOOnePersonalOrderTwo, @BigBoyBurger),
 	   (0, '', 3, @TOOnePersonalOrderTwo, @Fries),

@@ -27,6 +27,7 @@ create table [Object_Table] --table is a keyword, and thus cannot be used as tab
 	tableCode char(7) not null,
 	restaurantCode char(3) not null,
 	tableOrderId int, --current TableOrder can be null, as a default TableOrder row would be very problematic.
+	tableNumber int not null,
 
 	primary key (tableCode),
 	constraint FK_Object_Table_Restaurant foreign key (restaurantCode) references Restaurant(restaurantCode) on delete cascade,
@@ -61,8 +62,8 @@ foreign key (tableOrderId) references TableOrder(tableOrderId) --adds foreign ke
 on delete set null --If the current TableOrder is deleted, then the Table just be missing a current order.
 
 --A dummy Object_Table row is made to give something for TableOrder to default to.
-insert into [Object_Table]	(tableCode, restaurantCode)
-values						('0000000', '000'         );
+insert into [Object_Table]	(tableCode, restaurantCode, tableNumber)
+values						('0000000', '000'         , 0);
 --No table Order is added to table, aside from Object_Table: All dependencies of TableOrder cascade delete.
 
 create table [MenuItem]
