@@ -24,7 +24,7 @@ import model.SideDish;
  * It implements the employeeDaoImpl, meaning it implements its methods
  * 
  * @author Line Bertelsen
- * @version 12.05.2025 - 17.20
+ * @version 15.05.2025 - 10:24
  */
 
 public class MenuItemDB implements MenuItemImpl
@@ -155,14 +155,21 @@ public class MenuItemDB implements MenuItemImpl
 	 * @param menuItemId the id of the menuItem to search for
 	 * @return the corresponding MenuItem object, or null if not found
 	 * @throws DataAccessException if retrieval fails
+	 * @throws SQLException 
 	 */
 	@Override
-	public MenuItem findMenuItemByMenuItemId(int menuItemId) throws DataAccessException
+	public MenuItem findMenuItemByMenuItemId(int menuItemId) throws DataAccessException, SQLException
 	{
 		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
 		
 		try
 		{
+			databaseConnection.setAutoCommit(false);
+			
+			// Reading MenuItems happens thousands of times per day. However it occurs almost exclusively during business
+			// hours, and updating happens rarely, and can usually be scheduled.
+			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+			
 			//Prepare a SQL statement to find and retrieve MenuItem with a matching menuItemId
 			statementFindMenuItemById = databaseConnection.prepareStatement(FIND_MENUITEM_BY_MENUITEMID_QUERY);
 			
@@ -182,12 +189,18 @@ public class MenuItemDB implements MenuItemImpl
 				menuItem = buildMenuItemObject(resultSet);
 			}
 			
+			databaseConnection.commit();
+			databaseConnection.setAutoCommit(true);
+			
 			// Returns the menuItem with a matching menuItem id or null if no menuItem has the specified menuItem id
 			return menuItem;
 		} 
 		
 		catch (SQLException exception)
 		{
+			databaseConnection.commit();
+			databaseConnection.setAutoCommit(true);
+			
 			// If an SQL error occurs a custom exception is thrown with the specified details
 			throw new DataAccessException("Unable to find an MenuItem object with an menuItem id matching: " + menuItemId, exception);
 		}
@@ -384,15 +397,22 @@ public class MenuItemDB implements MenuItemImpl
 	 * @param mainCourseId the id of the MultipleChoiceMenu to search for
 	 * @return the corresponding MultipleChoiceMenu object, or null if not found
 	 * @throws DataAccessException if retrieval fails
+	 * @throws SQLException 
 	 */
 	@Override
-	public MultipleChoiceMenu findMultipleChoiceMenuByMainCourseId(int mainCourseId) throws DataAccessException
+	public MultipleChoiceMenu findMultipleChoiceMenuByMainCourseId(int mainCourseId) throws DataAccessException, SQLException
 	{
 		// Gets a connection to the database
 		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
 
 		try
 		{
+			databaseConnection.setAutoCommit(false);
+			
+			// Reading MultipleChoiceMenu happens thousands of times per day. However it occurs almost exclusively during business
+			// hours, and updating happens rarely, and can usually be scheduled.
+			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+			
 			// Prepares a SQL statement to find and retrieve an MultipleChoiceMenu with a matching employee id
 			statementMultipleChoiceMenuByMainCourseId = databaseConnection.prepareStatement(FIND_MULTIPLECHOICEMENU_BY_MAINCOURSEID_QUERY);
 
@@ -412,12 +432,18 @@ public class MenuItemDB implements MenuItemImpl
 				multipleChoiceMenu = buildMultipleChoiceMenuObject(resultSet);
 			}
 
+			databaseConnection.commit();
+			databaseConnection.setAutoCommit(true);
+			
 			// Returns the MultipleChoiceMenu with a matching choiceMenuId or null if no multipleChoiceMenu has the specified choiceMenuId
 			return multipleChoiceMenu;
 		}
 
 		catch (SQLException exception)
 		{
+			databaseConnection.commit();
+			databaseConnection.setAutoCommit(true);
+			
 			// If an SQL error occurs a custom exception is thrown with the specified details
 			throw new DataAccessException("Unable to find an MultipleChoiceMenu object with an choiceMenuId matching: " + mainCourseId, exception);
 		}
@@ -450,16 +476,23 @@ public class MenuItemDB implements MenuItemImpl
 	 * @param mainCourseId the ID of the main course to find related selection options for
 	 * @return the corresponding SelectionOption object, or null if not found
 	 * @throws DataAccessException if a database access error occurs
+	 * @throws SQLException 
 
 	 */
 	@Override
-	public SelectionOption findSelectionOptionByMainCourseId(int mainCourseId) throws DataAccessException
+	public SelectionOption findSelectionOptionByMainCourseId(int mainCourseId) throws DataAccessException, SQLException
 	{
 		// Gets a connection to the database
 		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
 
 		try
 		{
+			databaseConnection.setAutoCommit(false);
+			
+			// Reading selectionsOptions happens thousands of times per day. However it occurs almost exclusively during business
+			// hours, and updating happens rarely, and can usually be scheduled.
+			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+			
 			// Prepares a SQL statement to find and retrieve an SelectionOption with a matching mainCourseId
 			statementSelectionOptionByMainCourseId = databaseConnection.prepareStatement(FIND_SELECTIONOPTION_BY_MAINCOURSEID_QUERY);
 
@@ -479,12 +512,18 @@ public class MenuItemDB implements MenuItemImpl
 				selectionOption = buildSelectionOptionObject(resultSet);
 			}
 
+			databaseConnection.commit();
+			databaseConnection.setAutoCommit(true);
+			
 			// Returns the SelectionOption with a matching mainCourseId or null if no SelectionOption has the specified mainCourseId
 			return selectionOption;
 		}
 
 		catch (SQLException exception)
 		{
+			databaseConnection.commit();
+			databaseConnection.setAutoCommit(true);
+			
 			// If an SQL error occurs a custom exception is thrown with the specified details
 			throw new DataAccessException("Unable to find an MultipleChoiceMenu object with an choiceMenuId matching: " + mainCourseId, exception);
 		}	
