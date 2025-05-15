@@ -1,5 +1,6 @@
 package database;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import model.TableOrder;
@@ -29,8 +30,9 @@ public interface TableOrderImpl
 	 * 
 	 * @return A list containing a shallow clone of every TableOrder in the database.
 	 * @throws DataAccessException if there is an issue accessing the data
+	 * @throws SQLException 
 	 */
-	List <TableOrder> findAllTableOrders() throws DataAccessException;
+	List <TableOrder> findAllTableOrders() throws DataAccessException, SQLException;
 
 	/**
      * Method creates a shallow clone of the tableOrder that has the given unique ID. 
@@ -39,6 +41,7 @@ public interface TableOrderImpl
      * @param tableOrder the ID of the menu item to be retrieved
      * @return the TableOrder object that matches the provided ID
      * @throws DataAccessException if there is an issue accessing the data
+	 * @throws SQLException 
      */
-	TableOrder findTableOrderByTableOrderId(int tableOrderId) throws DataAccessException;
+	TableOrder findTableOrderByTableOrderId(int tableOrderId) throws DataAccessException, SQLException;
 }
