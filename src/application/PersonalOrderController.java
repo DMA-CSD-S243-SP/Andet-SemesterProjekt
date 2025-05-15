@@ -17,8 +17,8 @@ import model.Table;
 
 /**
  * 
- * @author Line Bertelsen
- * @version 13.05.25 - 21:50
+ * @author Line Bertelsen & Anders trankjær
+ * @version 15.05.25 - 9:45
  */
 
 public class PersonalOrderController
@@ -101,13 +101,16 @@ public class PersonalOrderController
 			throw new DataAccessException("Unable to find restaurant objects in the database" , exception);
 					
 		}
-		
-		
 	}
 	
-	public void enterMainCourse(MenuItem mainCourse)
+	/**
+	 * this method adds a mainCourse object to the personalOrder
+	 * 
+	 * @param mainCourse - the mainCourse object that is going to be added
+	 */
+	public void enterMainCourse(MainCourse mainCourse)
 	{
-		//TODO: Not sure what this does
+		personalOrder.addMainCourseLine(mainCourse, mainCourse.getListOfAddOnOption(), mainCourse.getListOfMultipleChoiceMenu().getFirst().getListOfSelectionOptions());
 	}
 	
 	/**
@@ -148,9 +151,6 @@ public class PersonalOrderController
 		{
 			// If an SQL error occurs a exception is thrown with the specified details
 			throw new DataAccessException("Unable to insert Personalorder to PersonalOrderDB" , exception);
-						
 		}
-		
 	}
-
 }
