@@ -13,8 +13,8 @@ import model.Restaurant;
  * 
  * It implements the restaurantImpl interface. 
  * 
- * @author Anders Trankjær
- * @version 2025/12/05/12:50
+ * @author Anders Trankjær & Line Bertelsen
+ * @version 15.05.25 - 10:17
  */
 public class RestaurantDB implements RestaurantImpl
 {
@@ -29,12 +29,19 @@ public class RestaurantDB implements RestaurantImpl
 	}
 
 	@Override
-	public Restaurant findRestaurantByCode(String restaurantCode) throws DataAccessException {
+	public Restaurant findRestaurantByCode(String restaurantCode) throws DataAccessException, SQLException 
+	{
 		// Gets a connection to the database
 		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
 		
 		try
 		{
+			databaseConnection.setAutoCommit(false);
+			
+			// Reading restaurantscodes happens many times per day. However it occurs almost exclusively during business
+			// hours, and updating happens rarely, and can usually be scheduled.
+			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+			
 			// Prepares a SQL statement to find and retrieve a restaurant with a matching tableCode
 			statementFindByTableCode = databaseConnection.prepareStatement(FIND_RESTAURANT_BY_RESTAURANTCODE_QUERY);
 			
@@ -54,12 +61,18 @@ public class RestaurantDB implements RestaurantImpl
 				restaurant = buildRestaurantObject(resultSet);
 			}
 			
+			databaseConnection.commit();
+			databaseConnection.setAutoCommit(true);
+			
 			// Returns an object with with a restaurantCode matching the parameterlist after it was built
 			return restaurant;
 		}
 		
 		catch (SQLException exception)
 		{
+			databaseConnection.rollback();
+			databaseConnection.setAutoCommit(true);
+			
 			// If an SQL error occurs a custom exception is thrown with the specified details
 			throw new DataAccessException("Unable to find an resetaurant object with a restaurantCode matching: " + restaurantCode, exception);
 		}
