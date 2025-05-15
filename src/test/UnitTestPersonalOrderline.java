@@ -15,6 +15,12 @@ import model.PotatoDish;
 import model.SelectionOption;
 import model.SelfServiceBar;
 
+/**
+ * Unit test on the PersonalOrderLine class
+ * 
+ * @author Line Bertelsen
+ * @version 15.05.25 - 08:56
+ */
 class UnitTestPersonalOrderline
 
 {
