@@ -56,7 +56,7 @@ public class TableOrderDB implements TableOrderImpl
 	 * @throws SQLException 
      */
 	@Override
-	public List<TableOrder> findAllTableOrders() throws DataAccessException
+	public List<TableOrder> findAllTableOrders() throws DataAccessException, SQLException
 	{
 		// Gets a connection to the database
 		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
@@ -88,29 +88,8 @@ public class TableOrderDB implements TableOrderImpl
 		catch (SQLException exception1)
 		{
 			
-			//Try catch for rollback
-			try
-			{
-				databaseConnection.rollback();
-			} 
-			
-			catch (Exception exception2)
-			{
-				throw new DataAccessException("", exception2);
-			}
-			
-			
-			//Try catch for setAutoCommit
-			try
-			{
-				databaseConnection.setAutoCommit(true);
-			} 
-			
-			catch (Exception exception3)
-			{
-				throw new DataAccessException("", exception3);
-			}
-			
+			databaseConnection.rollback();
+			databaseConnection.setAutoCommit(true);
 			
 			// If an SQL error occurs a custom exception is thrown with the specified details
 			throw new DataAccessException("Unable to find TableOrder objects in the database", exception1);
@@ -151,7 +130,7 @@ public class TableOrderDB implements TableOrderImpl
      * @throws SQLException if accessing the resultSet fails
      */
 	@Override
-	public TableOrder findTableOrderByTableOrderId(int tableOrderId) throws DataAccessException
+	public TableOrder findTableOrderByTableOrderId(int tableOrderId) throws DataAccessException, SQLException
 	{
 		// Gets a connection to the database
 		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
@@ -193,28 +172,8 @@ public class TableOrderDB implements TableOrderImpl
 		catch (SQLException exception1)
 		{
 			
-			//Try catch for rollback
-			try
-			{
-				databaseConnection.rollback();
-			} 
-			
-			catch (Exception exception2)
-			{
-				throw new DataAccessException("", exception2);
-			}
-			
-			
-			//Try catch for setAutoCommit
-			try
-			{
-				databaseConnection.setAutoCommit(true);
-			} 
-			
-			catch (Exception exception3)
-			{
-				throw new DataAccessException("", exception3);
-			}
+			databaseConnection.rollback();
+			databaseConnection.setAutoCommit(true);
 			
 			// If an SQL error occurs a custom exception is thrown with the specified details
 			throw new DataAccessException("Unable to find an TableOrder object with an tableOrderId matching: " + tableOrderId, exception1);
