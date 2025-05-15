@@ -19,7 +19,7 @@ import model.Table;
 public class TableDB implements TableImpl
 {
 	//  selects a specific row from table_object
-	private static final String FIND_TABLE_BY_TABLECODE_QUERY = "SELECT * FROM Object_table WHERE tableCode = ?";
+	private static final String FIND_TABLE_BY_TABLECODE_QUERY = "SELECT * FROM Object_table WHERE tableNumber = ? AND restaurantCode = ?";
 		
 	private PreparedStatement statementFindByTableCode; 
 	
@@ -30,7 +30,7 @@ public class TableDB implements TableImpl
 	
 	
 	@Override
-	public Table findTableByCode(String tableCode) throws DataAccessException 
+	public Table findTableByCode(int tableNumber, String restaurantCode) throws DataAccessException 
 	{
 		// Gets a connection to the database
 		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
@@ -47,7 +47,8 @@ public class TableDB implements TableImpl
 			statementFindByTableCode = databaseConnection.prepareStatement(FIND_TABLE_BY_TABLECODE_QUERY);
 
 			// Adds the tableCode from the methods parameterlist to the String instead of the placeholder
-			statementFindByTableCode.setString(1, tableCode);
+			statementFindByTableCode.setInt(1, tableNumber);
+			statementFindByTableCode.setString(2, restaurantCode);
 
 			// Executes the query, and stores the retrieved data as a ResultSet
 			ResultSet resultSet = statementFindByTableCode.executeQuery();
@@ -95,7 +96,7 @@ public class TableDB implements TableImpl
 			}
 			
 			// If an SQL error occurs a custom exception is thrown with the specified details
-			throw new DataAccessException("Unable to find an table object with a tableCode matching: " + tableCode, exception1);
+			throw new DataAccessException("Unable to find an table object with a tableCode matching: " + tableNumber + restaurantCode, exception1);
 		}
 	}
 	
@@ -108,9 +109,11 @@ public class TableDB implements TableImpl
 	 */
 	private Table buildTableObject(ResultSet resultSet) throws SQLException
 	{	
+		String tableCode = resultSet.getString("restaurantCode") + resultSet.getInt("tableNumber");
+		
 		Table table = new Table(
-				0, //TODO fix 
-				resultSet.getString("tableCode"));
+						  resultSet.getInt("tableNumber"), 
+						  tableCode);
 		return table;
 	}	
 }

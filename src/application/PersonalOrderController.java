@@ -56,13 +56,14 @@ public class PersonalOrderController
 	 * @throws DataAccessException if retrieval fails
 	 * @throws SQLException if accessing the tableCode fails 
 	 */
-	public Table enterTableCode(String tableCode) throws DataAccessException, SQLException
+	public Table enterTableCode(int tableNumber, String restaurantCode) throws DataAccessException, SQLException
 	{
+		String tableCode = restaurantCode + tableNumber;
 		//Attempt to execute the code within the braces
 		try
 		{
 			//Assigns to tableController instance to find a table by the given tableCode
-			return tableController.findTableByCode(tableCode);
+			return tableController.findTableByCode(tableNumber, tableCode);
 		} 
 		
 		// Attempts to catch exceptions of the DataAccessException type

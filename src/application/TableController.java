@@ -24,10 +24,11 @@ public class TableController
 	 * @throws DataAccessException
 	 * @throws SQLException
 	 */
-	public Table findTableByCode(String tableCode) throws DataAccessException, SQLException 
+	public Table findTableByCode(int tableNumber, String restaurantCode) throws DataAccessException, SQLException 
 	{
 		TableImpl dao = new TableDB();
-		return dao.findTableByCode(tableCode);
+		String tableCode = restaurantCode + tableNumber;
+		return dao.findTableByCode(tableNumber, tableCode);
 	}
 	
 	/**
