@@ -13,8 +13,8 @@ import model.Table;
  * 
  * It implements the tableImpl interface. 
  * 
- * @author Anders Trankjær
- * @version 2025/12/05/11:20
+ * @author Anders Trankjær & Line Bertelsen
+ * @version 15.05.25 - 10:10
  */
 public class TableDB implements TableImpl
 {
@@ -33,38 +33,70 @@ public class TableDB implements TableImpl
 	public Table findTableByCode(String tableCode) throws DataAccessException 
 	{
 		// Gets a connection to the database
-				Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
-				
-				try
-				{
-					// Prepares a SQL statement to find and retrieve a table with a matching tableCode
-					statementFindByTableCode = databaseConnection.prepareStatement(FIND_TABLE_BY_TABLECODE_QUERY);
-					
-					// Adds the tableCode from the methods parameterlist to the String instead of the placeholder
-					statementFindByTableCode.setString(1, tableCode);
-					
-					// Executes the query, and stores the retrieved data as a ResultSet
-					ResultSet resultSet = statementFindByTableCode.executeQuery();
-					
-					// Creates and initializes an table object as null, which will later have table specific data
-					Table table = null;
-					
-					// Iterates through the resultSet while there are still more rows in the database's table
-					if (resultSet.next())
-					{
-						// Converts the retrieved database row into a table object using the buildTableObject method
-						table = buildTableObject(resultSet);
-					}
-					
-					// Returns a object with with a tableCode matching the parameterlist
-					return table;
-				}
-				
-				catch (SQLException exception)
-				{
-					// If an SQL error occurs a custom exception is thrown with the specified details
-					throw new DataAccessException("Unable to find an table object with a tableCode matching: " + tableCode, exception);
-				}
+		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
+
+		try
+		{
+			databaseConnection.setAutoCommit(false);
+			
+			// Reading Tables happens many of times per day. However it occurs almost exclusively during business
+			// hours, and updating happens rarely, and can usually be scheduled.
+			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+			
+			// Prepares a SQL statement to find and retrieve a table with a matching tableCode
+			statementFindByTableCode = databaseConnection.prepareStatement(FIND_TABLE_BY_TABLECODE_QUERY);
+
+			// Adds the tableCode from the methods parameterlist to the String instead of the placeholder
+			statementFindByTableCode.setString(1, tableCode);
+
+			// Executes the query, and stores the retrieved data as a ResultSet
+			ResultSet resultSet = statementFindByTableCode.executeQuery();
+
+			// Creates and initializes an table object as null, which will later have table specific data
+			Table table = null;
+
+			// Iterates through the resultSet while there are still more rows in the database's table
+			if (resultSet.next())
+			{
+				// Converts the retrieved database row into a table object using the buildTableObject method
+				table = buildTableObject(resultSet);
+			}
+
+			databaseConnection.commit();
+			databaseConnection.setAutoCommit(true);
+			
+			// Returns a object with with a tableCode matching the parameterlist
+			return table;
+		}
+
+		catch (SQLException exception1)
+		{
+			//Try catch for rollback
+			try
+			{
+				databaseConnection.rollback();
+			} 
+			
+			catch (Exception exception2)
+			{
+				throw new DataAccessException("", exception2);
+			}
+			
+			
+			//Try catch for setAutoCommit
+			try
+			{
+				databaseConnection.setAutoCommit(true);
+			} 
+			
+			catch (Exception exception3)
+			{
+				throw new DataAccessException("", exception3);
+			}
+			
+			// If an SQL error occurs a custom exception is thrown with the specified details
+			throw new DataAccessException("Unable to find an table object with a tableCode matching: " + tableCode, exception1);
+		}
 	}
 	
 	/**
