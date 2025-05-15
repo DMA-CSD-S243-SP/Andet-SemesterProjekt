@@ -1,5 +1,7 @@
 package database;
 
+import java.sql.SQLException;
+
 import model.Restaurant;
 
 /**
@@ -16,6 +18,7 @@ public interface RestaurantImpl
 	 * @param restaurantCode
 	 * @return
 	 * @throws DataAccessException 
+	 * @throws SQLException 
 	 */
-	Restaurant findRestaurantByCode(String restaurantCode) throws DataAccessException;
+	Restaurant findRestaurantByCode(String restaurantCode) throws DataAccessException, SQLException;
 }
