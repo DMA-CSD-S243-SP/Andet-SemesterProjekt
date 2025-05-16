@@ -49,7 +49,7 @@ public class Table
 	 */
 	public void setTableCode(int tableNumber, String restaurantCode) 
 	{
-		this.tableCode = tableNumber + restaurantCode;
+		this.tableCode = restaurantCode + tableNumber;
 	}
 
 	/**
