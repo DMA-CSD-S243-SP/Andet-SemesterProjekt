@@ -36,7 +36,7 @@ public interface PersonalOrderImpl
      * @param personalOrderLine 
      * @throws DataAccessException if there is an issue accessing the data
      */
-	PersonalOrderLine insertSaleOrderToDatabase(PersonalOrderLine personalOrderLine) throws DataAccessException;
+	PersonalOrderLine insertPersonalOrderLineToDatabase(PersonalOrderLine personalOrderLine) throws DataAccessException;
 
 	/**
 	 * Inserts a new PersonalOrder into the PersonalOrder table in the Database. 
