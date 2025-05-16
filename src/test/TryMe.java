@@ -12,6 +12,8 @@ import model.Drink;
 import model.EnumBarType;
 import model.MainCourse;
 import model.MenuItem;
+import model.PotatoDish;
+import model.SelectionOption;
 import model.SelfServiceBar;
 import model.SideDish;
 
@@ -38,6 +40,9 @@ public class TryMe
     	ribeye.addAddOnOption(garlicButter);
     	ribeye.addAddOnOption(upgradedRibeye);
     	
+    	// Potato
+    	PotatoDish potatoDish = new PotatoDish(true, 0);
+    	
     	//sidedishes
     	Drink softdrink = new Drink(false, true, 30);
     	SelfServiceBar salad = new SelfServiceBar(EnumBarType.SALADBAR, 50, 65);
@@ -50,7 +55,7 @@ public class TryMe
     	//Step: 1 
     	try 
     	{
-        	controller.enterTableCode(001, "0001");
+        	controller.enterTableCode(1, "001");
     	} 
     	
     	catch (DataAccessException exception)
@@ -92,6 +97,12 @@ public class TryMe
     	//Step: 4
     	controller.enterMainCourse(ribeye);
     	
+    	//Step 4.5
+    	List<AddOnOption> listOfAddOnOptions = new ArrayList<AddOnOption>() ;
+    	listOfAddOnOptions.add(garlicButter);
+    	listOfAddOnOptions.add(upgradedRibeye);
+    	List<SelectionOption>listOfSelectionOptions = new ArrayList<>();
+    	controller.enterMainCourseOptions(potatoDish, listOfAddOnOptions, listOfSelectionOptions);
     	
     	//Step: 5
     	controller.enterSideOrder(salad);
