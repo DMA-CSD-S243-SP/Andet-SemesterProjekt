@@ -24,12 +24,11 @@ values						('000',          '',     '',   ''        );
 
 create table [Object_Table] --table is a keyword, and thus cannot be used as table name.
 (
-	tableCode char(7) not null,
 	restaurantCode char(3) not null,
 	tableOrderId int, --current TableOrder can be null, as a default TableOrder row would be very problematic.
 	tableNumber int not null,
 
-	primary key (tableCode),
+	primary key (restaurantCode, tableNumber),
 	constraint FK_Object_Table_Restaurant foreign key (restaurantCode) references Restaurant(restaurantCode) on delete cascade,
 	--Table Order also has a foreign key constraint to Object_Table so it's made later, not here.
 );
@@ -47,12 +46,14 @@ create table [TableOrder]
 	isRequestingService bit not null,
 	orderPreparationTime int not null,
 	employeeId int, -- Can be null, as a TableOrder shouldn't have an assigned employee the moment it's made.
-	tableCode char(7) not null default ('0000000'),
+	tableRestaurantCode char(3) not null default ('000'),
+	tableNumber int not null default 0,
 
 	primary key (tableOrderId),
 	constraint FK_TableOrder_Employee  foreign key (employeeId) references Employee(employeeId) on delete set null,
-	constraint FK_TableOrder_Table_Object foreign key (tableCode) references Object_Table(tableCode) on delete set default,
-	--table with code 0000000 should be a dummy table, serving as a catch all for orphaned orders.
+	constraint FK_TableOrder_Restaurant foreign key (tableRestaurantCode) references Restaurant(restaurantCode) on delete set default,
+	constraint FK_TableOrder_Table_Object foreign key (tableRestaurantCode, tableNumber) references Object_Table(restaurantCode, tableNumber),
+	--table nr 0 at restaurant '000' should be a dummy table, serving as a catch all for orphaned orders.
 );
 
 --TableOrder and Object_Table most mutually refer to one another. Either constraint require that the óther table exists
@@ -62,8 +63,8 @@ foreign key (tableOrderId) references TableOrder(tableOrderId) --adds foreign ke
 on delete set null --If the current TableOrder is deleted, then the Table just be missing a current order.
 
 --A dummy Object_Table row is made to give something for TableOrder to default to.
-insert into [Object_Table]	(tableCode, restaurantCode, tableNumber)
-values						('0000000', '000'         , 0);
+insert into [Object_Table]	(restaurantCode, tableNumber)
+values						('000'         , 0);
 --No table Order is added to table, aside from Object_Table: All dependencies of TableOrder cascade delete.
 
 create table [MenuItem]
