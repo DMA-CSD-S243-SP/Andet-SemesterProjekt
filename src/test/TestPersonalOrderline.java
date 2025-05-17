@@ -21,7 +21,7 @@ import model.SelfServiceBar;
  * @author Line Bertelsen
  * @version 15.05.25 - 08:56
  */
-class UnitTestPersonalOrderline
+class TestPersonalOrderline
 
 {
 	private PersonalOrderLine personalOrderLinePotatoDish;
