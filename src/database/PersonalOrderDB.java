@@ -3,7 +3,9 @@ package database;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLClientInfoException;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,14 +33,18 @@ public class PersonalOrderDB implements PersonalOrderImpl
 
 	private static final String FIND_PERSONALORDERLINES_BY_PERSONALORDERID_QUERY = "SELECT * FROM PersonalOrderLine WHERE personalOrderId = ?";
 	
-	private static final String INSERT_PERSONALORDER_AND_GET_ID = "INSERT INTO PersonalOrder (customerAge, customerName, tableOrderId) VALUES (?, ?, ?); DECLARE @id INT = SCOPE_IDENTITY(); SELECT @id";
+	private static final String INSERT_PERSONALORDER = "INSERT INTO PersonalOrder (customerAge, customerName, tableOrderId) VALUES (?, ?, ?)";
+	
+	private static final String INSERT_PERSONALORDERLINE = "INSERT INTO PersonalOrderLine (additionalPrice, notes, status, personalOrderId, menuItemId) VALUES (?, ?, ?, ?, ?)";
 
 	// PreparedStatement for retrieving PersonalOrder based on the personalOrderId
 	private PreparedStatement statementFindByPersonalOrderId;
 
 	private PreparedStatement statementFindLinesByPersonalOrderId;
 	
-	private PreparedStatement statementInsertPersonalOrderAndGetId;
+	private PreparedStatement statementInsertPersonalOrder;
+	
+	private PreparedStatement statementInsertPersonalOrderLine;
 
 	// Constructor
 	public PersonalOrderDB() throws SQLException
@@ -179,16 +185,55 @@ public class PersonalOrderDB implements PersonalOrderImpl
 	}
 
 	@Override
-	public PersonalOrderLine insertSaleOrderToDatabase(PersonalOrderLine personalOrderLine) throws DataAccessException
+	public PersonalOrder insertPersonalOrder(PersonalOrder personalOrder, int tableOrderId) throws DataAccessException
 	{
-		// TODO Auto-generated method stub
-		return null;
+		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
+		try
+		{
+			databaseConnection.setAutoCommit(false);
+			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+			statementInsertPersonalOrder = databaseConnection.prepareStatement(INSERT_PERSONALORDER);
+			// Fill customer information
+			statementInsertPersonalOrder.setInt(1, personalOrder.getCustomerAge());
+			statementInsertPersonalOrder.setString(2, personalOrder.getCustomerName());
+			statementInsertPersonalOrder.setInt(3, tableOrderId);
+			
+			statementInsertPersonalOrder.executeUpdate();
+			ResultSet generatedKey = statementInsertPersonalOrder.getGeneratedKeys();
+			if (generatedKey.next())
+			{
+				int personalOrderId = generatedKey.getInt("personalOrderId");
+				insertPersonalOrderLines(personalOrder.getPersonalOrderLines(), personalOrderId);
+			}
+			
+			databaseConnection.commit();
+			databaseConnection.setAutoCommit(true);
+		} catch (SQLException e)
+		{
+			try
+			{
+				databaseConnection.rollback();
+			} catch (SQLException rollbackException){}
+		}
+		
+		return personalOrder;
 	}
-
-	@Override
-	public PersonalOrder insertPersonalOrder(PersonalOrder personalOrder) throws DataAccessException
+	
+	private void insertPersonalOrderLines(List<PersonalOrderLine> personalOrderLines, int personalOrderId) throws SQLException
 	{
-		// TODO Auto-generated method stub
-		return null;
+		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
+		statementInsertPersonalOrderLine = databaseConnection.prepareStatement(INSERT_PERSONALORDERLINE);
+		for (PersonalOrderLine line: personalOrderLines)
+		{
+			// Fills in the values for given PersonalOrderLine
+			statementInsertPersonalOrderLine.setDouble(1, line.getAdditionalPrice());
+			statementInsertPersonalOrderLine.setString(2, line.getNotes());
+			statementInsertPersonalOrderLine.setInt(3, line.getStatus().ordinal());
+			statementInsertPersonalOrderLine.setInt(4, personalOrderId);
+			statementInsertPersonalOrderLine.setInt(5, line.getMenuItem().getMenuItemId());
+			// Adds the filled in values to the statement batch
+			statementInsertPersonalOrderLine.addBatch();
+		}
+		statementInsertPersonalOrderLine.executeBatch();
 	}
 }
