@@ -1,5 +1,7 @@
 package database;
 
+import java.sql.SQLException;
+
 import model.Table;
 
 /**
@@ -15,6 +17,7 @@ public interface TableImpl
 	 * 
 	 * @param tableCode the code used in the search
 	 * @return a clone of a table that matches the search parameters
+	 * @throws SQLException 
 	 */
-	Table findTableByCode(int tableNumber, String restaurant) throws DataAccessException;
+	Table findTableByCode(int tableNumber, String restaurant) throws DataAccessException, SQLException;
 }

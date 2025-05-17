@@ -31,7 +31,7 @@ public class TableDB implements TableImpl
 	
 	
 	@Override
-	public Table findTableByCode(int tableNumber, String restaurantCode) throws DataAccessException 
+	public Table findTableByCode(int tableNumber, String restaurantCode) throws DataAccessException, SQLException 
 	{
 		// Gets a connection to the database
 		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
@@ -74,27 +74,9 @@ public class TableDB implements TableImpl
 		catch (SQLException exception1)
 		{
 			//Try catch for rollback
-			try
-			{
-				databaseConnection.rollback();
-			} 
+			databaseConnection.commit();
+			databaseConnection.setAutoCommit(true);
 			
-			catch (Exception exception2)
-			{
-				throw new DataAccessException("", exception2);
-			}
-			
-			
-			//Try catch for setAutoCommit
-			try
-			{
-				databaseConnection.setAutoCommit(true);
-			} 
-			
-			catch (Exception exception3)
-			{
-				throw new DataAccessException("", exception3);
-			}
 			
 			// If an SQL error occurs a custom exception is thrown with the specified details
 			throw new DataAccessException("Unable to find an table object with a tableCode matching: " + tableNumber + restaurantCode, exception1);
