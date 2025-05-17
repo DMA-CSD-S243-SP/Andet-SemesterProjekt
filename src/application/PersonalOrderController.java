@@ -14,6 +14,7 @@ import model.PersonalOrder;
 import model.Restaurant;
 import model.SelectionOption;
 import model.Table;
+import model.TableOrder;
 
 /**
  * 
@@ -27,6 +28,7 @@ public class PersonalOrderController
 	private MainCourse mainCourse; 
 	private PersonalOrder personalOrder; 
 	private Restaurant restaurant;
+	private TableOrder tableOrder;
 	
 	//Line: Attributes added by Line
 	private TableController tableController;
@@ -63,7 +65,9 @@ public class PersonalOrderController
 		try
 		{
 			//Assigns to tableController instance to find a table by the given tableCode
-			return tableController.findTableByCode(tableNumber, tableCode);
+			Table table = tableController.findTableByCode(tableNumber, tableCode);
+			tableOrder = new TableController().getCurrentTableOrder(table);
+			return table;
 		} 
 		
 		// Attempts to catch exceptions of the DataAccessException type
@@ -151,7 +155,7 @@ public class PersonalOrderController
 		try 
 		{
 			//Insert personalOrder to PersonalOrderDB
-			personalOrderDB.insertPersonalOrder(personalOrder);
+			personalOrderDB.insertPersonalOrder(personalOrder, tableOrder.getTableOrderId());
 		}
 		catch (DataAccessException exception) 
 		{
