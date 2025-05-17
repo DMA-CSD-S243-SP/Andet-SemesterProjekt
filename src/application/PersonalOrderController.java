@@ -59,7 +59,7 @@ public class PersonalOrderController
 	 * @throws DataAccessException if retrieval fails
 	 * @throws SQLException if accessing the tableCode fails 
 	 */
-	public Table enterTableCode(int tableNumber, String restaurantCode) throws DataAccessException, SQLException
+	public Table enterTableNumber(int tableNumber, String restaurantCode) throws DataAccessException, SQLException
 	{
 		String tableCode = restaurantCode + tableNumber;
 		//Attempt to execute the code within the braces
