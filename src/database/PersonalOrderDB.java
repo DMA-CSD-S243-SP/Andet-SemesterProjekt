@@ -179,7 +179,7 @@ public class PersonalOrderDB implements PersonalOrderImpl
 	}
 
 	@Override
-	public PersonalOrderLine insertPersonalOrderLineToDatabase(PersonalOrderLine personalOrderLine) throws DataAccessException
+	public PersonalOrderLine insertSaleOrderToDatabase(PersonalOrderLine personalOrderLine) throws DataAccessException
 	{
 		// TODO Auto-generated method stub
 		return null;
