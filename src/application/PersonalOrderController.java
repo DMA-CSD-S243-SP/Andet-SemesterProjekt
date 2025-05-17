@@ -59,7 +59,7 @@ public class PersonalOrderController
 	 * @throws DataAccessException if retrieval fails
 	 * @throws SQLException if accessing the tableCode fails 
 	 */
-	public Table enterTableNumber(int tableNumber, String restaurantCode) throws DataAccessException, SQLException
+	public Table enterTableCode(int tableNumber, String restaurantCode) throws DataAccessException, SQLException
 	{
 		String tableCode = restaurantCode + tableNumber;
 		//Attempt to execute the code within the braces
@@ -67,7 +67,13 @@ public class PersonalOrderController
 		{
 			//Assigns to tableController instance to find a table by the given tableCode
 			Table table = tableController.findTableByCode(tableNumber, tableCode);
-			tableOrder = new TableController().getCurrentTableOrder(table);
+			
+			if (table == null) 
+			{
+	            throw new IllegalArgumentException("No table found with tableCode: " + tableCode);
+	        }
+			
+			this.tableOrder = tableController.getCurrentTableOrder(table);
 			return table;
 		} 
 		
