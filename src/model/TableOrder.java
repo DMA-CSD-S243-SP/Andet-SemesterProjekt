@@ -243,4 +243,9 @@ public class TableOrder
 		}
 		return calculatedTableOrderPrice;
 	}
+	
+	public int getTableOrderId()
+	{
+		return tableOrderId;
+	}
 }
