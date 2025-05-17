@@ -29,14 +29,6 @@ public interface PersonalOrderImpl
      */
 	PersonalOrder findPersonalOrderById(int personalOrderId) throws DataAccessException;
 
-	
-	/**
-     * Inserts a new PersonalOrderLine into the PersonalOrderLine table in the Database. 
-     *
-     * @param personalOrderLine 
-     * @throws DataAccessException if there is an issue accessing the data
-     */
-	PersonalOrderLine insertSaleOrderToDatabase(PersonalOrderLine personalOrderLine) throws DataAccessException;
 
 	/**
 	 * Inserts a new PersonalOrder into the PersonalOrder table in the Database. 
@@ -45,5 +37,5 @@ public interface PersonalOrderImpl
 	 * @return
 	 * @throws DataAccessException
 	 */
-	PersonalOrder insertPersonalOrder(PersonalOrder personalOrder) throws DataAccessException;
+	PersonalOrder insertPersonalOrder(PersonalOrder personalOrder, int tableOrderId) throws DataAccessException;
 }
