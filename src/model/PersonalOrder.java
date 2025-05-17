@@ -290,4 +290,9 @@ public class PersonalOrder
 	{
 		//TODO
 	}
+	
+	public List<PersonalOrderLine> getPersonalOrderLines()
+	{
+		return new ArrayList<>(personalOrderLineList);
+	}
 }
