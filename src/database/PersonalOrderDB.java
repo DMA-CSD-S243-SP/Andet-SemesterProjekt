@@ -22,8 +22,8 @@ import model.TableOrder;
  * 
  * It implements the PersonalOrderImpl, meaning it implements its methods
  * 
- * @author Line Bertelsen & Anders Trankjær
- * @version 13.05.25 - 16:55
+ * @author Line Bertelsen, Anders Trankjær & Lumière Schack 
+ * @version 17.05.25 - 10.30
  */
 public class PersonalOrderDB implements PersonalOrderImpl
 {
