@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import model.Table;
+import model.TableOrder;
 
 /**
  * This class is responsible for accessing and managing table objects stored
@@ -106,14 +107,17 @@ public class TableDB implements TableImpl
 	 * @param resultSet - the data about the object from the database
 	 * @return an instance of the table class with the specific data from the database
 	 * @throws SQLException
+	 * @throws DataAccessException 
 	 */
-	private Table buildTableObject(ResultSet resultSet) throws SQLException
+	private Table buildTableObject(ResultSet resultSet) throws SQLException, DataAccessException
 	{	
 		String tableCode = resultSet.getString("restaurantCode") + resultSet.getInt("tableNumber");
 		
 		Table table = new Table(
 						  resultSet.getInt("tableNumber"), 
 						  tableCode);
+		TableOrder tableOrder = new TableOrderDB().findTableOrderByTableOrderId(resultSet.getInt("tableOrderId"));
+		table.setCurrentTableOrder(tableOrder);
 		return table;
 	}	
 }
