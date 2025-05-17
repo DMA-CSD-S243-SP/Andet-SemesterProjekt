@@ -53,7 +53,8 @@ public class PersonalOrderController
 	 * The enterTableCode method assigning the task to tableController 
 	 * to find a table with a matching tableCode
 	 * 
-	 * @param tableCode is the code of a table to search for
+	 * @param tableNumber is the code of a table to search for
+	 * @param restaurantCode is the code of the restaurant connect to the table
 	 * @return a matching table matching tableCode or null if not found
 	 * @throws DataAccessException if retrieval fails
 	 * @throws SQLException if accessing the tableCode fails 
