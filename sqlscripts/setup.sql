@@ -24,9 +24,9 @@ values						('000',          '',     '',   ''        );
 
 create table [Object_Table] --table is a keyword, and thus cannot be used as table name.
 (
-	restaurantCode char(3) not null,
+	restaurantCode char(3) not null default '000',
 	tableOrderId int, --current TableOrder can be null, as a default TableOrder row would be very problematic.
-	tableNumber int not null,
+	tableNumber char(4) not null,
 
 	primary key (restaurantCode, tableNumber),
 	constraint FK_Object_Table_Restaurant foreign key (restaurantCode) references Restaurant(restaurantCode) on delete cascade,
@@ -47,12 +47,12 @@ create table [TableOrder]
 	orderPreparationTime int not null,
 	employeeId int, -- Can be null, as a TableOrder shouldn't have an assigned employee the moment it's made.
 	tableRestaurantCode char(3) not null default ('000'),
-	tableNumber int not null default 0,
+	tableNumber char(4) not null default '0000',
 
 	primary key (tableOrderId),
 	constraint FK_TableOrder_Employee  foreign key (employeeId) references Employee(employeeId) on delete set null,
 	constraint FK_TableOrder_Restaurant foreign key (tableRestaurantCode) references Restaurant(restaurantCode) on delete set default,
-	constraint FK_TableOrder_Table_Object foreign key (tableRestaurantCode, tableNumber) references Object_Table(restaurantCode, tableNumber),
+	constraint FK_TableOrder_Table_Object foreign key (tableRestaurantCode, tableNumber) references Object_Table(restaurantCode, tableNumber)
 	--table nr 0 at restaurant '000' should be a dummy table, serving as a catch all for orphaned orders.
 );
 
