@@ -19,5 +19,5 @@ public interface TableImpl
 	 * @return a clone of a table that matches the search parameters
 	 * @throws SQLException 
 	 */
-	Table findTableByCode(String tableNumber, String restaurant) throws DataAccessException, SQLException;
+	Table findTableByCode(String tableNumber, String restaurantCode) throws DataAccessException, SQLException;
 }
