@@ -53,6 +53,7 @@ public class TryMe
     	
     	
     	//Step: 1 
+    	System.out.println("Step 1");
     	try 
     	{
         	controller.enterTableCode("0001", "001");
@@ -72,10 +73,12 @@ public class TryMe
     	
     	
     	//Step: 2
+    	System.out.println("Step 2");
     	controller.enterNameAndAge("Ben Dover", 45);
     	
     	
     	//Step: 3
+    	System.out.println("Step 3");
     	try 
     	{
     	controller.enterDiscounts(listOfDiscounts);
@@ -95,21 +98,25 @@ public class TryMe
     	
     	
     	//Step: 4
+    	System.out.println("Step 4");
     	controller.enterMainCourse(ribeye);
     	
-    	//Step 4.5
+    	//Step 5
+    	System.out.println("Step 5");
     	List<AddOnOption> listOfAddOnOptions = new ArrayList<AddOnOption>() ;
     	listOfAddOnOptions.add(garlicButter);
     	listOfAddOnOptions.add(upgradedRibeye);
     	List<SelectionOption>listOfSelectionOptions = new ArrayList<>();
     	controller.enterMainCourseOptions(potatoDish, listOfAddOnOptions, listOfSelectionOptions);
     	
-    	//Step: 5
+    	//Step: 6
+    	System.out.println("Step 6");
     	controller.enterSideOrder(salad);
     	controller.enterSideOrder(softdrink);
     	controller.enterSideOrder(chickenBall);
     	
-    	//step: 6
+    	//step: 7
+    	System.out.println("Step 7");
     	try
     	{
     	controller.finishPersonalOrder();
