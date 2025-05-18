@@ -14,8 +14,8 @@ import model.TableOrder;
  * 
  * It implements the tableImpl interface. 
  * 
- * @author Anders Trankjær & Line Bertelsen
- * @version 15.05.25 - 10:10
+ * @author Anders Trankjær, Line Bertelsen & Christoffer Søndergaard
+ * @version 18/05/2025 - 16:46
  */
 public class TableDB implements TableImpl
 {
@@ -31,7 +31,7 @@ public class TableDB implements TableImpl
 	
 	
 	@Override
-	public Table findTableByCode(int tableNumber, String restaurantCode) throws DataAccessException, SQLException 
+	public Table findTableByCode(String tableNumber, String restaurantCode) throws DataAccessException, SQLException 
 	{
 		// Gets a connection to the database
 		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
@@ -48,7 +48,7 @@ public class TableDB implements TableImpl
 			statementFindByTableCode = databaseConnection.prepareStatement(FIND_TABLE_BY_TABLECODE_QUERY);
 
 			// Adds the tableCode from the methods parameterlist to the String instead of the placeholder
-			statementFindByTableCode.setInt(1, tableNumber);
+			statementFindByTableCode.setString(1, tableNumber);
 			statementFindByTableCode.setString(2, restaurantCode);
 
 			// Executes the query, and stores the retrieved data as a ResultSet
@@ -93,10 +93,10 @@ public class TableDB implements TableImpl
 	 */
 	private Table buildTableObject(ResultSet resultSet) throws SQLException, DataAccessException
 	{	
-		String tableCode = resultSet.getString("restaurantCode") + resultSet.getInt("tableNumber");
+		String tableCode = resultSet.getString("restaurantCode") + resultSet.getString("tableNumber");
 		
 		Table table = new Table(
-						  resultSet.getInt("tableNumber"), 
+						  resultSet.getString("tableNumber"), 
 						  tableCode);
 		TableOrder tableOrder = new TableOrderDB().findTableOrderByTableOrderId(resultSet.getInt("tableOrderId"));
 		table.setCurrentTableOrder(tableOrder);

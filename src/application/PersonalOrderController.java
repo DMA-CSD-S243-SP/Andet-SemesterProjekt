@@ -18,8 +18,8 @@ import model.TableOrder;
 
 /**
  * 
- * @author Line Bertelsen & Anders trankjær
- * @version 15.05.25 - 9:45
+ * @author Line Bertelsen, Anders trankjær & Christoffer Søndergaard
+ * @version 18/05/2025 - 16:53
  */
 
 public class PersonalOrderController
@@ -59,7 +59,7 @@ public class PersonalOrderController
 	 * @throws DataAccessException if retrieval fails
 	 * @throws SQLException if accessing the tableCode fails 
 	 */
-	public Table enterTableCode(int tableNumber, String restaurantCode) throws DataAccessException, SQLException
+	public Table enterTableCode(String tableNumber, String restaurantCode) throws DataAccessException, SQLException
 	{
 		String tableCode = restaurantCode + tableNumber;
 		//Attempt to execute the code within the braces

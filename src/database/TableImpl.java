@@ -6,8 +6,8 @@ import model.Table;
 
 /**
  * 
- * @author Anders Trankjær
- * @Version 2025/08/05/11:30 
+ * @author Anders Trankjær & Christoffer Søndergaard
+ * @version 18/05/2025 - 16:55
  */
 public interface TableImpl
 {
@@ -19,5 +19,5 @@ public interface TableImpl
 	 * @return a clone of a table that matches the search parameters
 	 * @throws SQLException 
 	 */
-	Table findTableByCode(int tableNumber, String restaurant) throws DataAccessException, SQLException;
+	Table findTableByCode(String tableNumber, String restaurant) throws DataAccessException, SQLException;
 }

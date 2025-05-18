@@ -11,8 +11,8 @@ import model.TableOrder;
 /**
  * a controller class that bridges the logic from the model layer and the user interface from the gui layer
  * 
- * @author Anders Trankjær
- * @version 2025/13/05/11:10
+ * @author Anders Trankjær & Christoffer Søndergaard
+ * @version 18/05/2025 - 16:53
  */
 public class TableController
 {
@@ -24,11 +24,14 @@ public class TableController
 	 * @throws DataAccessException
 	 * @throws SQLException
 	 */
-	public Table findTableByCode(int tableNumber, String restaurantCode) throws DataAccessException, SQLException 
+	public Table findTableByCode(String tableNumber, String restaurantCode) throws DataAccessException, SQLException 
 	{
 		TableImpl dao = new TableDB();
-		String tableCode = restaurantCode + tableNumber;
-		return dao.findTableByCode(tableNumber, tableCode);
+
+		// TODO: Is this intended, given that tableCode is not what it takes now but tableNumber?
+//		String tableCode = restaurantCode + tableNumber;
+//		return dao.findTableByCode(tableNumber, tableCode);
+		return dao.findTableByCode(tableNumber, restaurantCode);
 	}
 	
 	/**
