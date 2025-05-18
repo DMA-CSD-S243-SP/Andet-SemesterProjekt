@@ -33,7 +33,7 @@ public class PersonalOrderDB implements PersonalOrderImpl
 
 	private static final String FIND_PERSONALORDERLINES_BY_PERSONALORDERID_QUERY = "SELECT * FROM PersonalOrderLine WHERE personalOrderId = ?";
 	
-	private static final String INSERT_PERSONALORDER = "INSERT INTO PersonalOrder (customerAge, customerName, tableOrderId) VALUES (?, ?, ?); DECLARE @ID INT = SCOPE_IDENTITY(); SELECT @ID";
+	private static final String INSERT_PERSONALORDER = "INSERT INTO PersonalOrder (customerAge, customerName, tableOrderId) VALUES (?, ?, ?)";
 	
 	private static final String INSERT_PERSONALORDERLINE = "INSERT INTO PersonalOrderLine (additionalPrice, notes, status, personalOrderId, menuItemId) VALUES (?, ?, ?, ?, ?);";
 
@@ -192,15 +192,15 @@ public class PersonalOrderDB implements PersonalOrderImpl
 		{
 			databaseConnection.setAutoCommit(false);
 			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-			statementInsertPersonalOrder = databaseConnection.prepareStatement(INSERT_PERSONALORDER);
+			statementInsertPersonalOrder = databaseConnection.prepareStatement(INSERT_PERSONALORDER, Statement.RETURN_GENERATED_KEYS);
 			// Fill customer information
 			statementInsertPersonalOrder.setInt(1, personalOrder.getCustomerAge());
 			statementInsertPersonalOrder.setString(2, personalOrder.getCustomerName());
 			statementInsertPersonalOrder.setInt(3, tableOrderId);
 			
-			ResultSet generatedKey = statementInsertPersonalOrder.executeQuery();
+			statementInsertPersonalOrder.executeUpdate();
 			
-			//ResultSet generatedKey = statementInsertPersonalOrder.getGeneratedKeys();
+			ResultSet generatedKey = statementInsertPersonalOrder.getGeneratedKeys();
 			if (generatedKey.next())
 			{
 				//int personalOrderId = generatedKey.getInt("personalOrderId");
