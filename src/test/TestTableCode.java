@@ -12,7 +12,7 @@ import model.Table;
  * This class tests the functionality of tableCode across the Restaurant and Table classes
  * 
  * @author Anders Have & Christoffer Søndergaard
- * @version 18/05/2025 - 15:23
+ * @version 18/05/2025 - 15:59
  */
 public class TestTableCode 
 {
@@ -20,8 +20,8 @@ public class TestTableCode
 	public void testTableCode()
 	{
 		// Arrange
-		Table table1 = new Table(1, null);
-		Table table2 = new Table(2, null);
+		Table table1 = new Table("0001", null);
+		Table table2 = new Table("0002", null);
 		
 		Restaurant restaurant1 = new Restaurant("Bones", "Aalborg", "epicStreet");
 		
@@ -35,7 +35,7 @@ public class TestTableCode
 	
 		// Assert
 		// tableCode is a unique code made up of tableNumber and the restaurantCode of the restaurant the table is within.
-		assertEquals("0001001", table1.getTableCode());
-		assertEquals("0002001", table2.getTableCode());
+		assertEquals("0010001", table1.getTableCode());
+		assertEquals("0010002", table2.getTableCode());
 	}
 }
