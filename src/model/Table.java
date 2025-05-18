@@ -1,9 +1,10 @@
 package model;
 
+
 /*
  * The table class represents a physical table in
- * @Author Anders Trankjær
- * @Version 2025/08/05/10:00
+ * @Author Anders Trankjær & Christoffer Søndergaard
+ * @Version 18/05/2025 - 15:23
  */
 public class Table 
 {
@@ -49,7 +50,35 @@ public class Table
 	 */
 	public void setTableCode(int tableNumber, String restaurantCode) 
 	{
-		this.tableCode = restaurantCode + tableNumber;
+		// Retrieves the inputted tableNumber's length and store it within the tableNumberLength variable
+		int tableNumberLength = String.valueOf(tableNumber).length();
+		
+		// Creates a String object with the name formattedTableNumberString 
+		String formattedTableNumberString = null;
+		
+		// If the length of the supplied tableNumber is only 1 digit long then execute this section
+		if(tableNumberLength == 1)
+		{
+			formattedTableNumberString = "000";
+		}
+		
+		// If the length of the supplied tableNumber is only 2 digit long then execute this section
+		else if(tableNumberLength == 2)
+		{
+			formattedTableNumberString = "00";
+		}
+		
+		// If the length of the supplied tableNumber is only 3 digit long then execute this section
+		else if(tableNumberLength == 3)
+		{
+			formattedTableNumberString = "0";
+		}
+		
+		// Combines the tableNumber with the formattedTableNumberString variable to form a four digit string
+		// E.g. supplying 1 will make this string be equivilant to "0001"
+		formattedTableNumberString = formattedTableNumberString + tableNumber;
+
+		this.tableCode = formattedTableNumberString + restaurantCode;
 	}
 
 	/**
