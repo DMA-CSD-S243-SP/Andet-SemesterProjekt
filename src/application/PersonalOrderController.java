@@ -66,7 +66,7 @@ public class PersonalOrderController
 		try
 		{
 			//Assigns to tableController instance to find a table by the given tableCode
-			Table table = tableController.findTableByCode(tableNumber, tableCode);
+			Table table = tableController.findTableByCode(tableNumber, restaurantCode);
 			
 			if (table == null) 
 			{
