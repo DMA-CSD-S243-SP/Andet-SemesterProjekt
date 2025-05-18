@@ -55,7 +55,7 @@ public class TryMe
     	//Step: 1 
     	try 
     	{
-        	controller.enterTableCode(1, "001");
+        	controller.enterTableCode("0001", "001");
     	} 
     	
     	catch (DataAccessException exception)
