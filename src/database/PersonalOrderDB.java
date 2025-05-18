@@ -33,9 +33,9 @@ public class PersonalOrderDB implements PersonalOrderImpl
 
 	private static final String FIND_PERSONALORDERLINES_BY_PERSONALORDERID_QUERY = "SELECT * FROM PersonalOrderLine WHERE personalOrderId = ?";
 	
-	private static final String INSERT_PERSONALORDER = "INSERT INTO PersonalOrder (customerAge, customerName, tableOrderId) VALUES (?, ?, ?)";
+	private static final String INSERT_PERSONALORDER = "INSERT INTO PersonalOrder (customerAge, customerName, tableOrderId) VALUES (?, ?, ?); DECLARE @ID INT = SCOPE_IDENTITY(); SELECT @ID";
 	
-	private static final String INSERT_PERSONALORDERLINE = "INSERT INTO PersonalOrderLine (additionalPrice, notes, status, personalOrderId, menuItemId) VALUES (?, ?, ?, ?, ?)";
+	private static final String INSERT_PERSONALORDERLINE = "INSERT INTO PersonalOrderLine (additionalPrice, notes, status, personalOrderId, menuItemId) VALUES (?, ?, ?, ?, ?);";
 
 	// PreparedStatement for retrieving PersonalOrder based on the personalOrderId
 	private PreparedStatement statementFindByPersonalOrderId;
@@ -198,11 +198,13 @@ public class PersonalOrderDB implements PersonalOrderImpl
 			statementInsertPersonalOrder.setString(2, personalOrder.getCustomerName());
 			statementInsertPersonalOrder.setInt(3, tableOrderId);
 			
-			statementInsertPersonalOrder.executeUpdate();
-			ResultSet generatedKey = statementInsertPersonalOrder.getGeneratedKeys();
+			ResultSet generatedKey = statementInsertPersonalOrder.executeQuery();
+			
+			//ResultSet generatedKey = statementInsertPersonalOrder.getGeneratedKeys();
 			if (generatedKey.next())
 			{
-				int personalOrderId = generatedKey.getInt("personalOrderId");
+				//int personalOrderId = generatedKey.getInt("personalOrderId");
+				int personalOrderId = generatedKey.getInt(1);
 				insertPersonalOrderLines(personalOrder.getPersonalOrderLines(), personalOrderId);
 			}
 			
@@ -210,6 +212,7 @@ public class PersonalOrderDB implements PersonalOrderImpl
 			databaseConnection.setAutoCommit(true);
 		} catch (SQLException e)
 		{
+			e.printStackTrace();
 			try
 			{
 				databaseConnection.rollback();
