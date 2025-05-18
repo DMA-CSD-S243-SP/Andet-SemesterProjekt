@@ -34,6 +34,7 @@ public class TryMe
     		
     	//MainCourse object and its addons
     	MainCourse ribeye = new MainCourse("Big juicy ribeye", 100, 125);
+    	ribeye.setMenuItemId(1);
     	AddOnOption garlicButter = new AddOnOption("Garlic butter", "with garlic butter", 10);
     	AddOnOption upgradedRibeye = new AddOnOption("285g steak", "285g steak", 45);
     	
@@ -42,11 +43,15 @@ public class TryMe
     	
     	// Potato
     	PotatoDish potatoDish = new PotatoDish(true, 0);
+    	potatoDish.setMenuItemId(2);
     	
     	//sidedishes
     	Drink softdrink = new Drink(false, true, 30);
+    	softdrink.setMenuItemId(3);
     	SelfServiceBar salad = new SelfServiceBar(EnumBarType.SALADBAR, 50, 65);
+    	salad.setMenuItemId(4);
     	SideDish chickenBall = new SideDish(2, 25);
+    	chickenBall.setMenuItemId(5);
     	
     	//controller for making a personalOrder
     	PersonalOrderController controller = new PersonalOrderController();
