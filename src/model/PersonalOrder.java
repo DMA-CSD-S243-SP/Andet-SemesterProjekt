@@ -165,6 +165,14 @@ public class PersonalOrder
 		 */
 		
 		PersonalOrderLine mainCourseLine = new PersonalOrderLine(mainCourse);
+		for (AddOnOption option: listOfAddOnOptions)
+		{
+			mainCourseLine.addAddOnOption(option);
+		}
+		for (SelectionOption option: listOfSelectionOption)
+		{
+			mainCourseLine.addSelectionOption(option);
+		}
 		addPersonalOrderLine(mainCourseLine);
 		
 	}
@@ -288,7 +296,8 @@ public class PersonalOrder
 
 	public void addMenuItemLine(MenuItem menuItem) 
 	{
-		//TODO
+		PersonalOrderLine menuItemLine = new PersonalOrderLine(menuItem);
+		addPersonalOrderLine(menuItemLine);
 	}
 	
 	public List<PersonalOrderLine> getPersonalOrderLines()
