@@ -1,15 +1,19 @@
 package database;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import model.AddOnOption;
 import model.TableOrder;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 /**
  * This class is responsible for accessing and managing 
  * TabelOrder objects stored in a database.
@@ -17,7 +21,7 @@ import model.TableOrder;
  * It implements the TableOrderImpl, meaning it implements its methods
  * 
  * @author Line Bertelsen
- * @version 15.05.2025 - 10:08
+ * @version 110/05/25 - 12:31
  */
 
 public class TableOrderDB implements TableOrderImpl
@@ -33,18 +37,37 @@ public class TableOrderDB implements TableOrderImpl
 	// Selects a row from the table menuItem in the database, based on the given tableOrderId
 	private static final String FIND_TABLEORDER_BY_TABLEORDERID_QUERY = "SELECT * FROM TableOrder WHERE TableOrderId = ?";
 	
-	// PreparedStatement for retrieving an TableOrder based on the tableOrderId
+	// PreparedStatement for retrieving a TableOrder based on the tableOrderId
 	private PreparedStatement statementFindTableOrderByTableOrderId;
 	
 	
+	// Selects a row from the table menuItem in the database, based on the given tableOrderId
+	private static final String UPDATE_TABLEORDER_QUERY = "UPDATE TableOrder SET timeOfArrival = ?, isTableOrderClosed = ?, paymentType = ?, totalTableOrderPrice = ?, totalAmountPaid = ?, isSentToKitchen = ?, isRequestingService = ?, orderPreparationTime = ? WHERE tableId = ?";
+	
+	// PreparedStatement for inserting a TableOrder
+	private PreparedStatement statementUpdateTabeOrder;
+	
+	
+	// Selects every row from the TableOrder where 
+	// isSentToKitchen = true and isTableOrderClsoed = false, in the database
+	private static final String FIND_VISIBLE_TO_KITCHEN_TABLE_ORDERS_QUERY =  "SELECT * FROM TableOrder WHERE isSentToKitchen = true AND isTableOrderClosed = false";
+			
+	// PreparedStatement for retrieving an TableOrder based on the tableOrderId
+	private PreparedStatement statementFindVisibleToKitchenTableOrders;
+	
 	public TableOrderDB() throws SQLException
 	{
-		//Prepares the SQL statement for retrieving a MenuItem by its MenuItemId
+		//Prepares the SQL statement for retrieving all TableOrder
 		statementFindAllTableOrders = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_AllTABLEORDERS_QUERY);
 
-		//Prepares the SQL statement for retrieving a SelfServeBar by its MenuItemId
+		//Prepares the SQL statement for retrieving a TableOrder by a matching TableOrderId
 		statementFindTableOrderByTableOrderId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_TABLEORDER_BY_TABLEORDERID_QUERY);
-				
+		
+		//Prepares the SQL statement for updating TableOrder for the matching tableOrderId
+		statementUpdateTabeOrder = DataBaseConnection.getInstance().getConnection().prepareStatement(UPDATE_TABLEORDER_QUERY);
+		
+		//Prepares the SQL statement for retrieving all TableOrder where isSentToKitchen is true and isTableClosed is false
+		statementFindVisibleToKitchenTableOrders = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_VISIBLE_TO_KITCHEN_TABLE_ORDERS_QUERY);
 	}
 	
 	
@@ -197,4 +220,109 @@ public class TableOrderDB implements TableOrderImpl
 
 		return tableOrder;	
 	}
+
+
+	@Override
+	public void updateTableOrder(TableOrder tableOrder) throws DataAccessException {
+		
+		// Gets a connection to the database
+		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
+
+		try 
+		{			
+			databaseConnection.setAutoCommit(false);
+
+			// Set transaction isolation level
+			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+
+			// Set values in prepared statement
+			statementUpdateTabeOrder.setTimestamp(1, Timestamp.valueOf(tableOrder.getTimeOfArrival()));
+			statementUpdateTabeOrder.setBoolean(2, tableOrder.isTableOrderClosed());
+			statementUpdateTabeOrder.setString(3, tableOrder.getPaymentType());
+			statementUpdateTabeOrder.setDouble(4, tableOrder.calculateTotalTableOrderPrice());
+			statementUpdateTabeOrder.setDouble(5, tableOrder.getTotalAmountPaid());
+			statementUpdateTabeOrder.setBoolean(6, tableOrder.isSentToKitchen());
+			statementUpdateTabeOrder.setBoolean(7, tableOrder.isRequestingService());
+			statementUpdateTabeOrder.setInt(8, tableOrder.getOrderPreparationTime());
+
+			statementUpdateTabeOrder.setInt(9, tableOrder.getTableOrderId());
+
+			// Execute the update
+			int rowsAffected = statementUpdateTabeOrder.executeUpdate();
+			if (rowsAffected == 1) 
+			{
+			    System.out.println("TableOrder was successfully updated.");
+			} 
+			else if (rowsAffected == 0) 
+			{
+			    System.out.println("No TableOrder was updated — maybe the tableId didn't match?");
+			}
+
+			// Commit changes
+			databaseConnection.commit();
+			databaseConnection.setAutoCommit(true);
+
+		} 
+		catch (SQLException exception) 
+		{
+			try
+			{
+				databaseConnection.rollback();
+				databaseConnection.setAutoCommit(true);
+			}
+			
+			catch (SQLException exception2) 
+			{
+				throw new DataAccessException("Rollback failed after updateTableOrder error", exception2);
+			}
+
+			throw new DataAccessException("Failed to update TableOrder in database", exception);
+		}
+	}
+
+
+
+	@Override
+	public List<TableOrder> findAllVisibleToKitchenTableOrders() throws DataAccessException, SQLException {
+	   
+		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
+
+	    try 
+	    {
+	        databaseConnection.setAutoCommit(false);
+	        
+	        databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+
+			// Prepares a SQL statement to find all tableOrder visible to kitchen
+	        statementFindVisibleToKitchenTableOrders = databaseConnection.prepareStatement(FIND_VISIBLE_TO_KITCHEN_TABLE_ORDERS_QUERY);
+
+	        // Run query
+	        ResultSet resultSet = statementFindVisibleToKitchenTableOrders.executeQuery();
+
+	        // Convert resultSet to a list
+	        List<TableOrder> tableOrders = buildTableOrderObjects(resultSet);
+
+	        databaseConnection.commit();
+	        databaseConnection.setAutoCommit(true);
+
+	        return tableOrders;
+	    } 
+	    
+	    catch (SQLException exception) 
+		{
+			try
+			{
+				databaseConnection.rollback();
+				databaseConnection.setAutoCommit(true);
+			}
+			
+			catch (SQLException exception2) 
+			{
+				throw new DataAccessException("Rollback failed after updateTableOrder error", exception2);
+			}
+
+			throw new DataAccessException("Failed to update TableOrder in database", exception);
+		}
+	}
+
 }
