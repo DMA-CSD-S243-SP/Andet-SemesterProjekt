@@ -25,9 +25,11 @@ import java.time.LocalDateTime;
  */
 public class TableOrder
 {
+	private LocalDateTime timeOfArrival;
+	private boolean isTableOrderClose;
 	private boolean isRequestingService;
 	private boolean isSentToKitchen;
-	private boolean isTableOrderClosed;
+	
 
 	private int tableOrderId;
 	private int orderPreparationTime;
@@ -37,7 +39,7 @@ public class TableOrder
 
 	private String paymentType;
 
-	private LocalDateTime timeOfArrival;
+	
 
 	private List<PersonalOrder> listOfPersonalOrders;
 
@@ -86,12 +88,12 @@ public class TableOrder
 	 * session and no longer wants to order, and are ready to begin the payment
 	 * process of their dining session.
 	 *
-	 * @param isTableOrderClosed true if the table order is finalized and closed;
+	 * @param isTableOrderClose true if the table order is finalized and closed;
 	 *                           false otherwise
 	 */
-	public void setTableOrderClosed(boolean isTableOrderClosed)
+	public void setTableOrderClosed(boolean isTableOrderClose)
 	{
-		this.isTableOrderClosed = isTableOrderClosed;
+		this.isTableOrderClose = isTableOrderClose;
 	}
 
 	/**
