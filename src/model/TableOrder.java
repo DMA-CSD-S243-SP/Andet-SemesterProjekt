@@ -26,20 +26,16 @@ import java.time.LocalDateTime;
 public class TableOrder
 {
 	private LocalDateTime timeOfArrival;
-	private boolean isTableOrderClose;
-	private boolean isRequestingService;
-	private boolean isSentToKitchen;
-	
-
-	private int tableOrderId;
-	private int orderPreparationTime;
-
-	private double totalAmountPaid;
-	private double totalTableOrderPrice;
-
+	private boolean isTableOrderClosed;
 	private String paymentType;
-
+	private double totalTableOrderPrice;
+	private double totalAmountPaid;
+	private boolean isSentToKitchen;
+	private boolean isRequestingService;
+	private int orderPreparationTime;
 	
+
+	private int tableOrderId;	
 
 	private List<PersonalOrder> listOfPersonalOrders;
 
@@ -88,12 +84,12 @@ public class TableOrder
 	 * session and no longer wants to order, and are ready to begin the payment
 	 * process of their dining session.
 	 *
-	 * @param isTableOrderClose true if the table order is finalized and closed;
+	 * @param isTableOrderClosed true if the table order is finalized and closed;
 	 *                           false otherwise
 	 */
-	public void setTableOrderClosed(boolean isTableOrderClose)
+	public void setTableOrderClosed(boolean isTableOrderClosed)
 	{
-		this.isTableOrderClose = isTableOrderClose;
+		this.isTableOrderClosed = isTableOrderClosed;
 	}
 
 	/**
@@ -249,5 +245,40 @@ public class TableOrder
 	public int getTableOrderId()
 	{
 		return tableOrderId;
+	}
+
+	public LocalDateTime getTimeOfArrival()
+	{
+		return timeOfArrival;
+	}
+
+	public boolean isTableOrderClosed()
+	{
+		return isTableOrderClosed();
+	}
+
+	public String getPaymentType()
+	{
+		return paymentType;
+	}
+
+	public double getTotalAmountPaid()
+	{
+		return totalAmountPaid;
+	}
+
+	public boolean isSentToKitchen()
+	{
+		return isSentToKitchen;
+	}
+
+	public boolean isRequestingService()
+	{
+		return isRequestingService;
+	}
+
+	public int getOrderPreparationTime()
+	{
+		return orderPreparationTime;
 	}
 }
