@@ -29,10 +29,10 @@ public class TableOrderController
 	 * @throws SQLException
 	 * @throws DataAccessException 
 	 */
-	public void insertTableOrder(TableOrder tableOrder) throws SQLException, DataAccessException
+	public void updateTableOrder(TableOrder tableOrder) throws SQLException, DataAccessException
 	{
 		TableOrderImpl dao = new TableOrderDB();
-		dao.insertTableOrder(tableOrder);
+		dao.updateTableOrder(tableOrder);
 	}
 	
 	/**
