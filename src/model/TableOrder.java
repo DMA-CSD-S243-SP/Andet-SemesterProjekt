@@ -254,7 +254,7 @@ public class TableOrder
 
 	public boolean isTableOrderClosed()
 	{
-		return isTableOrderClosed();
+		return isTableOrderClosed;
 	}
 
 	public String getPaymentType()
