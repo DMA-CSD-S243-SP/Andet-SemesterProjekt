@@ -216,6 +216,7 @@ public class PersonalOrderDB implements PersonalOrderImpl
 			try
 			{
 				databaseConnection.rollback();
+				databaseConnection.setAutoCommit(true);
 			} catch (SQLException rollbackException){}
 		}
 		
