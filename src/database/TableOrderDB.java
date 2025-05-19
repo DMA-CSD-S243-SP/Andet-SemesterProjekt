@@ -247,17 +247,6 @@ public class TableOrderDB implements TableOrderImpl
 
 			statementUpdateTabeOrder.setInt(9, tableOrder.getTableOrderId());
 
-			// Execute the update
-			int rowsAffected = statementUpdateTabeOrder.executeUpdate();
-			if (rowsAffected == 1) 
-			{
-			    System.out.println("TableOrder was successfully updated.");
-			} 
-			else if (rowsAffected == 0) 
-			{
-			    System.out.println("No TableOrder was updated — maybe the tableId didn't match?");
-			}
-
 			// Commit changes
 			databaseConnection.commit();
 			databaseConnection.setAutoCommit(true);
