@@ -9,13 +9,13 @@ package model;
 public class Table 
 {
 	private String tableNumber;
-	private String tableCode;
+	private String restaurantCode;
 	private TableOrder currentTableOrder;
 
-	public Table(String tableNumber, String tableCode) 
+	public Table(String tableCode) 
 	{
-		this.tableNumber = tableNumber;
-		this.tableCode = tableCode;
+		this.tableNumber = tableCode.substring(3, 7);
+		this.restaurantCode = tableCode.substring(0, 3);
 	}
 	
 	/**
@@ -39,7 +39,7 @@ public class Table
 	 */
 	public String getTableCode() 
 	{
-		return tableCode;
+		return restaurantCode+tableNumber;
 	}
 
 	/**
@@ -80,7 +80,8 @@ public class Table
 		formattedTableNumberString = formattedTableNumberString + tableNumber;
 */
 		
-		this.tableCode = restaurantCode + tableNumber;
+		this.tableNumber = tableNumber;
+		this.restaurantCode = restaurantCode;
 	}
 
 	

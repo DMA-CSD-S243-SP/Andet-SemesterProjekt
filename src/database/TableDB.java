@@ -95,9 +95,7 @@ public class TableDB implements TableImpl
 	{	
 		String tableCode = resultSet.getString("restaurantCode") + resultSet.getString("tableNumber");
 		
-		Table table = new Table(
-						  resultSet.getString("tableNumber"), 
-						  tableCode);
+		Table table = new Table(tableCode);
 		TableOrder tableOrder = new TableOrderDB().findTableOrderByTableOrderId(resultSet.getInt("tableOrderId"));
 		table.setCurrentTableOrder(tableOrder);
 		return table;
