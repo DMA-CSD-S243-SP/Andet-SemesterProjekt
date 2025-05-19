@@ -47,13 +47,13 @@ public interface TableOrderImpl
 	TableOrder findTableOrderByTableOrderId(int tableOrderId) throws DataAccessException, SQLException;
 
 	/**
-	 * Method inserts a given TableOrder into data storage
+	 * Method updates a given TableOrder in data storage. Doesn't add associations, just updates the specific TableOrderRow
 	 * 
-	 * @param tableOrder the TableOrder to be inserted.
+	 * @param tableOrder the TableOrder to be updated.
 	 * @throws DataAccessException if there is an issue accessing the data
 	 * @throws SQLException
 	 */
-	void insertTableOrder(TableOrder tableOrder) throws DataAccessException, SQLException;
+	void updateTableOrder(TableOrder tableOrder) throws DataAccessException, SQLException;
 
 	/**
 	 * Method gets all the TableOrders that the kitchen should be able to see.
