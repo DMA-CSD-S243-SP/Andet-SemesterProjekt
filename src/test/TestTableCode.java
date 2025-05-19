@@ -20,13 +20,15 @@ public class TestTableCode
 	public void testTableCode()
 	{
 		// Arrange
-		Table table1 = new Table("0001", null);
-		Table table2 = new Table("0002", null);
+		Table table1 = new Table("0000000");
+		Table table2 = new Table("0000000");
 		
 		Restaurant restaurant1 = new Restaurant("Bones", "Aalborg", "epicStreet");
 		
 		
 		// Act
+		table1.setTableNumber("0001");
+		table2.setTableNumber("0002");
 		restaurant1.setRestaurantCode("001");
 			
 		table1.setTableCode(table1.getTableNumber(), restaurant1.getRestaurantCode());
