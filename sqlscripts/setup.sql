@@ -38,7 +38,7 @@ create table [TableOrder]
 	tableOrderId int identity(100000, 1) not null,
 	timeOfArrival datetime, --timeOfArrival can be null, as it signifies that it should be set when a customer arrives.
 							--Orders with PersonalOrders should never have a null value in timeOfArrival.
-	isTableOrderClose bit not null,
+	isTableOrderClosed bit not null,
 	paymentType varchar(30) not null,
 	totalTableOrderPrice decimal,
 	totalAmountPaid decimal not null,
@@ -51,8 +51,10 @@ create table [TableOrder]
 
 	primary key (tableOrderId),
 	constraint FK_TableOrder_Employee  foreign key (employeeId) references Employee(employeeId) on delete set null,
-	constraint FK_TableOrder_Restaurant foreign key (tableRestaurantCode) references Restaurant(restaurantCode) on delete set default,
-	constraint FK_TableOrder_Table_Object foreign key (tableRestaurantCode, tableNumber) references Object_Table(restaurantCode, tableNumber)
+	constraint FK_TableOrder_Restaurant foreign key (tableRestaurantCode) 
+											references Restaurant(restaurantCode) on delete set default,
+	constraint FK_TableOrder_Table_Object foreign key (tableRestaurantCode, tableNumber)
+											references Object_Table(restaurantCode, tableNumber)
 	--table nr 0 at restaurant '000' should be a dummy table, serving as a catch all for orphaned orders.
 );
 

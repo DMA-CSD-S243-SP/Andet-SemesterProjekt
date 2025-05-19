@@ -20,7 +20,7 @@ import model.TableOrder;
  * 
  * It implements the PersonalOrderImpl, meaning it implements its methods
  * 
- * @author Line Bertelsen, Anders Trankjær & Lumière Schack 
+ * @author Line Bertelsen, Anders Trankjær & Lumière Schack
  * @version 17.05.25 - 10.30
  */
 public class PersonalOrderDB implements PersonalOrderImpl
@@ -30,18 +30,18 @@ public class PersonalOrderDB implements PersonalOrderImpl
 	private static final String FIND_PERSONALORDER_BY_PERSONALORDERID_QUERY = "SELECT * FROM PersonalOrder WHERE personalOrderId = ?";
 
 	private static final String FIND_PERSONALORDERLINES_BY_PERSONALORDERID_QUERY = "SELECT * FROM PersonalOrderLine WHERE personalOrderId = ?";
-	
+
 	private static final String INSERT_PERSONALORDER = "INSERT INTO PersonalOrder (customerAge, customerName, tableOrderId) VALUES (?, ?, ?)";
-	
+
 	private static final String INSERT_PERSONALORDERLINE = "INSERT INTO PersonalOrderLine (additionalPrice, notes, status, personalOrderId, menuItemId) VALUES (?, ?, ?, ?, ?);";
 
 	// PreparedStatement for retrieving PersonalOrder based on the personalOrderId
 	private PreparedStatement statementFindByPersonalOrderId;
 
 	private PreparedStatement statementFindLinesByPersonalOrderId;
-	
+
 	private PreparedStatement statementInsertPersonalOrder;
-	
+
 	private PreparedStatement statementInsertPersonalOrderLine;
 
 	// Constructor
@@ -123,8 +123,8 @@ public class PersonalOrderDB implements PersonalOrderImpl
 	 * 
 	 * @param resultSet the result set containing PersonalOrder data
 	 * @return a PersonalOrder object with the extracted data
-	 * @throws SQLException if accessing the resultSet fails
-	 * @throws DataAccessException 
+	 * @throws SQLException        if accessing the resultSet fails
+	 * @throws DataAccessException
 	 */
 	private PersonalOrder buildPersonalOrderObject(ResultSet resultSet) throws SQLException, DataAccessException
 	{
@@ -133,8 +133,9 @@ public class PersonalOrderDB implements PersonalOrderImpl
 		PersonalOrder personalOrder = new PersonalOrder(tableOrder);
 		personalOrder.setCustomerAge(resultSet.getInt("customerAge"));
 		personalOrder.setCustomerName(resultSet.getString("customerName"));
-		List<PersonalOrderLine> listOfLines = findPersonalOrderLinesByPersonalOrderLineId(resultSet.getInt("personalOrderId"));
-		for (PersonalOrderLine line: listOfLines)
+		List<PersonalOrderLine> listOfLines = findPersonalOrderLinesByPersonalOrderLineId(
+				resultSet.getInt("personalOrderId"));
+		for (PersonalOrderLine line : listOfLines)
 		{
 			personalOrder.addPersonalOrderLine(line);
 		}
@@ -143,17 +144,18 @@ public class PersonalOrderDB implements PersonalOrderImpl
 		return personalOrder;
 	}
 
-	private List<PersonalOrderLine> findPersonalOrderLinesByPersonalOrderLineId(int personalOrderLineId) throws DataAccessException
+	private List<PersonalOrderLine> findPersonalOrderLinesByPersonalOrderLineId(int personalOrderLineId)
+			throws DataAccessException
 	{
 		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
 		List<PersonalOrderLine> lineList = new ArrayList<>();
-		try 
+		try
 		{
 			statementFindLinesByPersonalOrderId = databaseConnection
 					.prepareStatement(FIND_PERSONALORDERLINES_BY_PERSONALORDERID_QUERY);
 			statementFindLinesByPersonalOrderId.setInt(1, personalOrderLineId);
 			ResultSet lineResult = statementFindLinesByPersonalOrderId.executeQuery();
-			while(lineResult.next())
+			while (lineResult.next())
 			{
 				lineList.add(buildPersonalOrderLineObject(lineResult));
 			}
@@ -168,8 +170,8 @@ public class PersonalOrderDB implements PersonalOrderImpl
 	 * 
 	 * @param resultSet the result set containing PersonalOrder data
 	 * @return a PersonalOrder object with the extracted data
-	 * @throws SQLException if accessing the resultSet fails
-	 * @throws DataAccessException 
+	 * @throws SQLException        if accessing the resultSet fails
+	 * @throws DataAccessException
 	 */
 	private PersonalOrderLine buildPersonalOrderLineObject(ResultSet resultSet) throws SQLException, DataAccessException
 	{
@@ -190,22 +192,23 @@ public class PersonalOrderDB implements PersonalOrderImpl
 		{
 			databaseConnection.setAutoCommit(false);
 			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-			statementInsertPersonalOrder = databaseConnection.prepareStatement(INSERT_PERSONALORDER, Statement.RETURN_GENERATED_KEYS);
+			statementInsertPersonalOrder = databaseConnection.prepareStatement(INSERT_PERSONALORDER,
+					Statement.RETURN_GENERATED_KEYS);
 			// Fill customer information
 			statementInsertPersonalOrder.setInt(1, personalOrder.getCustomerAge());
 			statementInsertPersonalOrder.setString(2, personalOrder.getCustomerName());
 			statementInsertPersonalOrder.setInt(3, tableOrderId);
-			
+
 			statementInsertPersonalOrder.executeUpdate();
-			
+
 			ResultSet generatedKey = statementInsertPersonalOrder.getGeneratedKeys();
 			if (generatedKey.next())
 			{
-				//int personalOrderId = generatedKey.getInt("personalOrderId");
+				// int personalOrderId = generatedKey.getInt("personalOrderId");
 				int personalOrderId = generatedKey.getInt(1);
 				insertPersonalOrderLines(personalOrder.getPersonalOrderLines(), personalOrderId);
 			}
-			
+
 			databaseConnection.commit();
 			databaseConnection.setAutoCommit(true);
 		} catch (SQLException e)
@@ -215,17 +218,20 @@ public class PersonalOrderDB implements PersonalOrderImpl
 			{
 				databaseConnection.rollback();
 				databaseConnection.setAutoCommit(true);
-			} catch (SQLException rollbackException){}
+			} catch (SQLException rollbackException)
+			{
+			}
 		}
-		
+
 		return personalOrder;
 	}
-	
-	private void insertPersonalOrderLines(List<PersonalOrderLine> personalOrderLines, int personalOrderId) throws SQLException
+
+	private void insertPersonalOrderLines(List<PersonalOrderLine> personalOrderLines, int personalOrderId)
+			throws SQLException
 	{
 		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
 		statementInsertPersonalOrderLine = databaseConnection.prepareStatement(INSERT_PERSONALORDERLINE);
-		for (PersonalOrderLine line: personalOrderLines)
+		for (PersonalOrderLine line : personalOrderLines)
 		{
 			// Fills in the values for given PersonalOrderLine
 			statementInsertPersonalOrderLine.setDouble(1, line.getAdditionalPrice());
