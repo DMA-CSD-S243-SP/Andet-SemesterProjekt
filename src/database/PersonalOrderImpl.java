@@ -1,9 +1,6 @@
 package database;
 
-import java.sql.SQLException;
-
 import model.PersonalOrder;
-import model.PersonalOrderLine;
 
 /**
  * An interface that defines a contract for accessing PersonalOrderImpl,

@@ -2,8 +2,6 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.awt.MenuItem;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +11,6 @@ import model.MainCourse;
 import model.PersonalOrderLine;
 import model.PotatoDish;
 import model.SelectionOption;
-import model.SelfServiceBar;
 
 /**
  * Unit test on the PersonalOrderLine class

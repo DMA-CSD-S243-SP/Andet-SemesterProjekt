@@ -10,8 +10,6 @@ import java.util.List;
 import model.AvailabilityTracker;
 import model.MenuCard;
 import model.MenuItem;
-import model.MultipleChoiceMenu;
-import model.SelectionOption;
 
 /**
  * This class is responsible for accessing and managing MenuCards and 

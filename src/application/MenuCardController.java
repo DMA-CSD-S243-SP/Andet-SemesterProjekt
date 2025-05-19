@@ -7,7 +7,6 @@ import database.DataAccessException;
 import database.MenuCardDB;
 import database.MenuCardImpl;
 import model.MenuCard;
-import model.Restaurant;
 
 /**
  * a controller class that bridges the logic from the model layer and the user interface from the gui layer

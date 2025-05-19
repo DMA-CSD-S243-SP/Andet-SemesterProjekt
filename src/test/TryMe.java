@@ -11,7 +11,6 @@ import model.Discount;
 import model.Drink;
 import model.EnumBarType;
 import model.MainCourse;
-import model.MenuItem;
 import model.PotatoDish;
 import model.SelectionOption;
 import model.SelfServiceBar;

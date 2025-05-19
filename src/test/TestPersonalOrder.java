@@ -10,7 +10,6 @@ import model.MainCourse;
 import model.PersonalOrder;
 import model.PersonalOrderLine;
 import model.SelfServiceBar;
-import model.SideDish;
 
 /**
  * this class tests the functionality of personalOrder 
