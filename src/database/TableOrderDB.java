@@ -1,19 +1,14 @@
 package database;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.AddOnOption;
 import model.TableOrder;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 /**
  * This class is responsible for accessing and managing 
  * TabelOrder objects stored in a database.
@@ -42,10 +37,10 @@ public class TableOrderDB implements TableOrderImpl
 	
 	
 	// Selects a row from the table menuItem in the database, based on the given tableOrderId
-	private static final String UPDATE_TABLEORDER_QUERY = "UPDATE TableOrder SET timeOfArrival = ?, isTableOrderClosed = ?, paymentType = ?, totalTableOrderPrice = ?, totalAmountPaid = ?, isSentToKitchen = ?, isRequestingService = ?, orderPreparationTime = ? WHERE tableId = ?";
+	private static final String UPDATE_TABLEORDER_QUERY = "UPDATE TableOrder SET timeOfArrival = ?, isTableOrderClosed = ?, paymentType = ?, totalTableOrderPrice = ?, totalAmountPaid = ?, isSentToKitchen = ?, isRequestingService = ?, orderPreparationTime = ? WHERE tableOrderId = ?";
 	
 	// PreparedStatement for inserting a TableOrder
-	private PreparedStatement statementUpdateTabeOrder;
+	private PreparedStatement statementUpdateTableOrder;
 	
 	
 	// Selects every row from the TableOrder where 
@@ -64,7 +59,7 @@ public class TableOrderDB implements TableOrderImpl
 		statementFindTableOrderByTableOrderId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_TABLEORDER_BY_TABLEORDERID_QUERY);
 		
 		//Prepares the SQL statement for updating TableOrder for the matching tableOrderId
-		statementUpdateTabeOrder = DataBaseConnection.getInstance().getConnection().prepareStatement(UPDATE_TABLEORDER_QUERY);
+		statementUpdateTableOrder = DataBaseConnection.getInstance().getConnection().prepareStatement(UPDATE_TABLEORDER_QUERY);
 		
 		//Prepares the SQL statement for retrieving all TableOrder where isSentToKitchen is true and isTableClosed is false
 		statementFindVisibleToKitchenTableOrders = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_VISIBLE_TO_KITCHEN_TABLE_ORDERS_QUERY);
@@ -223,51 +218,55 @@ public class TableOrderDB implements TableOrderImpl
 
 
 	@Override
-	public void updateTableOrder(TableOrder tableOrder) throws DataAccessException {
-		
-		// Gets a connection to the database
-		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
+	public void updateTableOrder(TableOrder tableOrder) throws DataAccessException 
+	{
+	    
+	    // Gets a connection to the database
+	    Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
 
-		try 
-		{			
-			databaseConnection.setAutoCommit(false);
+	    try 
+	    {
+	        databaseConnection.setAutoCommit(false);
 
-			// Set transaction isolation level
-			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+	        // Set transaction isolation level
+	        databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 
-			// Set values in prepared statement
-			statementUpdateTabeOrder.setTimestamp(1, Timestamp.valueOf(tableOrder.getTimeOfArrival()));
-			statementUpdateTabeOrder.setBoolean(2, tableOrder.isTableOrderClosed());
-			statementUpdateTabeOrder.setString(3, tableOrder.getPaymentType());
-			statementUpdateTabeOrder.setDouble(4, tableOrder.calculateTotalTableOrderPrice());
-			statementUpdateTabeOrder.setDouble(5, tableOrder.getTotalAmountPaid());
-			statementUpdateTabeOrder.setBoolean(6, tableOrder.isSentToKitchen());
-			statementUpdateTabeOrder.setBoolean(7, tableOrder.isRequestingService());
-			statementUpdateTabeOrder.setInt(8, tableOrder.getOrderPreparationTime());
+	        // Set values in the prepared statement
+	        statementUpdateTableOrder.setTimestamp(1, java.sql.Timestamp.valueOf(tableOrder.getTimeOfArrival()));
+	        statementUpdateTableOrder.setBoolean(2, tableOrder.isTableOrderClosed());
+	        statementUpdateTableOrder.setString(3, tableOrder.getPaymentType());
+	        statementUpdateTableOrder.setDouble(4, tableOrder.calculateTotalTableOrderPrice());
+	        statementUpdateTableOrder.setDouble(5, tableOrder.getTotalAmountPaid());
+	        statementUpdateTableOrder.setBoolean(6, tableOrder.isSentToKitchen());
+	        statementUpdateTableOrder.setBoolean(7, tableOrder.isRequestingService());
+	        statementUpdateTableOrder.setInt(8, tableOrder.getOrderPreparationTime());
+	        statementUpdateTableOrder.setInt(9, tableOrder.getTableOrderId()); 
 
-			statementUpdateTabeOrder.setInt(9, tableOrder.getTableOrderId());
+	        // Execute update
+	        statementUpdateTableOrder.executeUpdate();
 
-			// Commit changes
-			databaseConnection.commit();
-			databaseConnection.setAutoCommit(true);
+	        // Commit changes
+	        databaseConnection.commit();
+	        databaseConnection.setAutoCommit(true);
 
-		} 
-		catch (SQLException exception) 
-		{
-			try
-			{
-				databaseConnection.rollback();
-				databaseConnection.setAutoCommit(true);
-			}
-			
-			catch (SQLException exception2) 
-			{
-				throw new DataAccessException("Rollback failed after updateTableOrder error", exception2);
-			}
+	    } 
+	    catch (SQLException exception) 
+	    {
+	        try 
+	        {
+	            databaseConnection.rollback();
+	            databaseConnection.setAutoCommit(true);
+	        } 
+	        
+	        catch (SQLException rollbackEx) 
+	        {
+	            throw new DataAccessException("Rollback failed after updateTableOrder error", rollbackEx);
+	        }
 
-			throw new DataAccessException("Failed to update TableOrder in database", exception);
-		}
+	        throw new DataAccessException("Failed to update TableOrder in database", exception);
+	    }
 	}
+
 
 
 
