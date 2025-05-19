@@ -44,4 +44,8 @@ public interface TableOrderImpl
 	 * @throws SQLException 
      */
 	TableOrder findTableOrderByTableOrderId(int tableOrderId) throws DataAccessException, SQLException;
+	
+	void insertTableOrder(TableOrder tableOrder);
+	
+	List<TableOrder> findAllVisibleToKitchenTableOrders();
 }
