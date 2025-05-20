@@ -107,7 +107,7 @@ public class ViewGuestDiscountSelection extends JFrame
 			btnBack.addActionListener(event ->
 			{
 				// Create and configure the new frame (you can replace this with your actual destination window)
-				ViewGuestTableInformation previouslyOpenFrameView = new ViewGuestTableInformation();
+				ViewGuestCustomerInformation previouslyOpenFrameView = new ViewGuestCustomerInformation();
 				
 				// Sets the visibility to true turning the previous view / window visible
 				previouslyOpenFrameView.setVisible(true);
