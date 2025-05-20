@@ -50,7 +50,7 @@ public class ViewGuestCustomerInformation extends JFrame
 		// Changes the frame / view's theme to the universal bone's brand theme
 		// - 	OBS! Since the heading and instruction text utilizes HTML for structuring
 		// 		you must use the <br> tag to break up the text instead of \n 
-		frameTheme.applyGeneralVisuals("KUNDEINFORMATION", this, "Udfyld Kundeinformation", "Udfyld informationsboksene nedenfor med de<br> påkrævede personlige oplysninger<br>  Fremvisning af gyldig legimation kan påkræves.");
+		frameTheme.applyGeneralVisuals("KUNDEINFORMATION", this, "Udfyld Kundeinformation", "Udfyld informationsboksene nedenfor med de<br> påkrævede personlige oplysninger<br>  Fremvisning af legimation kan påkræves.");
 		
 		// Retrieves the navigationPanel component from the frameTheme
 		navigationPanel = frameTheme.getNavigationPanel();
@@ -149,10 +149,10 @@ public class ViewGuestCustomerInformation extends JFrame
 		btnContinue.addActionListener(event ->
 		{
 			// Creates the new frame that should be opened when pressing the button
-//			ViewGuestCustomerInformation nextView = new ViewGuestCustomerInformation();
+			ViewGuestDiscountSelection nextView = new ViewGuestDiscountSelection();
 
 			// Sets the visibility to true turning the previous view / window visible
-//			nextView.setVisible(true);
+			nextView.setVisible(true);
 			
 			// Closes the current frame/window
 			this.dispose();
