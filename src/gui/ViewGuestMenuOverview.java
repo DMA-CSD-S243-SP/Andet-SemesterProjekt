@@ -14,7 +14,7 @@ import javax.swing.JPanel;
  * 
  * 
  * @author Christoffer Søndergaard
- * @version 20/05/2025 - 14:21
+ * @version 20/05/2025 - 14:26
  */	
 public class ViewGuestMenuOverview extends JFrame
 {
@@ -71,7 +71,7 @@ public class ViewGuestMenuOverview extends JFrame
 		//   SHOULD BE INSERTED IN   //
 		///////////////////////////////
 		
-		
+		/*
 		// Creates a customized input field object with a placeholder text accepting only numbers in it
 		ComponentGuestInputField inputFieldFirstName = new ComponentGuestInputField("Fornavn", "onlyNumbers");
 		
@@ -86,7 +86,7 @@ public class ViewGuestMenuOverview extends JFrame
 
 		// Adds the age input field to the primary content panel
 		frameTheme.getPrimaryContentPanel().add(inputFieldAge);
-		
+		*/
 		
 		
 		////////////////////////////////
@@ -140,13 +140,19 @@ public class ViewGuestMenuOverview extends JFrame
 		
 		
 		// Creates a customized button component with the supplied information
-		ComponentGuestButtonContinue btnContinue = new ComponentGuestButtonContinue("Fortsæt", bottomPanel);
+		ComponentGuestButtonContinue btnAdultMenu = new ComponentGuestButtonContinue("Voksenmenu", bottomPanel);
 		
 		// Adds the customized button to the panel
-		bottomPanel.add(btnContinue);
+		bottomPanel.add(btnAdultMenu);
 	
+		// Creates a customized button component with the supplied information
+		ComponentGuestButtonContinue btnChildMenu = new ComponentGuestButtonContinue("Børnemenu", bottomPanel);
+		
+		// Adds the customized button to the panel
+		bottomPanel.add(btnChildMenu);
+		
 		// Adds an action listener for when the button is clicked
-		btnContinue.addActionListener(event ->
+		btnAdultMenu.addActionListener(event ->
 		{
 			// Creates the new frame that should be opened when pressing the button
 			ViewGuestMenuAdult nextView = new ViewGuestMenuAdult();
