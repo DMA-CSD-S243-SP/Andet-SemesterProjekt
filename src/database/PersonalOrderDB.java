@@ -221,6 +221,7 @@ public class PersonalOrderDB implements PersonalOrderImpl
 			} catch (SQLException rollbackException)
 			{
 			}
+			throw new DataAccessException("Failed to insert PersonalOrder", e);
 		}
 
 		return personalOrder;
