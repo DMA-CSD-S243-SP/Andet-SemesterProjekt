@@ -29,7 +29,7 @@ public class TestTableOrderDB
     @Test
     public void testUpdateTableOrder() throws Exception {
         // Step 1: Create a TableOrder object with known tableId that already exists
-        TableOrder tableOrder = new TableOrder(1); 
+        TableOrder tableOrder = new TableOrder(100009); 
 
         // Step 2: Set updated values
         tableOrder.setTimeOfArrival(LocalDateTime.now());
@@ -45,13 +45,13 @@ public class TestTableOrderDB
         tableOrderDB.updateTableOrder(tableOrder);
 
         // Step 4: Retrieve updated object
-        TableOrder updated = tableOrderDB.findTableOrderByTableOrderId(1);
+        TableOrder updated = tableOrderDB.findTableOrderByTableOrderId(100009);
 
         // Step 5: Assert changes
         assertNotNull(updated);
         assertEquals("CARD", updated.getPaymentType());
         assertTrue(updated.isTableOrderClosed());
-        assertEquals(200.0, updated.getTotalAmountPaid());
+        assertEquals(200, updated.getTotalAmountPaid());
         assertTrue(updated.isSentToKitchen());
         assertFalse(updated.isRequestingService());
         assertEquals(15, updated.getOrderPreparationTime());

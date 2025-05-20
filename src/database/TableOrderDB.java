@@ -30,7 +30,7 @@ public class TableOrderDB implements TableOrderImpl
 	
 	
 	// Selects a row from the table menuItem in the database, based on the given tableOrderId
-	private static final String FIND_TABLEORDER_BY_TABLEORDERID_QUERY = "SELECT * FROM TableOrder WHERE TableOrderId = ?";
+	private static final String FIND_TABLEORDER_BY_TABLEORDERID_QUERY = "SELECT * FROM TableOrder WHERE tableOrderId = ?";
 	
 	// PreparedStatement for retrieving a TableOrder based on the tableOrderId
 	private PreparedStatement statementFindTableOrderByTableOrderId;
@@ -212,6 +212,14 @@ public class TableOrderDB implements TableOrderImpl
 		TableOrder tableOrder = new TableOrder(
 				resultSet.getInt("tableOrderId")
 				);		
+		
+		tableOrder.setTableOrderClosed(resultSet.getBoolean("isTableOrderClosed"));
+		tableOrder.setPaymentType(resultSet.getString("paymentType"));
+		tableOrder.setTotalAmountPaid(resultSet.getDouble("totalAmountPaid"));
+		tableOrder.setSentToKitchen(resultSet.getBoolean("isSentToKitchen"));
+		tableOrder.setRequestingService(resultSet.getBoolean("isRequestingService"));
+		tableOrder.setOrderPreparationTime(resultSet.getInt("orderPreparationTime"));
+				
 
 		return tableOrder;	
 	}
