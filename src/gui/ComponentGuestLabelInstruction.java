@@ -10,6 +10,14 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 
+/**
+ * TODO: Write a thorough description of this class and also java docs
+ * for the constructor and the class' methods
+ * 
+ * 
+ * @author Christoffer Søndergaard
+ * @version 20/05/2025 - 13:25
+ */
 public class ComponentGuestLabelInstruction extends JLabel
 {
 	public ComponentGuestLabelInstruction(String instructionText, JPanel attachedPanel)
