@@ -99,4 +99,9 @@ public class ComponentGuestComboBox extends JPanel
 	{
 		return (String) comboBox.getSelectedItem();
 	}
+	
+	public int getIndex()
+	{
+		return comboBox.getSelectedIndex();
+	}
 }
