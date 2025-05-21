@@ -142,6 +142,9 @@ public class ComponentGuestErrorDialog extends JDialog
 
         // Adds the specified amount of vertical spacing
         mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        
+        // Sets the Jdialog to be visible
+        this.setVisible(true);
     }
     
     
