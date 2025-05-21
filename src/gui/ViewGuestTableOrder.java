@@ -2,11 +2,24 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import database.DataAccessException;
+import database.PersonalOrderDB;
+import database.PersonalOrderImpl;
+import database.TableOrderDB;
+import database.TableOrderImpl;
+import model.PersonalOrder;
+import model.TableOrder;
 
 
 /**
@@ -14,8 +27,8 @@ import javax.swing.JPanel;
  * for the constructor and the class' methods
  * 
  * 
- * @author Christoffer Søndergaard
- * @version 21/05/2025 - 02:11
+ * @author Christoffer Søndergaard & Anders Trankjær
+ * @version 21/05/2025 - 14:30
  */	
 public class ViewGuestTableOrder extends JFrame
 {
@@ -33,16 +46,53 @@ public class ViewGuestTableOrder extends JFrame
 	// Determines whether or not the 'Anmod om service' button is enabled in the navigational panel
 	boolean isServiceEnabled = true;
 	
+	private List<PersonalOrder> personalOrderList;
+	private TableOrder currentTableOrder;
+	private TableOrderImpl daoTO;
+	private PersonalOrderImpl daoPO;
+	
 	
 	/**
 	 * Create the frame.
 	 */
 	public ViewGuestTableOrder()
 	{
+		personalOrderList = new ArrayList<PersonalOrder>();
+		code();
 		initGUI();
 	}
 	
 	
+	private void code() {
+		
+		//tableOrder code
+		try {
+			daoTO = new TableOrderDB();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			currentTableOrder = daoTO.findTableOrderByTableOrderId(100009);
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		currentTableOrder.setTimeOfArrival(LocalDateTime.of(LocalDate.now(), LocalTime.of(16, 0)));
+		
+		//personalOrder code
+		daoPO = new PersonalOrderDB();
+		try {
+			personalOrderList.addAll(daoPO.findPersonalOrderBytableOrderId(currentTableOrder.getTableOrderId()));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+
 	private void initGUI()
 	{
 		// Creates a ComponentFrameThemeGuest component
@@ -89,45 +139,18 @@ public class ViewGuestTableOrder extends JFrame
 		frameTheme.getPrimaryContentPanel().add(inputFieldAge);
 		*/
 		
-		
-		
-		
-		// Creates a list of menu items selected by the customer
-		List<String> sanneItems = List.of(
-		    "Spareribs, Lille.",
-		    "Bagt Kartoffel m. Hvidløgssmør",
-		    "Sodavand, Refill"
-		);
+		for (PersonalOrder pO : personalOrderList) 
+		{
+			// adds the name of the customer whoes personalOrder it is 
+			primaryContentPanel.add(new ComponentGuestOrderSummary(pO.getCustomerName(), pO.getTotalPersonalOrderEveningPrice(), pO.getNameOfItemsInList()));
 
-		// Adds vertical spacing above the item
-		primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 25)));
-
-		// Adds the panel that holds the order information
-		primaryContentPanel.add(new ComponentGuestOrderSummary("Sanne", 129, sanneItems));
-
-		// Adds vertical spacing before the next order
-		primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 25)));
-
-		
-		
-		// Creates a list of menu items selected by the customer
-		List<String> borgeItems = List.of(
-		    "Bag Kartoffel m. Creme Fraiche",
-		    "Softice Ad Libitum",
-		    "Øl, Refill"
-		);
-		
-		// Adds vertical spacing above the item
-		primaryContentPanel.add(new ComponentGuestOrderSummary("Børge", 239, borgeItems));
-
-		// Adds the panel that holds the order information
-		primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 45)));
-
-		// Adds vertical spacing before the next order
-		primaryContentPanel.add(new ComponentGuestOrderTotalPrice("Total Pris:", 239));
-		
-		
-		
+			// Adds the panel that holds the order information
+			primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 45)));
+			
+			currentTableOrder.addPersonalOrder(pO);
+		}
+			// Adds vertical spacing before the next order
+			primaryContentPanel.add(new ComponentGuestOrderTotalPrice("Total Pris:", currentTableOrder.calculateTotalTableOrderPrice()));
 		
 		
 		////////////////////////////////
