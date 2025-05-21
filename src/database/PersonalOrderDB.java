@@ -35,7 +35,7 @@ public class PersonalOrderDB implements PersonalOrderImpl
 
 	private static final String INSERT_PERSONALORDERLINE = "INSERT INTO PersonalOrderLine (additionalPrice, notes, status, personalOrderId, menuItemId) VALUES (?, ?, ?, ?, ?);";
 	
-	private static final String FIND_PERSONALORDERS_BY_TABLEORDERID_QUERY = "select * from PersonalOrder where tableOrderId = ?";
+	private static final String FIND_PERSONALORDERS_BY_TABLEORDERID_QUERY = "SELECT * FROM PersonalOrder WHERE tableOrderId = ?";
 
 	// PreparedStatement for retrieving PersonalOrder based on the personalOrderId
 	private PreparedStatement statementFindByPersonalOrderId;
@@ -263,6 +263,9 @@ public class PersonalOrderDB implements PersonalOrderImpl
 					
 					// Prepare a SQL statement to retrieve all tableOrders
 					statementFindByTableOrderId = databaseConnection.prepareStatement(FIND_PERSONALORDERS_BY_TABLEORDERID_QUERY);
+					
+					
+					statementFindByTableOrderId.setInt(1, TableOrderId);
 					
 					// Executes the prepared statement and stores the result set
 					ResultSet resultSetPersonalOrder = statementFindByTableOrderId.executeQuery();
