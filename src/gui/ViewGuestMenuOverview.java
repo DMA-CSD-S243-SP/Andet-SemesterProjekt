@@ -151,6 +151,7 @@ public class ViewGuestMenuOverview extends JFrame
 		btnChildMenu.addActionListener(event ->
 		{
 			// TODO: Add functionality
+			btnChildMenu.setEnabled(false);
 			System.out.println("This feature has yet to be implemented.");
 		});
 		
@@ -164,14 +165,24 @@ public class ViewGuestMenuOverview extends JFrame
 		// Adds an action listener for when the button is clicked
 		btnAdultMenu.addActionListener(event ->
 		{
-			// Creates the new frame that should be opened when pressing the button
-			ViewGuestMenuAdult nextView = new ViewGuestMenuAdult();
+			try
+			{
+				btnAdultMenu.setEnabled(false);
+				// Creates the new frame that should be opened when pressing the button
+				ViewGuestMenuAdult nextView = new ViewGuestMenuAdult();
 
-			// Sets the visibility to true turning the previous view / window visible
-			nextView.setVisible(true);
-			
-			// Closes the current frame/window
-			this.dispose();
+				// Sets the visibility to true turning the previous view / window visible
+				nextView.setVisible(true);
+				
+				// Closes the current frame/window
+				this.dispose();
+			} catch (Exception e)
+			{
+				e.printStackTrace();
+			} finally
+			{
+				btnAdultMenu.setEnabled(true);
+			}
 		});
 	}
 }
