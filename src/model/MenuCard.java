@@ -86,4 +86,9 @@ public class MenuCard
 		 }
 		 return menuItems;
 	 }
+	 
+	 public String getName()
+	 {
+		 return name;
+	 }
 }
