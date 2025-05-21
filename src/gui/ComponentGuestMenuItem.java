@@ -17,7 +17,7 @@ public class ComponentGuestMenuItem extends JPanel
 {
 	private JButton btnAdd;
 
-	public ComponentGuestMenuItem(model.MenuItem menuItem)
+	public ComponentGuestMenuItem(model.MainCourse menuItem)
 	{
 		// Set layout manager to BorderLayout for this component
 		this.setLayout(new BorderLayout());
@@ -142,6 +142,8 @@ public class ComponentGuestMenuItem extends JPanel
 
 		// Add bottom padding to separate from other components
 		this.setBorder(new EmptyBorder(0, 0, 20, 0));
+		
+		btnAdd.addActionListener(x -> UtilityGuestInformation.getInstance().enterMainCourse(menuItem));
 	}
 
 	/**
