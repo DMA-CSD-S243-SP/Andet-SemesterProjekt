@@ -7,32 +7,36 @@ import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
+ * TODO: Write a thorough description of this class and also java docs for the
+ * constructor and the class' methods
  * 
  * 
  * @author Christoffer Søndergaard
  * @version 20/05/2025 - 13:45
- */	
+ */
 public class ViewGuestTableInformation extends JFrame
 {
-	// Added in order to suppress the warning that appears in serializable classes where no serialVersionUID is specified
+	// Added in order to suppress the warning that appears in serializable classes
+	// where no serialVersionUID is specified
 	private static final long serialVersionUID = 1L;
-	
-	// The Jframes that will be retrieved from the guest frame theme and used for manipulating the contents
+
+	// The Jframes that will be retrieved from the guest frame theme and used for
+	// manipulating the contents
 	private JPanel navigationPanel;
 	private JPanel primaryContentPanel;
 	private JPanel bottomPanel;
-	
-	// Determines whether or not this frame should have the "tilbage" button enabled in the navigational panel
+
+	// Determines whether or not this frame should have the "tilbage" button enabled
+	// in the navigational panel
 	boolean isPreviousViewEnabled = false;
-	
-	// Determines whether or not the 'Anmod om service' button is enabled in the navigational panel
+
+	// Determines whether or not the 'Anmod om service' button is enabled in the
+	// navigational panel
 	boolean isServiceEnabled = false;
-	
-	
+
+	ComponentGuestInputField inputField;
+
 	/**
 	 * Create the frame.
 	 */
@@ -40,8 +44,7 @@ public class ViewGuestTableInformation extends JFrame
 	{
 		initGUI();
 	}
-	
-	
+
 	private void initGUI()
 	{
 		// Creates a ComponentFrameThemeGuest component
@@ -72,7 +75,7 @@ public class ViewGuestTableInformation extends JFrame
 		///////////////////////////////
 		
 		
-		ComponentGuestInputField inputField = new ComponentGuestInputField("Bordnummer", "onlyNumbers");
+		inputField = new ComponentGuestInputField("Bordnummer", "onlyNumbers");
 		frameTheme.getPrimaryContentPanel().add(inputField);
 		
 		
@@ -103,14 +106,25 @@ public class ViewGuestTableInformation extends JFrame
 		// Adds an action listener for when the button is clicked
 		btnContinue.addActionListener(event ->
 		{
-			// Creates the new frame that should be opened when pressing the button
-			ViewGuestCustomerInformation nextView = new ViewGuestCustomerInformation();
+			try
+			{
+				String tableCode = inputField.getText();
+				
+				UtilityGuestInformation info = UtilityGuestInformation.getInstance();
+				info.getPersonalOrderController().enterTableCode(tableCode.substring(3,7), tableCode.substring(0,3));
+				// Creates the new frame that should be opened when pressing the button
+				ViewGuestCustomerInformation nextView = new ViewGuestCustomerInformation();
 
-			// Sets the visibility to true turning the previous view / window visible
-			nextView.setVisible(true);
+				// Sets the visibility to true turning the previous view / window visible
+				nextView.setVisible(true);
+				
+				// Closes the current frame/window
+				this.dispose();
+			} catch (Exception e)
+			{
+				e.printStackTrace();
+			}
 			
-			// Closes the current frame/window
-			this.dispose();
 		});
 	}
 }
