@@ -59,6 +59,9 @@ public class ComponentGuestCheckBox extends JCheckBox
 
 		// Adds the custom checkbox component to the panel
 		panelStyleAdjusting.add(this);
+		
+		// Adds additional vertical space between each of the checkboxes
+		panelStyleAdjusting.add(Box.createRigidArea(new Dimension(0, 10)));
 
 		return panelStyleAdjusting;
 	}

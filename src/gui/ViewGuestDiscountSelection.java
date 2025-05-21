@@ -1,9 +1,11 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -71,22 +73,26 @@ public class ViewGuestDiscountSelection extends JFrame
 		//   SHOULD BE INSERTED IN   //
 		///////////////////////////////
 		
-/*
-		// Creates a customized input field object with a placeholder text accepting only numbers in it
-		ComponentGuestInputField inputFieldFirstName = new ComponentGuestInputField("Fornavn", "onlyNumbers");
+		// Add the options for the various checkboxes
+		String[] checkboxOptionList = 
+		{
+		    "Jeg er studerende",
+		    "Jeg er pensionist",
+		    "Jeg er i hjemmeværnet",
+		    "Jeg er blevet konfirmand i år",
+		    "Jeg har fødselsdag i dag"
+		};
 		
-		// Adds the first name input field to the primary content panel
-		frameTheme.getPrimaryContentPanel().add(inputFieldFirstName);
-		
-		// Adds some spacing between the component above and below
-		primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-
-		// Creates a customized input field object with a placeholder text accepting only letters in it
-		ComponentGuestInputField inputFieldAge = new ComponentGuestInputField("Alder i antal år", "onlyLetters");
-
-		// Adds the age input field to the primary content panel
-		frameTheme.getPrimaryContentPanel().add(inputFieldAge);
-*/	
+		// Iterates through the list of checkbox options using a for each loop
+		for (String checkboxText : checkboxOptionList)
+		{
+			// Creates a new custom checkbox object
+		    ComponentGuestCheckBox checkBox = new ComponentGuestCheckBox(checkboxText);
+		    
+		    // Applies an additional styling to the checkbox in the form of a wrapper, in order 
+		    // to be possible to add in to the UI without disrupting the flow
+		    primaryContentPanel.add(checkBox.applyWrapperStyling());
+		}
 		
 		
 		////////////////////////////////
