@@ -47,12 +47,6 @@ class TestPersonalOrderline
 		
 	}
 
-	@AfterEach
-	void tearDown() 
-	//throws Exception
-	{
-		System.out.println("tearDown(Test finished.\\n)");
-	}
 	
 	@Test
 	void testGetMenuItemWhereTheResultIsPotatoDish()
