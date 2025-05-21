@@ -281,4 +281,9 @@ public class TableOrder
 	{
 		return orderPreparationTime;
 	}
+	
+	public double getTotalTableOrderPrice()
+	{
+		return totalTableOrderPrice;
+	}
 }
