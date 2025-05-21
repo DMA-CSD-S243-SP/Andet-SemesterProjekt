@@ -29,6 +29,7 @@ public class PersonalOrderController
 	private PersonalOrder personalOrder; 
 	private Restaurant restaurant;
 	private TableOrder tableOrder;
+	private Table table;
 	
 	//Line: Attributes added by Line
 	private TableController tableController;
@@ -41,9 +42,7 @@ public class PersonalOrderController
 		// Creates a controller
 		tableController = new TableController();
 		menuCardController = new MenuCardController();
-		
-		personalOrder = new PersonalOrder(null);
-		restaurant = new Restaurant(null, null, null);
+
 		personalOrderDB = new PersonalOrderDB();
 	}
 	
@@ -66,7 +65,7 @@ public class PersonalOrderController
 		try
 		{
 			//Assigns to tableController instance to find a table by the given tableCode
-			Table table = tableController.findTableByCode(tableNumber, restaurantCode);
+			table = tableController.findTableByCode(tableNumber, restaurantCode);
 			
 			if (table == null) 
 			{
@@ -74,6 +73,7 @@ public class PersonalOrderController
 	        }
 			
 			this.tableOrder = tableController.getCurrentTableOrder(table);
+			personalOrder = new PersonalOrder(tableOrder);
 			return table;
 		} 
 		
@@ -107,10 +107,9 @@ public class PersonalOrderController
 			//Adds all the discount object to personalOrder
 			personalOrder.addAllDiscounts(listOfDiscounts);	
 			
-			String currentRestaurant = restaurant.getRestaurantCode();
 			
 			//returns all the avalible menuCards for this restaurant by the given restaurantCode
-			return menuCardController.findMenuCardsByRestaurantCode(currentRestaurant);
+			return menuCardController.findMenuCardsByRestaurantCode(table.getTableCode().substring(0,3));
 			
 		} catch (Exception exception)
 		{
