@@ -85,6 +85,7 @@ public class ViewGuestMenuAdult extends JFrame
 			ComponentGuestMenuItem menuItemBox = new ComponentGuestMenuItem(mainCourse);
 			primaryContentPanel.add(menuItemBox);
 			primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+			menuItemBox.getAddButton().addActionListener(x -> openUniversalMainMenu());
 		}
 		
 		
@@ -179,5 +180,17 @@ public class ViewGuestMenuAdult extends JFrame
         //          contents without spending too much time on adjusting them, this 
         //         would be added to the backlog and revisited in a later iteration.
         setSize(580, 822);
+	}
+	
+	private void openUniversalMainMenu()
+	{
+		// Creates the new frame that should be opened when pressing the button
+					JFrame nextView = new ViewGuestUniversalMainMenu();
+
+					// Sets the visibility to true turning the previous view / window visible
+					nextView.setVisible(true);
+					
+					// Closes the current frame/window
+					this.dispose();
 	}
 }

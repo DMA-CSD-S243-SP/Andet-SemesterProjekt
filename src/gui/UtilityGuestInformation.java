@@ -21,6 +21,7 @@ public class UtilityGuestInformation
 	private TableOrder tableOrder;
 	private List<Discount> listOfDiscounts;
 	private List<MenuCard> listOfMenuCards;
+	private MainCourse mainCourse;
 
 	private UtilityGuestInformation()
 	{
@@ -119,5 +120,11 @@ public class UtilityGuestInformation
 	public void enterMainCourse(MainCourse mainCourse)
 	{
 		personalOrderController.enterMainCourse(mainCourse);
+		this.mainCourse = mainCourse;
+	}
+	
+	public MainCourse getMainCourse()
+	{
+		return mainCourse;
 	}
 }

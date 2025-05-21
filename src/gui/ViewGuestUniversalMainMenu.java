@@ -2,10 +2,17 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Box;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import model.MainCourse;
+import model.MenuCard;
+import model.PotatoDish;
 
 
 /**
@@ -71,9 +78,18 @@ public class ViewGuestUniversalMainMenu extends JFrame
 		//   SHOULD BE INSERTED IN   //
 		///////////////////////////////
 		
+		MenuCard menu = UtilityGuestInformation.getInstance().getAdultMenu();
+		List<PotatoDish> potatoDishes = UtilityGuestInformation.getInstance().getPotatoDishes(menu);
+		MainCourse mainCourse = UtilityGuestInformation.getInstance().getMainCourse();
 		
-		
-		
+		List<String> potatoStrings = new ArrayList<>();
+		for (PotatoDish potato: potatoDishes)
+		{
+			potatoStrings.add(potato.getName());
+		}
+		ComponentGuestComboBox potatoCombo = new ComponentGuestComboBox("Vælg kartoffel tilbehør", potatoStrings);
+		potatoCombo.setVisible(true);
+		primaryContentPanel.add(potatoCombo);
 		
 		
 		
