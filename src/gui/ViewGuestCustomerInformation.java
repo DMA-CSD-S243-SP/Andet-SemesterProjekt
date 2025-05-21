@@ -136,6 +136,7 @@ public class ViewGuestCustomerInformation extends JFrame
 			navigationPanel.add(btnRequestService, BorderLayout.EAST);
 		}
 		
+		
 
 		//////////////////////////////
 		// - Bottom Panel Buttons - //
@@ -152,21 +153,61 @@ public class ViewGuestCustomerInformation extends JFrame
 		btnContinue.addActionListener(event ->
 		{
 			try
-			{	
+			{
+				// Temporarily disables the button to show something is happening and
+				// also to prevent user spamming the database
 				btnContinue.setEnabled(false);
-				String name = inputFieldFirstName.getText().strip();
-				int age = Integer.valueOf(inputFieldAge.getText());
-				if (name.isEmpty())
+				
+				// Retrieves the name inputted name from the input field
+				String firstName = inputFieldFirstName.getText().strip();
+				
+				// If the inputted name is empty then execute this section
+				if (firstName.isEmpty())
 				{
+					// Creates a dialog box, with the "Ok" option, containing a specific and detailed error message
+					new ComponentGuestErrorDialog(this, 
+							"Følgende er ikke udfyldt korrekt:",
+							"Fornavn",
+							"Feltet skal have indhold."
+					);
+					
 					throw new IllegalArgumentException("A name must be filled in");
 				}
+				
+				// If the inputted name is longer than 30 letters then execute this section
+				else if (firstName.length() > 30)
+				{
+					// Creates a dialog box, with the "Ok" option, containing a specific and detailed error message
+					new ComponentGuestErrorDialog(this, 
+							"Følgende er ikke udfyldt korrekt:",
+							"Fornavn",
+							"Må maks indeholde 30 tegn."
+					);
+				}
+				
+				// Retrieves the inputted integer from the input field
+				int age = Integer.valueOf(inputFieldAge.getText());
+				
+				// If the age input is above 200 or below 0 then execute this section
 				if (age > 200 || age < 0)
 				{
+					// Creates a dialog box, with the "Ok" option, containing a specific and detailed error message
+					new ComponentGuestErrorDialog(this, 
+							"Følgende er ikke udfyldt korrekt:",
+							"Alder",
+							"Alderen skal være over 0 og under 200."
+					);
+					
 					throw new IllegalArgumentException("Age can't exceed 200, or fall below 0");
 				}
 				
+				// Retrieves the singleton instance of the UtilityGuestInformation
 				UtilityGuestInformation info = UtilityGuestInformation.getInstance();
-				info.enterNameAndAge(name, age);
+				
+				// Stores the data from the input fields and supplies it to the to the
+				// personal order controller, to set the name and age of the guest, this
+				// is done within the UtilityGuestInformation class.
+				info.enterNameAndAge(firstName, age);
 				
 				// Creates the new frame that should be opened when pressing the button
 				ViewGuestDiscountSelection nextView = new ViewGuestDiscountSelection();
@@ -176,10 +217,14 @@ public class ViewGuestCustomerInformation extends JFrame
 				
 				// Closes the current frame/window
 				this.dispose();
-			} catch (Exception e)
+			}
+			
+			catch (Exception exception)
 			{
-				e.printStackTrace();
-			} finally
+				exception.printStackTrace();
+			}
+			
+			finally
 			{
 				btnContinue.setEnabled(true);
 			}
