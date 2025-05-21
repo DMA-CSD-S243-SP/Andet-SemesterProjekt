@@ -133,4 +133,16 @@ public class UtilityGuestInformation
 	{
 		personalOrderController.enterMainCourseOptions(potatoDish, listOfAddOnOptionChoices, listOfSelectionOption);
 	}
+	
+	public void finishPersonalOrder()
+	{
+		try
+		{
+			personalOrderController.finishPersonalOrder();
+		} catch (DataAccessException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
