@@ -34,6 +34,8 @@ public class PersonalOrderDB implements PersonalOrderImpl
 	private static final String INSERT_PERSONALORDER = "INSERT INTO PersonalOrder (customerAge, customerName, tableOrderId) VALUES (?, ?, ?)";
 
 	private static final String INSERT_PERSONALORDERLINE = "INSERT INTO PersonalOrderLine (additionalPrice, notes, status, personalOrderId, menuItemId) VALUES (?, ?, ?, ?, ?);";
+	
+	private static final String FIND_PERSONALORDERS_BY_TABLEORDERID_QUERY = "select * from PersonalOrder where tableOrderId = ?";
 
 	// PreparedStatement for retrieving PersonalOrder based on the personalOrderId
 	private PreparedStatement statementFindByPersonalOrderId;
@@ -43,6 +45,8 @@ public class PersonalOrderDB implements PersonalOrderImpl
 	private PreparedStatement statementInsertPersonalOrder;
 
 	private PreparedStatement statementInsertPersonalOrderLine;
+	
+	private PreparedStatement statementFindByTableOrderId;
 
 	// Constructor
 	public PersonalOrderDB()
@@ -125,9 +129,9 @@ public class PersonalOrderDB implements PersonalOrderImpl
 	 */
 	private PersonalOrder buildPersonalOrderObject(ResultSet resultSet) throws SQLException, DataAccessException
 	{
-		TableOrder tableOrder = new TableOrder(resultSet.getInt("tableOrderId"));
+		//TableOrder tableOrder = new TableOrder(resultSet.getInt("tableOrderId"));
 
-		PersonalOrder personalOrder = new PersonalOrder(tableOrder);
+		PersonalOrder personalOrder = new PersonalOrder(null);
 		personalOrder.setCustomerAge(resultSet.getInt("customerAge"));
 		personalOrder.setCustomerName(resultSet.getString("customerName"));
 		List<PersonalOrderLine> listOfLines = findPersonalOrderLinesByPersonalOrderLineId(
@@ -242,4 +246,62 @@ public class PersonalOrderDB implements PersonalOrderImpl
 		}
 		statementInsertPersonalOrderLine.executeBatch();
 	}
+
+	@Override
+	public List<PersonalOrder> findPersonalOrderBytableOrderId(int TableOrderId) throws SQLException, DataAccessException 
+	{
+		// Gets a connection to the database
+				Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
+
+				try
+				{
+					databaseConnection.setAutoCommit(false);
+					
+					// Reading tableOrders happens many times per day. However it occurs almost exclusively during business
+					// hours, and updating happens rarely, and can usually be scheduled.
+					databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+					
+					// Prepare a SQL statement to retrieve all tableOrders
+					statementFindByTableOrderId = databaseConnection.prepareStatement(FIND_PERSONALORDERS_BY_TABLEORDERID_QUERY);
+					
+					// Executes the prepared statement and stores the result set
+					ResultSet resultSetPersonalOrder = statementFindByTableOrderId.executeQuery();
+
+					// Converts the result set into a list of TableOrder objects
+					List<PersonalOrder> resultListOfPersonalOrder = buildPersonalOrderObjects(resultSetPersonalOrder);
+
+					databaseConnection.commit();
+					databaseConnection.setAutoCommit(true);
+					
+					// Returns the list of TableOrder objects
+					return resultListOfPersonalOrder;
+				}
+
+				catch (SQLException exception1)
+				{
+					
+					databaseConnection.rollback();
+					databaseConnection.setAutoCommit(true);
+					
+					// If an SQL error occurs a custom exception is thrown with the specified details
+					throw new DataAccessException("Unable to find PersonalOrder objects in the database", exception1);
+				}
+	}
+
+	private List<PersonalOrder> buildPersonalOrderObjects(ResultSet resultSetPersonalOrder) throws SQLException, DataAccessException
+		{
+			// Creates an empty list to store Employee objects within
+			List<PersonalOrder> personalOrders = new ArrayList<>();
+
+			// Iterates through the result set while there are still more rows in the database's table
+			while (resultSetPersonalOrder.next())
+			{
+				// Converts each row into a Employee object and add it to the list
+				personalOrders.add(buildPersonalOrderObject(resultSetPersonalOrder));
+			}
+
+			// Returns the populated list of Employee objects
+			return personalOrders;
+			
+		}
 }

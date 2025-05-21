@@ -1,5 +1,8 @@
 package database;
 
+import java.sql.SQLException;
+import java.util.List;
+
 import model.PersonalOrder;
 
 /**
@@ -35,4 +38,6 @@ public interface PersonalOrderImpl
 	 * @throws DataAccessException
 	 */
 	PersonalOrder insertPersonalOrder(PersonalOrder personalOrder, int tableOrderId) throws DataAccessException;
+	
+	List<PersonalOrder> findPersonalOrderBytableOrderId(int TableOrderId) throws SQLException, DataAccessException;
 }

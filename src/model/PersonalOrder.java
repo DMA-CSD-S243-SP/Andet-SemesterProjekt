@@ -304,4 +304,24 @@ public class PersonalOrder
 	{
 		return new ArrayList<>(personalOrderLineList);
 	}
+	
+	public List<String> getNameOfItemsInList()
+	{
+		List<String> nameList = new ArrayList<String>();
+		for (PersonalOrderLine pList : personalOrderLineList)
+		{
+			nameList.add(pList.getMenuItem().getName());
+		}
+		return nameList;
+	}
+	
+	public int getPersonalOrderId()
+	{
+		return this.PersonalOrderId;
+	}
+	
+	public void setPersonalOrderId(int personalOrderId)
+	{
+		this.PersonalOrderId = personalOrderId;
+	}
 }
