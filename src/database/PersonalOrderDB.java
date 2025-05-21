@@ -45,12 +45,9 @@ public class PersonalOrderDB implements PersonalOrderImpl
 	private PreparedStatement statementInsertPersonalOrderLine;
 
 	// Constructor
-	public PersonalOrderDB() throws SQLException
+	public PersonalOrderDB()
 	{
-		// Prepares the SQL statement for retrieving a PersonalOrder by its
-		// personalOrderId
-		statementFindByPersonalOrderId = DataBaseConnection.getInstance().getConnection()
-				.prepareStatement(FIND_PERSONALORDER_BY_PERSONALORDERID_QUERY);
+		
 	}
 
 	/**
