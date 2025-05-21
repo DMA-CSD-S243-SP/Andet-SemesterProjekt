@@ -40,8 +40,8 @@ public class ComponentGuestButtonContinue extends JButton
 		// Don't use the default button border
 		this.setBorderPainted(false);
 
-		// Set font to Tahoma, plain, size 18
-		this.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		// Set font to Tahoma, plain, size 16
+		this.setFont(new Font("Tahoma", Font.PLAIN, 16));
 
 		// Center-align the button in the layout
 		this.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -53,10 +53,10 @@ public class ComponentGuestButtonContinue extends JButton
 		this.setVerticalAlignment(SwingConstants.CENTER);
 
 		// Set preferred size for layout managers
-		this.setPreferredSize(new Dimension(160, 45));
+		this.setPreferredSize(new Dimension(180, 45));
 
 		// Limit max height to keep UI consistent
-		this.setMaximumSize(new Dimension(160, 50));
+		this.setMaximumSize(new Dimension(180, 50));
 
 		// Set default background (Bone’s red)
 		this.setBackground(new Color(187, 41, 41));
@@ -78,10 +78,9 @@ public class ComponentGuestButtonContinue extends JButton
 		// Draw outer border in black
 		graphics2D.setColor(new Color(0, 0, 0));
 
-		
+		// Fills out the specified rounded corner triangle
 		graphics2D.fillRoundRect(0, 0, getWidth(), getHeight(), cornerRadius + borderThickness, cornerRadius + borderThickness);
 
-		
 		// MOdifies the fill coloring of the button whenever it is pressed or unpressed
 		if (getModel().isArmed())
 		{
@@ -131,8 +130,9 @@ public class ComponentGuestButtonContinue extends JButton
 	
 	public void setBorderThickness(int borderThickness)
 	{
-		// Changing the border thickness causes us to have to repaint the button this is why this i being done
 		this.borderThickness = borderThickness;
+		
+		// Changing the border thickness causes us to have to repaint the button this is why this i being done
 		repaint();
 	}
 
