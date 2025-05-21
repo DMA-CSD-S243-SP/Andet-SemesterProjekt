@@ -17,7 +17,7 @@ public class ComponentGuestMenuItem extends JPanel
 {
 	private JButton btnAdd;
 
-	public ComponentGuestMenuItem(String title, String description, int price)
+	public ComponentGuestMenuItem(model.MenuItem menuItem)
 	{
 		// Set layout manager to BorderLayout for this component
 		this.setLayout(new BorderLayout());
@@ -44,7 +44,7 @@ public class ComponentGuestMenuItem extends JPanel
 		textPanel.setOpaque(false);
 
 		// Create the title label with uppercase text
-		JLabel lblTitle = new JLabel(title.toUpperCase());
+		JLabel lblTitle = new JLabel(menuItem.getName().toUpperCase());
 
 		// Set the font style and size for the title
 		lblTitle.setFont(new Font("SansSerif", Font.BOLD, 16));
@@ -53,7 +53,7 @@ public class ComponentGuestMenuItem extends JPanel
 		lblTitle.setForeground(new Color(40, 40, 40));
 
 		// Create the description label using HTML for italic styling
-		JLabel lblDescription = new JLabel("<html><i>" + description + "</i></html>");
+		JLabel lblDescription = new JLabel("<html><i>" + menuItem.getDescription() + "</i></html>");
 
 		// Set the font style and size for the description
 		lblDescription.setFont(new Font("SansSerif", Font.PLAIN, 13));
@@ -83,6 +83,13 @@ public class ComponentGuestMenuItem extends JPanel
 		rightPanel.setOpaque(false);
 
 		// Create the label
+		double price = menuItem.getEveningPrice();
+		/* TODO Fix fetched TableOrders, so time actually gets set.
+		if (UtilityGuestInformation.getInstance().isLunchTime())
+		{
+			price = menuItem.getLunchPrice();
+		}*/
+		
 		JLabel lblPrice = new JLabel(price + ",-");
 		lblPrice.setFont(new Font("SansSerif", Font.BOLD, 15));
 		lblPrice.setForeground(Color.BLACK);

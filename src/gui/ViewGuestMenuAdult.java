@@ -2,10 +2,14 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import model.MainCourse;
+import model.MenuCard;
 
 
 /**
@@ -73,59 +77,15 @@ public class ViewGuestMenuAdult extends JFrame
 		//   SHOULD BE INSERTED IN   //
 		///////////////////////////////
 		
+		MenuCard adultMenu = UtilityGuestInformation.getInstance().getAdultMenu();
+		List<MainCourse> listOfMainCourses = UtilityGuestInformation.getInstance().getMainCourses(adultMenu);
 		
-
-		// Creates a customized item on teh menu showing the heading, description and 
-		// the standard base pricing for the product
-		ComponentGuestMenuItem menuItemInformation1 = new ComponentGuestMenuItem(
-		    "Original BBQ Specialiteter",
-		    "Bone’s Original Spareribs, med den hemmelige Bone’s BBQ",
-		    129
-		);
-		
-		// Adds the item to the list
-		primaryContentPanel.add(menuItemInformation1);
-
-		// Adds vertical spacing between the item components
-		primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-
-		
-		
-		
-		
-		// Creates a customized item on teh menu showing the heading, description and 
-		// the standard base pricing for the product
-		ComponentGuestMenuItem menuItemInformation2 = new ComponentGuestMenuItem(
-		    "Steaks & Chicken",
-		    "Saftig og smagfuld Ribeye af kødkvæg fra Uruguay.",
-		    239
-		);
-		
-		// Adds the item to the list
-		primaryContentPanel.add(menuItemInformation2);
-
-		// Adds vertical spacing between the item components
-		primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-
-		
-		
-		
-		// Creates a customized item on teh menu showing the heading, description and 
-		// the standard base pricing for the product
-		ComponentGuestMenuItem menuItemInformation3 = new ComponentGuestMenuItem(
-		    "",
-		    "Center cut, saftig og lækker oksemørbrad fra kødkvæg på græs.",
-		    229
-		);
-		
-		// Adds the item to the list
-		primaryContentPanel.add(menuItemInformation3);
-		
-		// Adds vertical spacing between the item components
-		primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-
-		
-		
+		for (MainCourse mainCourse: listOfMainCourses)
+		{
+			ComponentGuestMenuItem menuItemBox = new ComponentGuestMenuItem(mainCourse);
+			primaryContentPanel.add(menuItemBox);
+			primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+		}
 		
 		
 		////////////////////////////////
@@ -214,5 +174,10 @@ public class ViewGuestMenuAdult extends JFrame
 			// Closes the current frame/window
 			this.dispose();
 		});
+		
+		// TODO: This is a dirty fix for displaying the graphical user interface
+        //          contents without spending too much time on adjusting them, this 
+        //         would be added to the backlog and revisited in a later iteration.
+        setSize(580, 822);
 	}
 }
