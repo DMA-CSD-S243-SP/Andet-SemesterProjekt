@@ -123,6 +123,7 @@ public class ViewGuestMenuOverview extends JFrame
 		// - Navigation Service Button - //
 		///////////////////////////////////
 		
+		
 		// If the isServiceEnabled variable is set to true then execute this section
 		if(isServiceEnabled == true)
 		{
@@ -133,10 +134,25 @@ public class ViewGuestMenuOverview extends JFrame
 			navigationPanel.add(btnRequestService, BorderLayout.EAST);
 		}
 		
+		
 
 		//////////////////////////////
 		// - Bottom Panel Buttons - //
 		//////////////////////////////
+		
+		
+		// Creates a customized button component with the supplied information
+		ComponentGuestButtonContinue btnChildMenu = new ComponentGuestButtonContinue("Børnemenu", bottomPanel);
+		
+		// Adds the customized button to the panel
+		bottomPanel.add(btnChildMenu);
+		
+		// Adds an action listener for when the button is clicked
+		btnChildMenu.addActionListener(event ->
+		{
+			// TODO: Add functionality
+			System.out.println("This feature has yet to be implemented.");
+		});
 		
 		
 		// Creates a customized button component with the supplied information
@@ -145,12 +161,6 @@ public class ViewGuestMenuOverview extends JFrame
 		// Adds the customized button to the panel
 		bottomPanel.add(btnAdultMenu);
 	
-		// Creates a customized button component with the supplied information
-		ComponentGuestButtonContinue btnChildMenu = new ComponentGuestButtonContinue("Børnemenu", bottomPanel);
-		
-		// Adds the customized button to the panel
-		bottomPanel.add(btnChildMenu);
-		
 		// Adds an action listener for when the button is clicked
 		btnAdultMenu.addActionListener(event ->
 		{
