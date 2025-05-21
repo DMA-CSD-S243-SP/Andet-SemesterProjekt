@@ -85,7 +85,10 @@ public class ViewGuestMenuAdult extends JFrame
 			ComponentGuestMenuItem menuItemBox = new ComponentGuestMenuItem(mainCourse);
 			primaryContentPanel.add(menuItemBox);
 			primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-			menuItemBox.getAddButton().addActionListener(x -> openUniversalMainMenu());
+			menuItemBox.getAddButton().addActionListener(x -> {
+				UtilityGuestInformation.getInstance().enterMainCourse(menuItemBox.getMainCourse());
+				openUniversalMainMenu();
+			});
 		}
 		
 		
