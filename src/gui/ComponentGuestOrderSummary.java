@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class ComponentGuestOrderSummary extends JPanel
 {
-	public ComponentGuestOrderSummary(String guestName, int price, List<String> items)
+	public ComponentGuestOrderSummary(String guestName, double price, List<String> items)
 	{
 		// Set the layout manager to BorderLayout
 		setLayout(new BorderLayout());

@@ -16,7 +16,7 @@ import java.util.List;
  */	
 public class ComponentGuestOrderTotalPrice extends JPanel
 {
-	public ComponentGuestOrderTotalPrice(String guestName, int price)
+	public ComponentGuestOrderTotalPrice(String guestName, double price)
 	{
 		super();
 		
