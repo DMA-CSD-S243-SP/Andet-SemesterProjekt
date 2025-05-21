@@ -13,8 +13,8 @@ import javax.swing.JPanel;
  * for the constructor and the class' methods
  * 
  * 
- * @author Christoffer Søndergaard
- * @version 20/05/2025 - 13:45
+ * @author Christoffer Søndergaard & Lumière Schack
+ * @version 21/05/2025 - 13:28
  */	
 public class ViewGuestCustomerInformation extends JFrame
 {
