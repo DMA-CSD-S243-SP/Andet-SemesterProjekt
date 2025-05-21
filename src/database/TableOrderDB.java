@@ -45,7 +45,7 @@ public class TableOrderDB implements TableOrderImpl
 	
 	// Selects every row from the TableOrder where 
 	// isSentToKitchen = true and isTableOrderClsoed = false, in the database
-	private static final String FIND_VISIBLE_TO_KITCHEN_TABLE_ORDERS_QUERY =  "SELECT * FROM TableOrder WHERE isSentToKitchen = true AND isTableOrderClosed = false";
+	private static final String FIND_VISIBLE_TO_KITCHEN_TABLE_ORDERS_QUERY =  "SELECT * FROM TableOrder WHERE isSentToKitchen = 1 AND isTableOrderClosed = 0";
 			
 	// PreparedStatement for retrieving an TableOrder based on the tableOrderId
 	private PreparedStatement statementFindVisibleToKitchenTableOrders;
