@@ -18,8 +18,8 @@ import model.Discount;
  * for the constructor and the class' methods
  * 
  * 
- * @author Christoffer Søndergaard
- * @version 20/05/2025 - 14:11
+ * @author Christoffer Søndergaard & Lumière Schack
+ * @version 21/05/2025 - 13:31
  */	
 public class ViewGuestDiscountSelection extends JFrame
 {
@@ -158,10 +158,19 @@ public class ViewGuestDiscountSelection extends JFrame
 		btnContinue.addActionListener(event ->
 		{
 			try
-			{ 
+			{
+				// Temporarily disables the button to show something is happening and
+				// also to prevent user spamming the database
 				btnContinue.setEnabled(false);
-				// TODO Make EnterDiscounts actually enter discounts
+				
+				// TODO: Make EnterDiscounts actually enter the selected discounts
+				// 		 Note this is in a different use case in a future iteration
+				
+				
+				// Retrieves the singleton instance of the UtilityGuestInformation
+				// and inserts the list of discounts, which are currently empty
 				UtilityGuestInformation.getInstance().enterDiscounts(new ArrayList<Discount>());
+				
 				// Creates the new frame that should be opened when pressing the button
 				ViewGuestMenuOverview nextView = new ViewGuestMenuOverview();
 
@@ -170,10 +179,14 @@ public class ViewGuestDiscountSelection extends JFrame
 				
 				// Closes the current frame/window
 				this.dispose();
-			} catch (Exception e)
+			}
+			
+			catch (Exception exception)
 			{
-				e.printStackTrace();
-			} finally
+				exception.printStackTrace();
+			}
+			
+			finally
 			{
 				btnContinue.setEnabled(true);
 			}
