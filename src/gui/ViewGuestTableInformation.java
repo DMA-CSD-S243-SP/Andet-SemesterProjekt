@@ -12,8 +12,8 @@ import javax.swing.JPanel;
  * constructor and the class' methods
  * 
  * 
- * @author Christoffer Søndergaard
- * @version 20/05/2025 - 13:45
+ * @author Christoffer Søndergaard & Lumière Schack
+ * @version 21/05/2025 - 12:09
  */
 public class ViewGuestTableInformation extends JFrame
 {
@@ -108,14 +108,35 @@ public class ViewGuestTableInformation extends JFrame
 		{
 			try
 			{
+				// Temporarily disables the button to show something is happening and
+				// also to prevent user spamming the database
 				btnContinue.setEnabled(false);
+				
+				// Retrieves the supplied information from the table code text field
 				String tableCode = inputField.getText();
+				
+				// If the tableCode's length is anything else than 7 digits long then execute this section
 				if (tableCode.length() != 7)
 				{
+					// Creates a dialog box, with the "Ok" option, containing a specific and detailed error message
+					new ComponentGuestErrorDialog(this, 
+							"Følgende er ikke udfyldt korrekt:",
+							"Bordnummer",
+							"Feltet skal indeholde 7 tal."
+					);
+					
 					throw new IllegalArgumentException("Invalid table code");
 				}
+				
+				// Retrieves the singleton instance of the UtilityGuestInformation
 				UtilityGuestInformation info = UtilityGuestInformation.getInstance();
+				
+				// Splits the table string up in to the 4 last digits (table number)
+				// and in to the 3 first digits (restaurant code) and stores the extracted
+				// data where it then gets used to supply the personalorder controller with 
+				// information within the UtilityGuestInformation class.
 				info.enterTableCode(tableCode.substring(3,7), tableCode.substring(0,3));
+				
 				// Creates the new frame that should be opened when pressing the button
 				ViewGuestCustomerInformation nextView = new ViewGuestCustomerInformation();
 
@@ -124,10 +145,14 @@ public class ViewGuestTableInformation extends JFrame
 				
 				// Closes the current frame/window
 				this.dispose();
-			} catch (Exception e)
+			}
+			
+			catch (Exception exception)
 			{
-				e.printStackTrace();
-			} finally
+				exception.printStackTrace();
+			}
+			
+			finally
 			{
 				btnContinue.setEnabled(true);
 			}
