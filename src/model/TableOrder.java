@@ -208,6 +208,13 @@ public class TableOrder
 	{
 		this.listOfPersonalOrders.add(personalOrder);
 	}
+	
+	public List<PersonalOrder> getPersonalOrders()
+	{
+		List<PersonalOrder> returnList = new ArrayList<PersonalOrder>();
+		returnList.addAll(listOfPersonalOrders);
+		return returnList;
+	}
 
 	/**
 	 * Uses the timeOfArrival to determine whether or not it should use lunch or

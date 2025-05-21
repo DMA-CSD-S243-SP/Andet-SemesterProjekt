@@ -9,8 +9,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import database.DataAccessException;
+import database.PersonalOrderDB;
+import database.PersonalOrderImpl;
 import database.TableOrderDB;
 import database.TableOrderImpl;
+import model.PersonalOrder;
 import model.TableOrder;
 
 
@@ -38,7 +41,9 @@ public class ViewGuestTableOrderConfirmation extends JFrame
 	// Determines whether or not the 'Anmod om service' button is enabled in the navigational panel
 	boolean isServiceEnabled = true;
 	
-	private TableOrderImpl dao;
+	private TableOrderImpl daoTO;
+	private PersonalOrderImpl daoPO;
+	
 	private TableOrder currentTableOrder;
 	
 	/**
@@ -48,10 +53,11 @@ public class ViewGuestTableOrderConfirmation extends JFrame
 	public ViewGuestTableOrderConfirmation(TableOrder currentTableOrder)
 	{
 		try {
-			dao = new TableOrderDB();
+			daoTO = new TableOrderDB();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		daoPO = new PersonalOrderDB();
 		this.currentTableOrder = currentTableOrder;
 		initGUI();
 	}
@@ -161,11 +167,19 @@ public class ViewGuestTableOrderConfirmation extends JFrame
 		{
 			// Creates the new frame that should be opened when pressing the button
 			try {
-				dao.updateTableOrder(currentTableOrder);
+				daoTO.updateTableOrder(currentTableOrder);
 			} catch (DataAccessException e) {
 				e.printStackTrace();
 			} catch (SQLException e) {
 				e.printStackTrace();
+			}
+			for (PersonalOrder pList : currentTableOrder.getPersonalOrders())
+			{
+				try {
+					daoPO.insertPersonalOrder(pList, currentTableOrder.getTableOrderId());
+				} catch (DataAccessException e) {
+					e.printStackTrace();
+				}
 			}
 			ViewGuestOrderOverview nextView = new ViewGuestOrderOverview();
 
