@@ -2,10 +2,16 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.sql.SQLException;
 
 import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import database.DataAccessException;
+import database.TableOrderDB;
+import database.TableOrderImpl;
+import model.TableOrder;
 
 
 /**
@@ -32,12 +38,21 @@ public class ViewGuestTableOrderConfirmation extends JFrame
 	// Determines whether or not the 'Anmod om service' button is enabled in the navigational panel
 	boolean isServiceEnabled = true;
 	
+	private TableOrderImpl dao;
+	private TableOrder currentTableOrder;
 	
 	/**
 	 * Create the frame.
+	 * @param currentTableOrder 
 	 */
-	public ViewGuestTableOrderConfirmation()
+	public ViewGuestTableOrderConfirmation(TableOrder currentTableOrder)
 	{
+		try {
+			dao = new TableOrderDB();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		this.currentTableOrder = currentTableOrder;
 		initGUI();
 	}
 	
@@ -145,6 +160,13 @@ public class ViewGuestTableOrderConfirmation extends JFrame
 		btnConfirm.addActionListener(event ->
 		{
 			// Creates the new frame that should be opened when pressing the button
+			try {
+				dao.updateTableOrder(currentTableOrder);
+			} catch (DataAccessException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 			ViewGuestOrderOverview nextView = new ViewGuestOrderOverview();
 
 			// Sets the visibility to true turning the previous view / window visible

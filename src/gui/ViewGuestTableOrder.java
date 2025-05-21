@@ -233,7 +233,7 @@ public class ViewGuestTableOrder extends JFrame
 		btnSendToKitchen.addActionListener(event ->
 		{
 			// Creates the new frame that should be opened when pressing the button
-			ViewGuestTableOrderConfirmation nextView = new ViewGuestTableOrderConfirmation();
+			ViewGuestTableOrderConfirmation nextView = new ViewGuestTableOrderConfirmation(currentTableOrder);
 
 			// Sets the visibility to true turning the previous view / window visible
 			nextView.setVisible(true);

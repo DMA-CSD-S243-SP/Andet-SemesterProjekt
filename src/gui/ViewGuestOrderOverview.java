@@ -107,7 +107,7 @@ public class ViewGuestOrderOverview extends JFrame
 			btnBack.addActionListener(event ->
 			{
 				// Create and configure the new frame (you can replace this with your actual destination window)
-				ViewGuestTableOrderConfirmation previouslyOpenFrameView = new ViewGuestTableOrderConfirmation();
+				ViewGuestTableOrderConfirmation previouslyOpenFrameView = new ViewGuestTableOrderConfirmation(null);
 				
 				// Sets the visibility to true turning the previous view / window visible
 				previouslyOpenFrameView.setVisible(true);
