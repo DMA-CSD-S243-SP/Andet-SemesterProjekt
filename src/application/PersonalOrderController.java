@@ -36,7 +36,7 @@ public class PersonalOrderController
 	private PersonalOrderDB personalOrderDB;
 	
 	//Constructor
-	public PersonalOrderController() throws SQLException
+	public PersonalOrderController()
 	{
 		// Creates a controller
 		tableController = new TableController();
