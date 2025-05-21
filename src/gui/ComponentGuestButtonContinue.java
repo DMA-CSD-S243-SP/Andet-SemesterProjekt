@@ -10,7 +10,7 @@ import java.awt.geom.RoundRectangle2D;
  * 
  * 
  * @author Christoffer Søndergaard
- * @version 20/05/2025 - 13:11
+ * @version 21/05/2025 - 02:33
  */
 public class ComponentGuestButtonContinue extends JButton
 {

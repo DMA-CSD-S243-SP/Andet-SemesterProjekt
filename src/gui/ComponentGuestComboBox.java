@@ -7,6 +7,14 @@ import java.awt.*;
 import java.util.List;
 
 
+/**
+ * TODO: Write a thorough description of this class and also java docs
+ * for the constructor and the class' methods
+ * 
+ * 
+ * @author Christoffer Søndergaard
+ * @version 21/05/2025 - 02:33
+ */
 public class ComponentGuestComboBox extends JPanel
 {
 	private JComboBox<String> comboBox;

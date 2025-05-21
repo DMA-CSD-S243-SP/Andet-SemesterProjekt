@@ -25,7 +25,7 @@ import javax.swing.border.EmptyBorder;
  * 
  * 
  * @author Christoffer Søndergaard
- * @version 20/05/2025 - 12:53
+ * @version 21/05/2025 - 02:33
  */
 public class ComponentFrameThemeGuest
 {

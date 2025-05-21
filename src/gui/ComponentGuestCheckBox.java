@@ -5,6 +5,14 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 
+/**
+ * TODO: Write a thorough description of this class and also java docs
+ * for the constructor and the class' methods
+ * 
+ * 
+ * @author Christoffer Søndergaard
+ * @version 21/05/2025 - 02:33
+ */
 public class ComponentGuestCheckBox extends JCheckBox
 {
 	public ComponentGuestCheckBox(String text)
