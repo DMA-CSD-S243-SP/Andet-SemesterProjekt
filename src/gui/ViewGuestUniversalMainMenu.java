@@ -10,9 +10,12 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import model.AddOnOption;
 import model.MainCourse;
 import model.MenuCard;
+import model.MultipleChoiceMenu;
 import model.PotatoDish;
+import model.SelectionOption;
 
 
 /**
@@ -39,6 +42,14 @@ public class ViewGuestUniversalMainMenu extends JFrame
 	// Determines whether or not the 'Anmod om service' button is enabled in the navigational panel
 	boolean isServiceEnabled = true;
 	
+	ComponentGuestComboBox potatoCombo;
+	List<AddOnOption> addOnOptions;
+	List<ComponentGuestCheckBox> addOnCheckBoxes;
+	List<PotatoDish> potatoDishes;
+	MainCourse mainCourse;
+	List<MultipleChoiceMenu> multipleChoiceMenus;
+	List<List<SelectionOption>> twodSelectionOptions;
+	List<ComponentGuestComboBox> multipleChoiceBoxes;
 	
 	/**
 	 * Create the frame.
@@ -79,18 +90,69 @@ public class ViewGuestUniversalMainMenu extends JFrame
 		///////////////////////////////
 		
 		MenuCard menu = UtilityGuestInformation.getInstance().getAdultMenu();
-		List<PotatoDish> potatoDishes = UtilityGuestInformation.getInstance().getPotatoDishes(menu);
-		MainCourse mainCourse = UtilityGuestInformation.getInstance().getMainCourse();
+		potatoDishes = UtilityGuestInformation.getInstance().getPotatoDishes(menu);
+		mainCourse = UtilityGuestInformation.getInstance().getMainCourse();
 		
+		// Potato selection
 		List<String> potatoStrings = new ArrayList<>();
 		for (PotatoDish potato: potatoDishes)
 		{
 			potatoStrings.add(potato.getName());
 		}
-		ComponentGuestComboBox potatoCombo = new ComponentGuestComboBox("Vælg kartoffel tilbehør", potatoStrings);
+		potatoCombo = new ComponentGuestComboBox("Vælg kartoffel tilbehør", potatoStrings);
 		potatoCombo.setVisible(true);
 		primaryContentPanel.add(potatoCombo);
 		
+		// All the multiple choice selections
+		// TODO Fix retrieval of maincourse options
+		//multipleChoiceMenus = mainCourse.getListOfMultipleChoiceMenu();
+		
+		// Code for showing functionality, despite broken fetch.
+		multipleChoiceMenus = new ArrayList<>();
+		MultipleChoiceMenu choice1 = new MultipleChoiceMenu("Size");
+		choice1.addSelectionOption(new SelectionOption("Small", "s", 0));
+		choice1.addSelectionOption(new SelectionOption("Medium", "m", 39));
+		choice1.addSelectionOption(new SelectionOption("Large", "l", 69));
+		multipleChoiceMenus.add(choice1);
+		MultipleChoiceMenu choice2 = new MultipleChoiceMenu("Doneness");
+		choice2.addSelectionOption(new SelectionOption("Rare", "too little", 0));
+		choice2.addSelectionOption(new SelectionOption("Well Done", "too much", 0));
+		choice2.addSelectionOption(new SelectionOption("Medium", "just right", 0));
+		multipleChoiceMenus.add(choice2);
+		
+		
+		multipleChoiceBoxes = new ArrayList<>();
+		for (MultipleChoiceMenu currentMenu : multipleChoiceMenus)
+		{
+			List<SelectionOption> options = currentMenu.getListOfSelectionOptions();
+			List<String> optionStrings = new ArrayList<>();
+			for (SelectionOption option: options)
+			{
+				optionStrings.add("(+"+option.getAdditionalPrice()+") "+option.getDescription());
+			}
+			ComponentGuestComboBox combobox = new ComponentGuestComboBox(currentMenu.getSelectionDescription(), optionStrings);
+			combobox.setVisible(true);
+			primaryContentPanel.add(combobox);
+			multipleChoiceBoxes.add(combobox);
+		}
+		
+		// AddOns
+		// TODO Fix fetching of options
+		//addOnOptions = mainCourse.getListOfAddOnOption();
+		
+		addOnOptions = new ArrayList<AddOnOption>();
+		addOnOptions.add(new AddOnOption("Garlic butter", "stinky", 10));
+		addOnOptions.add(new AddOnOption("No herbs", "herbless", 0));
+		
+		addOnCheckBoxes = new ArrayList<>();
+		for (AddOnOption option: addOnOptions)
+		{
+			String optionText = "(+" + option.getAdditionalPrice()+") "+option.getDescription();
+			ComponentGuestCheckBox addOnBox = new ComponentGuestCheckBox(optionText);
+			addOnBox.setVisible(true);
+			addOnCheckBoxes.add(addOnBox);
+			primaryContentPanel.add(addOnBox);
+		}
 		
 		
 		
@@ -155,6 +217,8 @@ public class ViewGuestUniversalMainMenu extends JFrame
 		// Adds an action listener for when the button is clicked
 		btnContinue.addActionListener(event ->
 		{
+			enterBoxInfo();
+			
 			// Creates the new frame that should be opened when pressing the button
 			ViewGuestMenuAdult nextView = new ViewGuestMenuAdult();
 
@@ -164,5 +228,31 @@ public class ViewGuestUniversalMainMenu extends JFrame
 			// Closes the current frame/window
 			this.dispose();
 		});
+	}
+	
+	private void enterBoxInfo()
+	{
+		PotatoDish potatoDish = potatoDishes.get(potatoCombo.getIndex());
+		
+		List<SelectionOption> listOfSelectionOptionChoices = new ArrayList<>();
+		for (int i = 0; i < multipleChoiceMenus.size(); i++)
+		{
+			// DO NOT TRY TO LEARN FROM THIS. PLEASE LEAVE. DO NOT LOOK BACK.
+			List<SelectionOption> selectionOptions = multipleChoiceMenus.get(i).getListOfSelectionOptions();
+			ComponentGuestComboBox box = multipleChoiceBoxes.get(i);
+			listOfSelectionOptionChoices.add(selectionOptions.get(box.getIndex()));
+		}
+		
+		List<AddOnOption> listOfAddOnOptionChoices = new ArrayList<>();
+		for (int i = 0; i < addOnCheckBoxes.size(); i++)
+		{
+			if (addOnCheckBoxes.get(i).isSelected())
+			{
+				listOfAddOnOptionChoices.add(addOnOptions.get(i));
+			}
+		}
+		
+		UtilityGuestInformation.getInstance().enterMainCourseOptions(potatoDish, listOfAddOnOptionChoices, listOfSelectionOptionChoices);
+		UtilityGuestInformation.getInstance().finishPersonalOrder();
 	}
 }
