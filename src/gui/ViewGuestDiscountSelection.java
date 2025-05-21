@@ -3,11 +3,14 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import model.Discount;
 
 
 /**
@@ -154,14 +157,27 @@ public class ViewGuestDiscountSelection extends JFrame
 		// Adds an action listener for when the button is clicked
 		btnContinue.addActionListener(event ->
 		{
-			// Creates the new frame that should be opened when pressing the button
-			ViewGuestMenuOverview nextView = new ViewGuestMenuOverview();
+			try
+			{ 
+				btnContinue.setEnabled(false);
+				// TODO Make EnterDiscounts actually enter discounts
+				UtilityGuestInformation.getInstance().enterDiscounts(new ArrayList<Discount>());
+				// Creates the new frame that should be opened when pressing the button
+				ViewGuestMenuOverview nextView = new ViewGuestMenuOverview();
 
-			// Sets the visibility to true turning the previous view / window visible
-			nextView.setVisible(true);
+				// Sets the visibility to true turning the previous view / window visible
+				nextView.setVisible(true);
+				
+				// Closes the current frame/window
+				this.dispose();
+			} catch (Exception e)
+			{
+				e.printStackTrace();
+			} finally
+			{
+				btnContinue.setEnabled(true);
+			}
 			
-			// Closes the current frame/window
-			this.dispose();
 		});
 	}
 }
