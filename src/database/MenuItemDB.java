@@ -372,9 +372,21 @@ public class MenuItemDB implements MenuItemImpl
 				String introductionDescription = resultSetMainCourse.getString("introductionDescription");
 				double lunchPrice = resultSetMainCourse.getDouble("lunchPrice");
 				double eveningPrice = resultSetMainCourse.getDouble("eveningPrice");
+				
 
 				// Constructs a new Drink object with both shared and specific attributes
-				menuItem = new MainCourse(introductionDescription, lunchPrice, eveningPrice);
+				MainCourse mainCourse = new MainCourse(introductionDescription, lunchPrice, eveningPrice);
+				try
+				{
+					mainCourse.addAddOnOption(findAddOnOptionByMainCourseId(menuItemId));
+					mainCourse.addMultipleChoiceMenu(findMultipleChoiceMenuByMainCourseId(menuItemId));
+				} catch (Exception e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				menuItem = mainCourse;
 			}
 		}
 		if (menuItem != null)
@@ -464,6 +476,14 @@ public class MenuItemDB implements MenuItemImpl
 		MultipleChoiceMenu multipleChoiceMenu = new MultipleChoiceMenu(
 			resultSet.getString("selectionDescription")			
 			);		
+		try
+		{
+			multipleChoiceMenu.addSelectionOption(findSelectionOptionByMainCourseId(1));
+		} catch (DataAccessException | SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 			
 		return multipleChoiceMenu;
 
