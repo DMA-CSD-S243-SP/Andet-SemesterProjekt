@@ -5,11 +5,13 @@ import java.util.List;
 
 import application.PersonalOrderController;
 import database.DataAccessException;
+import model.AddOnOption;
 import model.Discount;
 import model.MainCourse;
 import model.MenuCard;
 import model.MenuItem;
 import model.PotatoDish;
+import model.SelectionOption;
 import model.Table;
 import model.TableOrder;
 
@@ -66,7 +68,6 @@ public class UtilityGuestInformation
 		MenuCard adultMenu = null;
 		for (MenuCard menu: listOfMenuCards)
 		{
-			System.out.println(menu.getName());
 			if (menu.getName().contains("Voksen"))
 			{
 				adultMenu = menu;
@@ -126,5 +127,10 @@ public class UtilityGuestInformation
 	public MainCourse getMainCourse()
 	{
 		return mainCourse;
+	}
+	
+	public void enterMainCourseOptions(MenuItem potatoDish, List<AddOnOption> listOfAddOnOptionChoices, List<SelectionOption> listOfSelectionOption)
+	{
+		personalOrderController.enterMainCourseOptions(potatoDish, listOfAddOnOptionChoices, listOfSelectionOption);
 	}
 }
