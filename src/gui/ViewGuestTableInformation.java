@@ -108,10 +108,14 @@ public class ViewGuestTableInformation extends JFrame
 		{
 			try
 			{
+				btnContinue.setEnabled(false);
 				String tableCode = inputField.getText();
-				
+				if (tableCode.length() != 7)
+				{
+					throw new IllegalArgumentException("Invalid table code");
+				}
 				UtilityGuestInformation info = UtilityGuestInformation.getInstance();
-				info.getPersonalOrderController().enterTableCode(tableCode.substring(3,7), tableCode.substring(0,3));
+				info.enterTableCode(tableCode.substring(3,7), tableCode.substring(0,3));
 				// Creates the new frame that should be opened when pressing the button
 				ViewGuestCustomerInformation nextView = new ViewGuestCustomerInformation();
 
@@ -123,6 +127,9 @@ public class ViewGuestTableInformation extends JFrame
 			} catch (Exception e)
 			{
 				e.printStackTrace();
+			} finally
+			{
+				btnContinue.setEnabled(true);
 			}
 			
 		});
