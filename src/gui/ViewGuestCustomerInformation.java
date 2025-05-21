@@ -32,6 +32,9 @@ public class ViewGuestCustomerInformation extends JFrame
 	// Determines whether or not the 'Anmod om service' button is enabled in the navigational panel
 	boolean isServiceEnabled = true;
 	
+	private ComponentGuestInputField inputFieldFirstName;
+	private ComponentGuestInputField inputFieldAge;
+	
 	
 	/**
 	 * Create the frame.
@@ -73,7 +76,7 @@ public class ViewGuestCustomerInformation extends JFrame
 		
 		
 		// Creates a customized input field object with a placeholder text accepting only numbers in it
-		ComponentGuestInputField inputFieldFirstName = new ComponentGuestInputField("Fornavn", "onlyLetters");
+        inputFieldFirstName = new ComponentGuestInputField("Fornavn", "onlyLetters");
 		
 		// Adds the first name input field to the primary content panel
 		frameTheme.getPrimaryContentPanel().add(inputFieldFirstName);
@@ -82,7 +85,7 @@ public class ViewGuestCustomerInformation extends JFrame
 		primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
 		// Creates a customized input field object with a placeholder text accepting only letters in it
-		ComponentGuestInputField inputFieldAge = new ComponentGuestInputField("Alder i antal år", "onlyNumbers");
+		inputFieldAge = new ComponentGuestInputField("Alder i antal år", "onlyNumbers");
 
 		// Adds the age input field to the primary content panel
 		frameTheme.getPrimaryContentPanel().add(inputFieldAge);
@@ -148,14 +151,38 @@ public class ViewGuestCustomerInformation extends JFrame
 		// Adds an action listener for when the button is clicked
 		btnContinue.addActionListener(event ->
 		{
-			// Creates the new frame that should be opened when pressing the button
-			ViewGuestDiscountSelection nextView = new ViewGuestDiscountSelection();
+			try
+			{	
+				btnContinue.setEnabled(false);
+				String name = inputFieldFirstName.getText().strip();
+				int age = Integer.valueOf(inputFieldAge.getText());
+				if (name.isEmpty())
+				{
+					throw new IllegalArgumentException("A name must be filled in");
+				}
+				if (age > 200 || age < 0)
+				{
+					throw new IllegalArgumentException("Age can't exceed 200, or fall below 0");
+				}
+				
+				UtilityGuestInformation info = UtilityGuestInformation.getInstance();
+				info.enterNameAndAge(name, age);
+				
+				// Creates the new frame that should be opened when pressing the button
+				ViewGuestDiscountSelection nextView = new ViewGuestDiscountSelection();
 
-			// Sets the visibility to true turning the previous view / window visible
-			nextView.setVisible(true);
-			
-			// Closes the current frame/window
-			this.dispose();
+				// Sets the visibility to true turning the previous view / window visible
+				nextView.setVisible(true);
+				
+				// Closes the current frame/window
+				this.dispose();
+			} catch (Exception e)
+			{
+				e.printStackTrace();
+			} finally
+			{
+				btnContinue.setEnabled(true);
+			}
 		});
 	}
 }
