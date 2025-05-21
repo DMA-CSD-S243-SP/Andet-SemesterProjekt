@@ -23,8 +23,8 @@ public class ComponentGuestOrderTotalPrice extends JPanel
 		// Set the layout of the outer panel to BorderLayout
 		setLayout(new BorderLayout());
 
-		// Make the panel background transparent
-		setOpaque(false());
+		// Make the background transparent
+		setOpaque(false);
 
 		// This line creates vertical spacing but does not add it to the layout – likely a mistake or leftover
 		Box.createRigidArea(new Dimension(0, 35));
