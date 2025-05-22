@@ -66,18 +66,7 @@ public class ViewGuestTableOrder extends JFrame
 	private void code() {
 		
 		//tableOrder code
-		try {
-			daoTO = new TableOrderDB();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		try {
-			currentTableOrder = daoTO.findTableOrderByTableOrderId(100009);
-		} catch (DataAccessException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		currentTableOrder = UtilityGuestInformation.getInstance().getTableOrder();
 		currentTableOrder.setTimeOfArrival(LocalDateTime.of(LocalDate.now(), LocalTime.of(16, 0)));
 		
 		//personalOrder code

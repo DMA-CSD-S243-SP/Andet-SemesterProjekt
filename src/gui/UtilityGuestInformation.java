@@ -145,4 +145,9 @@ public class UtilityGuestInformation
 			e.printStackTrace();
 		}
 	}
+	
+	public TableOrder getTableOrder()
+	{
+		return tableOrder;
+	}
 }
