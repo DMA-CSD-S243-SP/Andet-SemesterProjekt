@@ -110,20 +110,25 @@ public class ViewGuestUniversalMainMenu extends JFrame
 		// Code for showing functionality, despite broken fetch.
 		multipleChoiceMenus = new ArrayList<>();
 		MultipleChoiceMenu choice1 = new MultipleChoiceMenu("Size");
-		choice1.addSelectionOption(new SelectionOption("Small", "s", 0));
-		choice1.addSelectionOption(new SelectionOption("Medium", "m", 39));
-		choice1.addSelectionOption(new SelectionOption("Large", "l", 69));
+		choice1.addSelectionOption(new SelectionOption("Small", "size-small", 0));
+		choice1.addSelectionOption(new SelectionOption("Medium", "size-medium", 39));
+		choice1.addSelectionOption(new SelectionOption("Large", "size-large", 69));
 		multipleChoiceMenus.add(choice1);
 		MultipleChoiceMenu choice2 = new MultipleChoiceMenu("Doneness");
-		choice2.addSelectionOption(new SelectionOption("Rare", "too little", 0));
-		choice2.addSelectionOption(new SelectionOption("Well Done", "too much", 0));
-		choice2.addSelectionOption(new SelectionOption("Medium", "just right", 0));
+		choice2.addSelectionOption(new SelectionOption("Rare", "rare-done", 0));
+		choice2.addSelectionOption(new SelectionOption("Well Done", "well-done", 0));
+		choice2.addSelectionOption(new SelectionOption("Medium", "medium-done", 0));
 		multipleChoiceMenus.add(choice2);
 		
 		
 		multipleChoiceBoxes = new ArrayList<>();
-		for (MultipleChoiceMenu currentMenu : multipleChoiceMenus)
+		int size = multipleChoiceMenus.size();
+		// Collection iteration is controlled manually here.
+		// This is because the order in which they are added is important,
+		// as the index is used to fetch later.
+		for (int i = 0; i < size; i++)
 		{
+			MultipleChoiceMenu currentMenu = multipleChoiceMenus.get(i);
 			List<SelectionOption> options = currentMenu.getListOfSelectionOptions();
 			List<String> optionStrings = new ArrayList<>();
 			for (SelectionOption option: options)
@@ -141,8 +146,8 @@ public class ViewGuestUniversalMainMenu extends JFrame
 		//addOnOptions = mainCourse.getListOfAddOnOption();
 		
 		addOnOptions = new ArrayList<AddOnOption>();
-		addOnOptions.add(new AddOnOption("Garlic butter", "stinky", 10));
-		addOnOptions.add(new AddOnOption("No herbs", "herbless", 0));
+		addOnOptions.add(new AddOnOption("Garlic butter", "+garlic", 10));
+		addOnOptions.add(new AddOnOption("No herbs", "-herb", 0));
 		
 		addOnCheckBoxes = new ArrayList<>();
 		for (AddOnOption option: addOnOptions)
@@ -232,6 +237,8 @@ public class ViewGuestUniversalMainMenu extends JFrame
 	
 	private void enterBoxInfo()
 	{
+		// The options for the comboboxes are added in ascending index order.
+		// Hence the index of a given option
 		PotatoDish potatoDish = potatoDishes.get(potatoCombo.getIndex());
 		
 		List<SelectionOption> listOfSelectionOptionChoices = new ArrayList<>();
