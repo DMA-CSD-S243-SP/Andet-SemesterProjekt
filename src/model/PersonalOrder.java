@@ -193,11 +193,7 @@ public class PersonalOrder
 	 */
 	public void clearMenuItemLine()
 	{
-		// Dummy Code Block
-
-		/*
-		 * for(MenuItem menuItem : menuItemLine) { menuItemLine.remove(menuItem); }
-		 */
+		personalOrderLineList = new ArrayList<>();
 	}
 
 	/**
