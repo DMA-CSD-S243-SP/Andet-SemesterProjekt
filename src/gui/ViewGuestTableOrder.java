@@ -128,6 +128,7 @@ public class ViewGuestTableOrder extends JFrame
 		frameTheme.getPrimaryContentPanel().add(inputFieldAge);
 		*/
 		
+		TableOrder tableOrder = new TableOrder(UtilityGuestInformation.getInstance().getTableOrder().getTableOrderId());
 		for (PersonalOrder pO : personalOrderList) 
 		{
 			// adds the name of the customer whoes personalOrder it is 
@@ -135,11 +136,10 @@ public class ViewGuestTableOrder extends JFrame
 
 			// Adds the panel that holds the order information
 			primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 45)));
-			
-			currentTableOrder.addPersonalOrder(pO);
+			tableOrder.addPersonalOrder(pO);
 		}
 			// Adds vertical spacing before the next order
-			primaryContentPanel.add(new ComponentGuestOrderTotalPrice("Total Pris:", currentTableOrder.calculateTotalTableOrderPrice()));
+			primaryContentPanel.add(new ComponentGuestOrderTotalPrice("Total Pris:", tableOrder.calculateTotalTableOrderPrice()));
 		
 		
 		////////////////////////////////
