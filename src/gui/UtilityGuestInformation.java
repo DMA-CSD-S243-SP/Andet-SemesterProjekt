@@ -151,4 +151,9 @@ public class UtilityGuestInformation
 	{
 		return tableOrder;
 	}
+	
+	public void clearOrder()
+	{
+		personalOrderController.clearMenuItemList();
+	}
 }

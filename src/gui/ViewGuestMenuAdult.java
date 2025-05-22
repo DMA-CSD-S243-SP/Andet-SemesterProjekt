@@ -151,12 +151,7 @@ public class ViewGuestMenuAdult extends JFrame
 		// Adds an action listener for when the button is clicked
 		btnEmptyOrder.addActionListener(event ->
 		{
-			// TODO: Empty the current items from the personal order
-			
-			
-			
-			// Closes the current frame/window
-//			this.dispose();
+			UtilityGuestInformation.getInstance().clearOrder();
 		});
 		
 		
