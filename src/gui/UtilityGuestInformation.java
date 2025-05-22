@@ -139,6 +139,7 @@ public class UtilityGuestInformation
 		try
 		{
 			personalOrderController.finishPersonalOrder();
+			personalOrderController.clearMenuItemList();
 		} catch (DataAccessException e)
 		{
 			// TODO Auto-generated catch block
