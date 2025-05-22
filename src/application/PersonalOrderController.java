@@ -169,4 +169,9 @@ public class PersonalOrderController
 			throw new DataAccessException("Unable to insert Personalorder to PersonalOrderDB" , exception);
 		}
 	}
+	
+	public void clearMenuItemList()
+	{
+		personalOrder.clearMenuItemLine();
+	}
 }
