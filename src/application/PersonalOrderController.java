@@ -27,23 +27,13 @@ public class PersonalOrderController
 	//Attributes/instance variables
 	private MainCourse mainCourse; 
 	private PersonalOrder personalOrder; 
-	private Restaurant restaurant;
 	private TableOrder tableOrder;
 	private Table table;
-	
-	//Line: Attributes added by Line
-	private TableController tableController;
-	private MenuCardController menuCardController;
-	private PersonalOrderDB personalOrderDB;
 	
 	//Constructor
 	public PersonalOrderController()
 	{
-		// Creates a controller
-		tableController = new TableController();
-		menuCardController = new MenuCardController();
-
-		personalOrderDB = new PersonalOrderDB();
+		
 	}
 	
 	
@@ -64,6 +54,7 @@ public class PersonalOrderController
 		//Attempt to execute the code within the braces
 		try
 		{
+			TableController tableController = new TableController();
 			//Assigns to tableController instance to find a table by the given tableCode
 			table = tableController.findTableByCode(tableNumber, restaurantCode);
 			
@@ -104,6 +95,7 @@ public class PersonalOrderController
 	{
 		try
 		{
+			MenuCardController menuCardController = new MenuCardController();
 			//Adds all the discount object to personalOrder
 			personalOrder.addAllDiscounts(listOfDiscounts);	
 			
@@ -160,6 +152,7 @@ public class PersonalOrderController
 	{
 		try 
 		{
+			PersonalOrderDB personalOrderDB = new PersonalOrderDB();
 			//Insert personalOrder to PersonalOrderDB
 			if (!personalOrder.getPersonalOrderLines().isEmpty())
 			{
