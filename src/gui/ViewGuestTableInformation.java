@@ -3,10 +3,16 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.sql.SQLException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import application.TableOrderController;
+import database.DataAccessException;
 
 /**
  * TODO: Write a thorough description of this class and also java docs for the
@@ -37,13 +43,39 @@ public class ViewGuestTableInformation extends JFrame
 	boolean isServiceEnabled = false;
 
 	ComponentGuestInputField inputField;
+	
+    private ScheduledExecutorService scheduler;
+    
+    private TableOrderController tableOrderController;
 
 	/**
 	 * Create the frame.
 	 */
 	public ViewGuestTableInformation()
 	{
+		tableOrderController = new TableOrderController();
+		startKitchenCall();
 		initGUI();
+	}
+
+	private void startKitchenCall() 
+	{
+        scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.scheduleAtFixedRate(new Runnable() 
+        {
+        	@Override
+            public void run()
+            {
+        		System.out.println("works");
+        		try {
+					tableOrderController.findAllVisibleToKitchenTableOrders();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} catch (DataAccessException e) {
+					e.printStackTrace();
+				}
+            }
+        }, 0, 30, TimeUnit.SECONDS);
 	}
 
 	private void initGUI()
