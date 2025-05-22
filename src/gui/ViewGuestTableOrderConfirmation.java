@@ -8,6 +8,7 @@ import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import application.TableOrderController;
 import database.DataAccessException;
 import database.PersonalOrderDB;
 import database.PersonalOrderImpl;
@@ -43,6 +44,7 @@ public class ViewGuestTableOrderConfirmation extends JFrame
 	
 	private TableOrderImpl daoTO;
 	private PersonalOrderImpl daoPO;
+	private TableOrderController tableOrderController;
 	
 	private TableOrder currentTableOrder;
 	
@@ -58,6 +60,7 @@ public class ViewGuestTableOrderConfirmation extends JFrame
 			e.printStackTrace();
 		}
 		daoPO = new PersonalOrderDB();
+		tableOrderController = new TableOrderController();
 		this.currentTableOrder = currentTableOrder;
 		initGUI();
 	}
@@ -165,7 +168,7 @@ public class ViewGuestTableOrderConfirmation extends JFrame
 		// Adds an action listener for when the button is clicked
 		btnConfirm.addActionListener(event ->
 		{
-			// Creates the new frame that should be opened when pressing the button
+			tableOrderController.setIsSentTOKitchen(currentTableOrder);
 			try {
 				daoTO.updateTableOrder(currentTableOrder);
 			} catch (DataAccessException e) {
@@ -181,6 +184,7 @@ public class ViewGuestTableOrderConfirmation extends JFrame
 					e.printStackTrace();
 				}
 			}
+			// Creates the new frame that should be opened when pressing the button
 			ViewGuestOrderOverview nextView = new ViewGuestOrderOverview();
 
 			// Sets the visibility to true turning the previous view / window visible
