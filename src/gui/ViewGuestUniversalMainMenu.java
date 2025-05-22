@@ -260,6 +260,5 @@ public class ViewGuestUniversalMainMenu extends JFrame
 		}
 		
 		UtilityGuestInformation.getInstance().enterMainCourseOptions(potatoDish, listOfAddOnOptionChoices, listOfSelectionOptionChoices);
-		UtilityGuestInformation.getInstance().finishPersonalOrder();
 	}
 }
