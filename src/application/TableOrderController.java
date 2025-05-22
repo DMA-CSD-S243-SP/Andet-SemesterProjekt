@@ -29,7 +29,7 @@ public class TableOrderController
 	 * @throws SQLException
 	 * @throws DataAccessException 
 	 */
-	public void updateTableOrder(TableOrder tableOrder) throws SQLException, DataAccessException
+	public void confirmSendToKitchen(TableOrder tableOrder) throws SQLException, DataAccessException
 	{
 		TableOrderImpl dao = new TableOrderDB();
 		dao.updateTableOrder(tableOrder);
@@ -40,7 +40,7 @@ public class TableOrderController
 	 * 
 	 * @param tableOrder -  the given tabelOrder
 	 */
-	public void setIsSentTOKitchen(TableOrder tableOrder)
+	public void sendToKitchen(TableOrder tableOrder)
 	{
 		tableOrder.setSentToKitchen(true);
 	}

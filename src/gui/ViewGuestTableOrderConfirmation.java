@@ -168,7 +168,7 @@ public class ViewGuestTableOrderConfirmation extends JFrame
 		// Adds an action listener for when the button is clicked
 		btnConfirm.addActionListener(event ->
 		{
-			tableOrderController.setIsSentTOKitchen(currentTableOrder);
+			tableOrderController.sendToKitchen(currentTableOrder);
 			try {
 				daoTO.updateTableOrder(currentTableOrder);
 			} catch (DataAccessException e) {
