@@ -161,7 +161,10 @@ public class PersonalOrderController
 		try 
 		{
 			//Insert personalOrder to PersonalOrderDB
-			personalOrderDB.insertPersonalOrder(personalOrder, tableOrder.getTableOrderId());
+			if (!personalOrder.getPersonalOrderLines().isEmpty())
+			{
+				personalOrderDB.insertPersonalOrder(personalOrder, tableOrder.getTableOrderId());
+			}
 		}
 		catch (DataAccessException exception) 
 		{
