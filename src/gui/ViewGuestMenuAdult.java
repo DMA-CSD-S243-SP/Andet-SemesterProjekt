@@ -169,6 +169,7 @@ public class ViewGuestMenuAdult extends JFrame
 		// Adds an action listener for when the button is clicked
 		btnCompleteOrder.addActionListener(event ->
 		{
+			UtilityGuestInformation.getInstance().finishPersonalOrder();
 			// Creates the new frame that should be opened when pressing the button
 			ViewGuestTableOrder nextView = new ViewGuestTableOrder();
 
