@@ -151,8 +151,18 @@ public class ViewGuestMenuOverview extends JFrame
 		btnChildMenu.addActionListener(event ->
 		{
 			// TODO: Add functionality
-			btnChildMenu.setEnabled(false);
-			System.out.println("This feature has yet to be implemented.");
+			try
+			{
+				throw new UnsupportedOperationException("Junior menu not implemented.");
+			} catch (Exception e)
+			{
+				new ComponentGuestErrorDialog(this, 
+						"Følgende menu kort:",
+						"Børnemenu",
+						"Kunne ikke hentes"
+				);
+				e.printStackTrace();
+			}
 		});
 		
 		
@@ -178,6 +188,11 @@ public class ViewGuestMenuOverview extends JFrame
 				this.dispose();
 			} catch (Exception e)
 			{
+				new ComponentGuestErrorDialog(this, 
+						"Følgende menu kort:",
+						"Voksenmenu",
+						"Kunne ikke hentes"
+				);
 				e.printStackTrace();
 			} finally
 			{

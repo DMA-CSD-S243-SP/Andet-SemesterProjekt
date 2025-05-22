@@ -192,12 +192,6 @@ public class ViewGuestCustomerInformation extends JFrame
 				if (age > 200 || age < 0)
 				{
 					// Creates a dialog box, with the "Ok" option, containing a specific and detailed error message
-					new ComponentGuestErrorDialog(this, 
-							"Følgende er ikke udfyldt korrekt:",
-							"Alder",
-							"Alderen skal være over 0 og under 200."
-					);
-					
 					throw new IllegalArgumentException("Age can't exceed 200, or fall below 0");
 				}
 				
@@ -218,7 +212,14 @@ public class ViewGuestCustomerInformation extends JFrame
 				// Closes the current frame/window
 				this.dispose();
 			}
-			
+			catch (IllegalArgumentException ie)
+			{
+				new ComponentGuestErrorDialog(this, 
+						"Følgende er ikke udfyldt korrekt:",
+						"Alder",
+						"Alderen skal være over 0 og under 200."
+				);
+			}
 			catch (Exception exception)
 			{
 				exception.printStackTrace();

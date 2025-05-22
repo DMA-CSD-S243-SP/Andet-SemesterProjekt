@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.sql.SQLException;
 
 import javax.swing.Box;
 import javax.swing.JFrame;
@@ -118,13 +119,7 @@ public class ViewGuestTableInformation extends JFrame
 				// If the tableCode's length is anything else than 7 digits long then execute this section
 				if (tableCode.length() != 7)
 				{
-					// Creates a dialog box, with the "Ok" option, containing a specific and detailed error message
-					new ComponentGuestErrorDialog(this, 
-							"Følgende er ikke udfyldt korrekt:",
-							"Bordnummer",
-							"Feltet skal indeholde 7 tal."
-					);
-					
+					// Creates a dialog box, with the "Ok" option, containing a specific and detailed error message			
 					throw new IllegalArgumentException("Invalid table code");
 				}
 				
@@ -146,9 +141,22 @@ public class ViewGuestTableInformation extends JFrame
 				// Closes the current frame/window
 				this.dispose();
 			}
-			
+			catch (IllegalArgumentException ie)
+			{
+				new ComponentGuestErrorDialog(this, 
+						"Følgende er ikke udfyldt korrekt:",
+						"Bordnummer",
+						"Indtast et gyldigt bordnummer (7 cifre)"
+				);
+				ie.printStackTrace();
+			}
 			catch (Exception exception)
 			{
+				new ComponentGuestErrorDialog(this, 
+						"Der skete en uventet fejl:",
+						"",
+						"Prøv igen."
+				);
 				exception.printStackTrace();
 			}
 			
