@@ -223,7 +223,7 @@ VALUES							  (@Fries, @Elvis_AdultLunchMenu, 1),
 								  (@WhiskeySauce, @Elvis_AdultLunchMenu, 1),
 								  (@Aioli, @Elvis_AdultLunchMenu, 1),
 								  (@Spareribs, @Elvis_AdultLunchMenu, 1),
-								  (@BigBoyBurger, @Elvis_AdultLunchMenu, 1);
+								  (@BigBoyBurger, @Elvis_AdultLunchMenu, 0);
 
 --   Historic TableOrderData
 INSERT INTO [TableOrder]	(timeOfArrival, isTableOrderClosed, paymentType, totalTableOrderPrice, 
