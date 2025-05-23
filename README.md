@@ -10,6 +10,12 @@ DMA-CSD-S243 Gruppe 2
 
 
 # Anvendelse
+Der gøres opmærksom på at du som bruger, under testningen af softwareløsningen bør gøre følgende:
+- Bør åbne programmet
+- Foretage dine udfyldninger
+- Derefter lukke programmet
+- Starte programmet op igen og påbegynde ny session for at simulere at flere enheder er i brug i forbindelse med bestillingsprocessen
+
 Når programmet eksekveres, bliver du bedt om at udfylde en bordkode.
 Der er på nuværende tidspunkt oprettet test data til at understøtte følgende bordkoder, som har indholdet beskrevet nedenfor:
 
@@ -27,3 +33,4 @@ Der er på nuværende tidspunkt oprettet test data til at understøtte følgende
 - 0030001
 - 0030002
 - 0030003
+
