@@ -14,7 +14,7 @@ import javax.swing.JPanel;
  * 
  * 
  * @author Christoffer Søndergaard
- * @version 20/05/2025 - 13:45
+ * @version 23/05/2025 - 09:10
  */	
 public class ViewGuestOrderOverview extends JFrame
 {
@@ -149,7 +149,7 @@ public class ViewGuestOrderOverview extends JFrame
 		btnCreateNewOrder.addActionListener(event ->
 		{
 			// Creates the new frame that should be opened when pressing the button
-			ViewGuestOrderMoreLater nextView = new ViewGuestOrderMoreLater();
+			ViewGuestOrderMore nextView = new ViewGuestOrderMore();
 
 			// Sets the visibility to true turning the previous view / window visible
 			nextView.setVisible(true);
