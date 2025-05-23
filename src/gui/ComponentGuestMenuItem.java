@@ -138,12 +138,12 @@ public class ComponentGuestMenuItem extends JPanel
 
 		// Add text panel to the center of the layout
 		this.add(textPanel, BorderLayout.CENTER);
-
+		
 		// Add right-side panel (price + button) to the right of the layout
 		this.add(rightPanel, BorderLayout.EAST);
 
 		// Add bottom padding to separate from other components
-		this.setBorder(new EmptyBorder(0, 0, 20, 0));
+		//this.setBorder(new EmptyBorder(0, 0, 20, 0));
 	}
 
 	/**
