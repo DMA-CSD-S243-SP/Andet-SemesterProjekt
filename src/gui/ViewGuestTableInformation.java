@@ -66,7 +66,6 @@ public class ViewGuestTableInformation extends JFrame
         	@Override
             public void run()
             {
-        		System.out.println("works");
         		try {
 					tableOrderController.findAllVisibleToKitchenTableOrders();
 				} catch (SQLException e) {
