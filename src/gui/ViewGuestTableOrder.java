@@ -1,7 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;import java.net.SecureCacheResponse;
+import java.awt.Dimension;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 import database.DataAccessException;
 import database.PersonalOrderDB;
 import database.PersonalOrderImpl;
-import database.TableOrderDB;
 import database.TableOrderImpl;
 import model.PersonalOrder;
 import model.TableOrder;
@@ -28,7 +27,7 @@ import model.TableOrder;
  * 
  * 
  * @author Christoffer Søndergaard & Anders Trankjær
- * @version 21/05/2025 - 14:30
+ * @version 23/05/2025 - 09:03
  */	
 public class ViewGuestTableOrder extends JFrame
 {
@@ -202,14 +201,35 @@ public class ViewGuestTableOrder extends JFrame
 		// Adds an action listener for when the button is clicked
 		btnOrderMore.addActionListener(event ->
 		{
-			// Creates the new frame that should be opened when pressing the button
-			ViewGuestOrderMore nextView = new ViewGuestOrderMore();
-
-			// Sets the visibility to true turning the previous view / window visible
-			nextView.setVisible(true);
+			// TODO: Add functionality
+			try
+			{
+				throw new UnsupportedOperationException("Bestil Mere is not implemented.");
+			}
 			
-			// Closes the current frame/window
-			this.dispose();
+			catch (Exception exception)
+			{
+				new ComponentGuestErrorDialog(this, 
+						"Følgende feature",
+						"Bestil mere",
+						"Er endnu ikke integreret i systemet"
+				);
+				
+				exception.printStackTrace();
+			}
+			
+			finally
+			{
+				// Creates the new frame that should be opened when pressing the button
+//				ViewGuestOrderMore nextView = new ViewGuestOrderMore();
+				ViewGuestMenuAdult nextView = new ViewGuestMenuAdult();
+
+				// Sets the visibility to true turning the previous view / window visible
+				nextView.setVisible(true);
+				
+				// Closes the current frame/window
+				this.dispose();				
+			}
 		});
 		
 		
