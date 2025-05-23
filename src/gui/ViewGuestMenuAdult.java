@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.util.List;
 
 import javax.swing.Box;
@@ -175,10 +176,19 @@ public class ViewGuestMenuAdult extends JFrame
 			this.dispose();
 		});
 		
-		// TODO: This is a dirty fix for displaying the graphical user interface
+		// TODO: This is a very dirty fix for displaying the graphical user interface
         //          contents without spending too much time on adjusting them, this 
         //         would be added to the backlog and revisited in a later iteration.
-        setSize(580, 822);
+        //
+		
+		// Gets the screen size
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		
+		// Changes the size of the to the specified screen size
+		setSize(screenSize);
+		
+		// Changes the view / window's position to the middle of the screen
+		setLocationRelativeTo(null);
 	}
 	
 	private void openUniversalMainMenu()
