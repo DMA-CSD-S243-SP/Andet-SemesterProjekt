@@ -16,9 +16,12 @@ import java.util.List;
  */
 public class MainCourse extends MenuItem
 {
+	//Attributes/Instance variables
 	private String introductionDescription;
 	private double lunchPrice;
 	private double eveningPrice;
+	
+	//Lists
 	private List<MultipleChoiceMenu> listOfMultipleChoiceMenus;
 	private List<AddOnOption> listOfAddOnOptions;
 
@@ -33,15 +36,24 @@ public class MainCourse extends MenuItem
 	public MainCourse(String introductionDescription, double lunchPrice, double eveningPrice) 
 	{
 		super();
-
+		
+		//Set the variables for this instance of mainCourse 
 		this.introductionDescription = introductionDescription;
 		this.lunchPrice = lunchPrice;
 		this.eveningPrice = eveningPrice;
+		
+		//Instantiates the list of multiple choices and the list of add on options
 		listOfMultipleChoiceMenus = new ArrayList<MultipleChoiceMenu>();
 		listOfAddOnOptions = new ArrayList<AddOnOption>();
 	}
 
 	/**
+	 * The get method returns the value of the variable introductionDescription 
+	 * 
+	 * The introductionDescription, is not the same as description in the abstract class MenuItem
+	 * description is a short overview of the mainCourse, but when the customer choose an mainCourse
+	 * a frame/window will appear showing another description which is this introductionDescription.  
+	 * 
 	 * @return introductionDescription
 	 */
 	public String getIntroductionDescription() 
@@ -50,14 +62,22 @@ public class MainCourse extends MenuItem
 	}
 
 	/**
-	 * @param newIntroductionDescription the new introductiondescription to be set
+	 * The set method takes a parameter introductionDescription and assigns it to the 
+	 * this.introductionDescription variable
+	 * 
+	 * @param introductionDescription the new this.introductionDescription to be set
 	 */
-	public void setIntroductionDescription(String newIntroductionDescription) 
+	public void setIntroductionDescription(String introductionDescription) 
 	{
-		this.introductionDescription = newIntroductionDescription;
+		this.introductionDescription = introductionDescription;
 	}
 
 	/**
+	 * The get method returns the value of the variable lunchPrice
+	 * 
+	 * Every Bone's main course has a lunch price, and this method
+	 * access the lunch price of the instance of main course
+	 * 
 	 * @return lunchPrice
 	 */
 	public double getLunchPrice() 
@@ -66,14 +86,22 @@ public class MainCourse extends MenuItem
 	}
 
 	/**
+	 * The set method takes a parameter lunchPrice and assigns it to the 
+	 * this.lunchPrice variable
+	 * 
 	 * @param newLunchPrice the new lunchPrice to be set
 	 */
-	public void setLunchPrice(double newLunchPrice) 
+	public void setLunchPrice(double lunchPrice) 
 	{
-		this.lunchPrice = newLunchPrice;
+		this.lunchPrice = lunchPrice;
 	}
 
 	/**
+	 * The get method returns the value of the variable eveningPrice
+	 * 
+	 * Every Bone's main course has a evening price, and this method
+	 * access the evening price of the instance of main course
+	 * 
 	 * @return eveningPrice
 	 */
 	public double getEveningPrice() 
@@ -82,11 +110,14 @@ public class MainCourse extends MenuItem
 	}
 
 	/**
-	 * @param newEveningPrice the new eveningPrice to be set
+	 * The set method takes a parameter eveningPrice and assigns it to the 
+	 * this.eveningPrice variable
+	 * 
+	 * @param eveningPrice the new eveningPrice to be set
 	 */
-	public void setEveningPrice(double newEveningPrice) 
+	public void setEveningPrice(double eveningPrice) 
 	{
-		this.eveningPrice = newEveningPrice;
+		this.eveningPrice = eveningPrice;
 	}
 
 	/**
@@ -111,12 +142,19 @@ public class MainCourse extends MenuItem
 	}
 
 	/**
+	 * gets the list of MultipleChoicMenus
+	 * 
 	 * @return a list of all the objects inside ListOfMultipleChoiceMenus
 	 */
 	public List<MultipleChoiceMenu> getListOfMultipleChoiceMenu() 
 	{
+		//Create an empty instance of multipleChoiceMenu called returnList that holds
 		List<MultipleChoiceMenu> returnList = new ArrayList<MultipleChoiceMenu>();
+		
+		//Add all the instance of MultipleChoiceMenu into returnList variable
 		returnList.addAll(listOfMultipleChoiceMenus);
+		
+		//returns the list of MultipleChoiceMenu
 		return returnList;
 	}
 
@@ -145,8 +183,13 @@ public class MainCourse extends MenuItem
 	 */
 	public List<AddOnOption> getListOfAddOnOption() 
 	{
+		//Create an empty instance of AddOnOption called returnList that holds
 		List<AddOnOption> returnList = new ArrayList<AddOnOption>();
+		
+		//Add all the instance of AddOnOptions into returnList variable
 		returnList.addAll(listOfAddOnOptions);
+		
+		//returns the list of addOnOptions
 		return returnList;
 	}
 }
