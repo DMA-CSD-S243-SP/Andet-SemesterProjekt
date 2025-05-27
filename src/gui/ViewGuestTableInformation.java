@@ -58,22 +58,43 @@ public class ViewGuestTableInformation extends JFrame
 		initGUI();
 	}
 
+	/**
+	 * Starts a scheduled task that runs every 30 seconds
+	 * to fetch table orders visible to the kitchen.
+	 */
 	private void startKitchenCall() 
 	{
-        scheduler = Executors.newSingleThreadScheduledExecutor();
+        //Creates a single thread to run a repeating task
+		scheduler = Executors.newSingleThreadScheduledExecutor();
+		
+		//Plans a task, that runs on a async interval 
+		//Starts at 0 and afterwards run every 30 sec.
         scheduler.scheduleAtFixedRate(new Runnable() 
         {
+        	//This method runs at a planned interval 
         	@Override
             public void run()
             {
-        		try {
-					tableOrderController.findAllVisibleToKitchenTableOrders();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				} catch (DataAccessException e) {
-					e.printStackTrace();
+        		try 
+        		{
+					//Tries to get all tableOrders, which are visble to kitchen
+        			tableOrderController.findAllVisibleToKitchenTableOrders();
+				} 
+        		
+        		catch (SQLException exception) 
+        		{
+        			// If a SQL error occurs while retrieving table orders, print the exception
+        			exception.printStackTrace();
+				} 
+        		
+        		catch (DataAccessException exception) 
+        		{
+        			// If a SQL error occurs while retrieving table orders, print the exception
+        			exception.printStackTrace();
 				}
             }
+        
+        	//0 = start at once, 30 = interval, TimeUnit = seconds
         }, 0, 30, TimeUnit.SECONDS);
 	}
 
