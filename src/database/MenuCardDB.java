@@ -64,9 +64,11 @@ public class MenuCardDB implements MenuCardImpl
 		try
 		{
 			databaseConnection.setAutoCommit(false);
-			// Reading MenuCards happens thousands of times per day. However it occurs almost exclusively during business
-			// hours, and updating happens rarely, and can usually be scheduled.
+			
+			// Reading MenuCards happens thousands of times per day. However it occurs almost exclusively during
+			// business hours, and updating happens rarely, and can usually be scheduled, which is why we use read uncommitted.
 			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+			
 			// Prepare a SQL statement to retrieve all employees
 			statementFindByRestaurantCode = databaseConnection.prepareStatement(FIND_MENUCARDS_BY_RESTAURANTCODE_QUERY);
 			statementFindByRestaurantCode.setString(1, restaurantCode);
@@ -75,14 +77,16 @@ public class MenuCardDB implements MenuCardImpl
 			ResultSet resultSet = statementFindByRestaurantCode.executeQuery();
 
 			// Converts the result set into a list of Employee objects
-			List<MenuCard> resultListOfMenuCards = buildMenuCardObjects(resultSet);
+			List<MenuCard> availableMenuCards = buildMenuCardObjects(resultSet);
 
 			
 			databaseConnection.commit();
 			databaseConnection.setAutoCommit(true);
+			
 			// Returns the list of Employee objects
-			return resultListOfMenuCards;
+			return availableMenuCards;
 		}
+		
 		catch (SQLException exception)
 		{
 			databaseConnection.rollback();
@@ -103,21 +107,25 @@ public class MenuCardDB implements MenuCardImpl
 	private MenuCard buildMenuCardObject(ResultSet resultSet) throws SQLException
 	{
 		// Creates a MenuCard object stored within the menuCard variable based off of the method's provided resultSet
-		MenuCard menuCard = new MenuCard(
-				resultSet.getString("name")
-				);
+		MenuCard menuCard = new MenuCard(resultSet.getString("name"));
+		
 		int menuCardId = resultSet.getInt("menuCardId");
+		
 		try
 		{
-			List<AvailabilityTracker> trackers = findAvailabilityTrackersByMenuCardId(menuCardId);
-			for (AvailabilityTracker tracker: trackers)
+			List<AvailabilityTracker> availabilityTrackers = findAvailabilityTrackersByMenuCardId(menuCardId);
+			for (AvailabilityTracker availabilityTracker: availabilityTrackers)
 			{
-				menuCard.addAvailabilityTracker(tracker);
+				menuCard.addAvailabilityTracker(availabilityTracker);
 			}
 			
-		} catch (DataAccessException e) {
+		}
+		
+		catch (DataAccessException e)
+		{
 			throw new SQLException("Unable to find trackers with given menuCardId");
 		}
+		
 		return menuCard;
 	}
 	
@@ -137,7 +145,7 @@ public class MenuCardDB implements MenuCardImpl
 		// Iterates through the result set while there are still more rows in the database's table
 		while (resultSet.next())
 		{
-			// Converts each row into a MenuCard object and add it to the list
+			// Converts each row into a MenuCard object and add it to the list of MenuCard objects
 			// by using the buildMenuCardObject method
 			menuCards.add(buildMenuCardObject(resultSet));
 		}
@@ -202,19 +210,24 @@ public class MenuCardDB implements MenuCardImpl
 	private AvailabilityTracker buildAvailabilityTrackerObject(ResultSet resultSet) throws SQLException
 	{
 		// Creates a AvailabilityTracker object stored within the availabilityTracker variable based off of the method's provided resultSet
-		AvailabilityTracker availabilityTracker = new AvailabilityTracker(
-				resultSet.getBoolean("isAvailable")			
-				);
+		AvailabilityTracker availabilityTracker = new AvailabilityTracker(resultSet.getBoolean("isAvailable"));
+		
 		MenuItem menuItem = null;
+		
 		int menuItemId = resultSet.getInt("menuItemId");
+		
 		try
 		{
 			menuItem = new MenuItemDB().findMenuItemByMenuItemId(menuItemId);
-		} catch (DataAccessException e)
+		}
+		
+		catch (DataAccessException e)
 		{
 			e.printStackTrace();
 		}
+		
 		availabilityTracker.setMenuItem(menuItem);
+		
 		return availabilityTracker;
 	}
 }
