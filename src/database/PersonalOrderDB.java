@@ -185,6 +185,10 @@ public class PersonalOrderDB implements PersonalOrderImpl
 		return personalOrderLine;
 	}
 
+	/**
+	 * The method is use in ViewGuesTableOrderConfirmation in gui layer
+	 * to insert a personalOrder that is listed in the currentTableOrder
+	 */
 	@Override
 	public PersonalOrder insertPersonalOrder(PersonalOrder personalOrder, int tableOrderId) throws DataAccessException
 	{
