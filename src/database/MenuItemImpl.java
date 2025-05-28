@@ -54,7 +54,7 @@ public interface MenuItemImpl
      * @throws DataAccessException if there is an issue accessing the data
 	 * @throws SQLException 
      */
-	List<SelectionOption> findSelectionsOptionByChoiceMenuId(int mainCourseId) throws DataAccessException, SQLException;
+	List<SelectionOption> findSelectionOptionsByChoiceMenuId(int mainCourseId) throws DataAccessException, SQLException;
 	
 	/**
      * Method creates a shallow clone of the addOnOption that has the given unique ID. 

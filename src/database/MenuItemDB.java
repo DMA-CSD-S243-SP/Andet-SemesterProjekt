@@ -472,7 +472,7 @@ public class MenuItemDB implements MenuItemImpl
 			);		
 		try
 		{
-			List<SelectionOption> selectionOptions = findSelectionsOptionByChoiceMenuId(resultSet.getInt("choiceMenuId"));
+			List<SelectionOption> selectionOptions = findSelectionOptionsByChoiceMenuId(resultSet.getInt("choiceMenuId"));
 			for (SelectionOption option: selectionOptions)
 			{
 				multipleChoiceMenu.addSelectionOption(option);
@@ -498,7 +498,7 @@ public class MenuItemDB implements MenuItemImpl
 
 	 */
 	@Override
-	public List<SelectionOption> findSelectionsOptionByChoiceMenuId(int choiceMenuId) throws DataAccessException, SQLException
+	public List<SelectionOption> findSelectionOptionsByChoiceMenuId(int choiceMenuId) throws DataAccessException, SQLException
 	{
 		// Gets a connection to the database
 		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
