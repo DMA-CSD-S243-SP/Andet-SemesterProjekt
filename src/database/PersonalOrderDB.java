@@ -55,8 +55,7 @@ public class PersonalOrderDB implements PersonalOrderImpl
 	}
 
 	/**
-	 * Finds a PersonaOrder object by searching for a PersonalOrder with a matching
-	 * Id.
+	 * Retrieves a PersonalOrder from the database using the given ID.
 	 * 
 	 * @param personalOrderId the id of the personalOrderId to search for
 	 * @return the corresponding PersonaOrder object, or null if not found
@@ -69,8 +68,10 @@ public class PersonalOrderDB implements PersonalOrderImpl
 		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
 		try
 		{
+			// Ensure consistent read during the operation
 			databaseConnection.setAutoCommit(false);
 			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+			
 			// Prepares a SQL statement to find and retrieve an PersonalOrder with a
 			// matching personalOrderId
 			statementFindByPersonalOrderId = databaseConnection
@@ -108,8 +109,11 @@ public class PersonalOrderDB implements PersonalOrderImpl
 			try
 			{
 				databaseConnection.setAutoCommit(true);
-			} catch (SQLException e)
+			} 
+			
+			catch (SQLException e)
 			{
+				
 			}
 			// If an SQL error occurs a custom exception is thrown with the specified
 			// details
@@ -145,6 +149,13 @@ public class PersonalOrderDB implements PersonalOrderImpl
 		return personalOrder;
 	}
 
+	/**
+	 * The method is being used by buildPersonalOrderObject
+	 * 
+	 * @param personalOrderLineId
+	 * @return
+	 * @throws DataAccessException
+	 */
 	private List<PersonalOrderLine> findPersonalOrderLinesByPersonalOrderLineId(int personalOrderLineId)
 			throws DataAccessException
 	{
@@ -156,11 +167,14 @@ public class PersonalOrderDB implements PersonalOrderImpl
 					.prepareStatement(FIND_PERSONALORDERLINES_BY_PERSONALORDERID_QUERY);
 			statementFindLinesByPersonalOrderId.setInt(1, personalOrderLineId);
 			ResultSet lineResult = statementFindLinesByPersonalOrderId.executeQuery();
+			
 			while (lineResult.next())
 			{
 				lineList.add(buildPersonalOrderLineObject(lineResult));
 			}
-		} catch (SQLException e)
+		} 
+		
+		catch (SQLException e)
 		{
 		}
 		return lineList;
@@ -216,15 +230,21 @@ public class PersonalOrderDB implements PersonalOrderImpl
 
 			databaseConnection.commit();
 			databaseConnection.setAutoCommit(true);
-		} catch (SQLException e)
+		} 
+		
+		catch (SQLException e)
 		{
 			e.printStackTrace();
+			
 			try
 			{
 				databaseConnection.rollback();
 				databaseConnection.setAutoCommit(true);
-			} catch (SQLException rollbackException)
+			} 
+			
+			catch (SQLException rollbackException)
 			{
+				
 			}
 			throw new DataAccessException("Failed to insert PersonalOrder", e);
 		}
@@ -232,8 +252,10 @@ public class PersonalOrderDB implements PersonalOrderImpl
 		return personalOrder;
 	}
 
-	private void insertPersonalOrderLines(List<PersonalOrderLine> personalOrderLines, int personalOrderId)
-			throws SQLException
+	/**
+	 *This method is being used by insertPersonalOrder
+	 */
+	private void insertPersonalOrderLines(List<PersonalOrderLine> personalOrderLines, int personalOrderId) throws SQLException
 	{
 		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
 		statementInsertPersonalOrderLine = databaseConnection.prepareStatement(INSERT_PERSONALORDERLINE);
@@ -250,6 +272,7 @@ public class PersonalOrderDB implements PersonalOrderImpl
 		}
 		statementInsertPersonalOrderLine.executeBatch();
 	}
+	
 
 	/**
 	 * The method is use in ViewGuesTableOrder in gui layer
