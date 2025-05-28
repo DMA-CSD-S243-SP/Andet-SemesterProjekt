@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -208,21 +210,27 @@ public class TableOrderDB implements TableOrderImpl
      */
 	private TableOrder buildTableOrderObject(ResultSet resultSet) throws SQLException
 	{
-		// Creates a AddOnOption object stored within the addOnOption variable based off of the method's provided resultSet
-		TableOrder tableOrder = new TableOrder(
-				resultSet.getInt("tableOrderId")
-				);		
-		
-		tableOrder.setTableOrderClosed(resultSet.getBoolean("isTableOrderClosed"));
-		tableOrder.setPaymentType(resultSet.getString("paymentType"));
-		tableOrder.setTotalAmountPaid(resultSet.getDouble("totalAmountPaid"));
-		tableOrder.setSentToKitchen(resultSet.getBoolean("isSentToKitchen"));
-		tableOrder.setRequestingService(resultSet.getBoolean("isRequestingService"));
-		tableOrder.setOrderPreparationTime(resultSet.getInt("orderPreparationTime"));
-		
-		return tableOrder;	
-	}
+		// Retrieves the SQL Timestamp object from the "timeOfArrival" column in the supplied result set
+		Timestamp timeOfArrivalTimeStamp = resultSet.getTimestamp("timeOfArrival");
 
+		// Creates an instance of LocalDateTime and sets it to null, this will later hold a converted date-time value
+		LocalDateTime timeOfArrivalLocalDate = null;
+
+		// If the timestamp that is retrieved from the database is not null then execute this section
+		if (timeOfArrivalTimeStamp != null)
+		{
+		    // Converts the SQL Timestamp to a LocalDateTime and stores it within the timeOfArrivalLocalDate variable
+		    timeOfArrivalLocalDate = timeOfArrivalTimeStamp.toLocalDateTime();
+		}
+		
+		// Creates a TableOrder object with the data that was retrieved from the database
+		TableOrder tableOrder = new TableOrder(resultSet.getInt("tableOrderId"), timeOfArrivalLocalDate, resultSet.getBoolean("isTableOrderClosed"),
+				resultSet.getString("paymentType"), resultSet.getDouble("totalTableOrderPrice"), resultSet.getDouble("totalAmountPaid"),
+				resultSet.getBoolean("isSentToKitchen"), resultSet.getBoolean("isRequestingService"), resultSet.getInt("orderPreparationTime"));
+		
+		return tableOrder;
+	}
+	
 
 	@Override
 	public void updateTableOrder(TableOrder tableOrder) throws DataAccessException 
