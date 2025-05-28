@@ -54,7 +54,6 @@ public class TableOrder
 	 * @param isRequestingService whether the table has requested service
 	 * @param orderPreparationTime the estimated time in seconds that the preparation of the food will take
 	 */
-	 */
 	public TableOrder(int tableOrderId, LocalDateTime timeOfArrival, boolean isTableOrderClosed, String paymentType, double totalTableOrderPrice, double totalAmountPaid, boolean isSentToKitchen, boolean isRequestingService, int orderPreparationTime)
 	{
 		this.tableOrderId = tableOrderId;
