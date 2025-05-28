@@ -247,8 +247,12 @@ public class PersonalOrderDB implements PersonalOrderImpl
 		statementInsertPersonalOrderLine.executeBatch();
 	}
 
+	/**
+	 * The method is use in ViewGuesTableOrder in gui layer
+	 * to find all personalOrders that is listed in the currentTableOrder
+	 */
 	@Override
-	public List<PersonalOrder> findPersonalOrderBytableOrderId(int TableOrderId) throws SQLException, DataAccessException 
+	public List<PersonalOrder> findPersonalOrdersBytableOrderId(int TableOrderId) throws SQLException, DataAccessException 
 	{
 		// Gets a connection to the database
 				Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
