@@ -60,6 +60,7 @@ public class ViewGuestTableOrder extends JFrame
 	 */
 	public ViewGuestTableOrder()
 	{
+		personalController = new PersonalOrderController();
 		personalOrderList = new ArrayList<PersonalOrder>();
 		code();
 		initGUI();
@@ -133,8 +134,7 @@ public class ViewGuestTableOrder extends JFrame
 		*/
 		
 		// makes a dummyTableOrder which for the purpose of calculating totalPrice 
-		TableOrder dummyTableOrder = new TableOrder(currentTableOrder.getTableOrderId());
-		dummyTableOrder.setTimeOfArrival(currentTableOrder.getTimeOfArrival());
+		TableOrder dummyTableOrder = new TableOrder(currentTableOrder.getTableOrderId(), currentTableOrder.getTimeOfArrival(), false, "not decided", 0, 0, false, false, 0);
 		//this loop displays each personalOrder from the currentTableOrder
 		for (PersonalOrder pO : personalOrderList) 
 		{

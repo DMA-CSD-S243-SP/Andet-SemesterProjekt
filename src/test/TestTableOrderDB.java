@@ -29,17 +29,7 @@ public class TestTableOrderDB
     @Test
     public void testUpdateTableOrder() throws Exception {
         // Step 1: Create a TableOrder object with known tableId that already exists
-        TableOrder tableOrder = new TableOrder(100009); 
-
-        // Step 2: Set updated values
-        tableOrder.setTimeOfArrival(LocalDateTime.now());
-        tableOrder.setTableOrderClosed(true);
-        tableOrder.setPaymentType("CARD");
-        tableOrder.setTotalAmountPaid(200.0);
-        tableOrder.setSentToKitchen(true);
-        tableOrder.setRequestingService(false);
-        tableOrder.setOrderPreparationTime(15);
-
+        TableOrder tableOrder = new TableOrder(100009, LocalDateTime.now(), true, "CARD", 0, 200, true, false, 15); 
 
         // Step 3: Call the method
         tableOrderDB.updateTableOrder(tableOrder);
