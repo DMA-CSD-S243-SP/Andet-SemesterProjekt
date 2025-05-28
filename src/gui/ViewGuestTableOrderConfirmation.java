@@ -8,6 +8,7 @@ import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import application.PersonalOrderController;
 import application.TableOrderController;
 import database.DataAccessException;
 import database.PersonalOrderDB;
@@ -45,6 +46,7 @@ public class ViewGuestTableOrderConfirmation extends JFrame
 	private TableOrderImpl daoTO;
 	private PersonalOrderImpl daoPO;
 	private TableOrderController tableOrderController;
+	private PersonalOrderController personalnOrderController;
 	
 	private TableOrder currentTableOrder;
 	
@@ -170,23 +172,39 @@ public class ViewGuestTableOrderConfirmation extends JFrame
 		{
 			//preps the tableOrder for being send to the kitchen 
 			tableOrderController.sendToKitchen(currentTableOrder);
-			try {
-				//updates a tableOrder in the database.
-				tableOrderController.confirmSendToKitchen(currentTableOrder);
-			} catch (DataAccessException e) {
-				e.printStackTrace();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			//this loop inserts all the PersonalOrders from the tableOrder
-			for (PersonalOrder pList : currentTableOrder.getPersonalOrders())
+
+			try
 			{
-				try {
-					daoPO.insertPersonalOrder(pList, currentTableOrder.getTableOrderId());
-				} catch (DataAccessException e) {
+				//updates a tableOrder in the database.
+				tableOrderController.updateTableOrder(currentTableOrder);
+			} 
+			
+			//DataAccessException is thrown in TableOrderController
+			catch (DataAccessException exception) 
+			{
+				exception.printStackTrace();
+			} 
+			
+			//SQLException is thrown in TableOrderController
+			catch (SQLException exception) 
+			{
+				exception.printStackTrace();
+			}
+			
+			//this loop inserts all the PersonalOrders from the tableOrder
+			for (PersonalOrder personalOrderList : currentTableOrder.getPersonalOrders())
+			{
+				try 
+				{
+					daoPO.insertPersonalOrder(personalOrderList, currentTableOrder.getTableOrderId());
+				} 
+				
+				catch (DataAccessException e) 
+				{
 					e.printStackTrace();
 				}
 			}
+			
 			// Creates the new frame that should be opened when pressing the button
 			ViewGuestOrderOverview nextView = new ViewGuestOrderOverview();
 
