@@ -188,7 +188,7 @@ public class PersonalOrderController
 	{
 		List<PersonalOrder> returnList = new ArrayList<PersonalOrder>();
 		PersonalOrderImpl personalOrderDB = new PersonalOrderDB();
-		returnList.addAll(personalOrderDB.findPersonalOrderBytableOrderId(TableOrderId));
+		returnList.addAll(personalOrderDB.findPersonalOrdersBytableOrderId(TableOrderId));
 		return returnList;
 	}
 }
