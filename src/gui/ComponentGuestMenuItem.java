@@ -16,11 +16,11 @@ import javax.swing.border.*;
 public class ComponentGuestMenuItem extends JPanel
 {
 	private JButton btnAdd;
-	private model.MainCourse mainCourse;
+	private model.MenuItem menuItem;
 
-	public ComponentGuestMenuItem(model.MainCourse menuItem)
+	public ComponentGuestMenuItem(model.MenuItem menuItem)
 	{
-		mainCourse = menuItem;
+		this.menuItem = menuItem;
 		// Set layout manager to BorderLayout for this component
 		this.setLayout(new BorderLayout());
 
@@ -155,8 +155,8 @@ public class ComponentGuestMenuItem extends JPanel
 		return btnAdd;
 	}
 	
-	public model.MainCourse getMainCourse()
+	public model.MenuItem getMenuItem()
 	{
-		return mainCourse;
+		return menuItem;
 	}
 }

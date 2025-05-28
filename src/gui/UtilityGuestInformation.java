@@ -6,12 +6,16 @@ import java.util.List;
 import application.PersonalOrderController;
 import database.DataAccessException;
 import model.AddOnOption;
+import model.DipsAndSauces;
 import model.Discount;
+import model.Drink;
 import model.MainCourse;
 import model.MenuCard;
 import model.MenuItem;
 import model.PotatoDish;
 import model.SelectionOption;
+import model.SelfServiceBar;
+import model.SideDish;
 import model.Table;
 import model.TableOrder;
 
@@ -118,6 +122,62 @@ public class UtilityGuestInformation
 		return potatoDishes;
 	}
 	
+	public List<MenuItem> getDrinks(MenuCard menuCard)
+	{
+		List<MenuItem> drinks = new ArrayList<>();
+		List<MenuItem> menuItems = menuCard.getAvailableMenuItems();
+		for (MenuItem item: menuItems)
+		{
+			if (item instanceof Drink)
+			{
+				drinks.add((Drink)item);
+			}
+		}
+		return drinks;
+	}
+	
+	public List<MenuItem> getSideDishes(MenuCard menuCard)
+	{
+		List<MenuItem> sideDishes = new ArrayList<>();
+		List<MenuItem> menuItems = menuCard.getAvailableMenuItems();
+		for (MenuItem item: menuItems)
+		{
+			if (item instanceof SideDish)
+			{
+				sideDishes.add((SideDish)item);
+			}
+		}
+		return sideDishes;
+	}
+	
+	public List<MenuItem> getDipsAndSauces(MenuCard menuCard)
+	{
+		List<MenuItem> dipsAndSauces = new ArrayList<>();
+		List<MenuItem> menuItems = menuCard.getAvailableMenuItems();
+		for (MenuItem item: menuItems)
+		{
+			if (item instanceof DipsAndSauces)
+			{
+				dipsAndSauces.add((DipsAndSauces)item);
+			}
+		}
+		return dipsAndSauces;
+	}
+	
+	public List<MenuItem> getSelfServiceBars(MenuCard menuCard)
+	{
+		List<MenuItem> selfServiceBar = new ArrayList<>();
+		List<MenuItem> menuItems = menuCard.getAvailableMenuItems();
+		for (MenuItem item: menuItems)
+		{
+			if (item instanceof SelfServiceBar)
+			{
+				selfServiceBar.add((SelfServiceBar)item);
+			}
+		}
+		return selfServiceBar;
+	}
+	
 	public void enterMainCourse(MainCourse mainCourse)
 	{
 		personalOrderController.enterMainCourse(mainCourse);
@@ -132,6 +192,11 @@ public class UtilityGuestInformation
 	public void enterMainCourseOptions(MenuItem potatoDish, List<AddOnOption> listOfAddOnOptionChoices, List<SelectionOption> listOfSelectionOption)
 	{
 		personalOrderController.enterMainCourseOptions(potatoDish, listOfAddOnOptionChoices, listOfSelectionOption);
+	}
+	
+	public void enterSideOrder(MenuItem menuItem)
+	{
+		personalOrderController.enterSideOrder(menuItem);
 	}
 	
 	public void finishPersonalOrder()
