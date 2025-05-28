@@ -23,8 +23,8 @@ import model.TableOrder;
  * for the constructor and the class' methods
  * 
  * 
- * @author Christoffer Søndergaard
- * @version 21/05/2025 - 02:14
+ * @author Christoffer Søndergaard & Anders trankjær
+ * @version 28/05/2025 - 9:40
  */	
 public class ViewGuestTableOrderConfirmation extends JFrame
 {
@@ -168,14 +168,17 @@ public class ViewGuestTableOrderConfirmation extends JFrame
 		// Adds an action listener for when the button is clicked
 		btnConfirm.addActionListener(event ->
 		{
+			//preps the tableOrder for being send to the kitchen 
 			tableOrderController.sendToKitchen(currentTableOrder);
 			try {
+				//updates a tableOrder in the database.
 				daoTO.updateTableOrder(currentTableOrder);
 			} catch (DataAccessException e) {
 				e.printStackTrace();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			//this loop inserts all the PersonalOrders from the tableOrder
 			for (PersonalOrder pList : currentTableOrder.getPersonalOrders())
 			{
 				try {

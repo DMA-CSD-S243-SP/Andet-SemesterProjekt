@@ -13,6 +13,7 @@ import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import application.PersonalOrderController;
 import database.DataAccessException;
 import database.PersonalOrderDB;
 import database.PersonalOrderImpl;
@@ -27,7 +28,7 @@ import model.TableOrder;
  * 
  * 
  * @author Christoffer Søndergaard & Anders Trankjær
- * @version 23/05/2025 - 09:03
+ * @version 28/05/2025 - 09:40
  */	
 public class ViewGuestTableOrder extends JFrame
 {
@@ -47,7 +48,6 @@ public class ViewGuestTableOrder extends JFrame
 	
 	private List<PersonalOrder> personalOrderList;
 	private TableOrder currentTableOrder;
-	private TableOrderImpl daoTO;
 	private PersonalOrderImpl daoPO;
 	
 	
@@ -71,7 +71,10 @@ public class ViewGuestTableOrder extends JFrame
 		//personalOrder code
 		daoPO = new PersonalOrderDB();
 		try {
+			//findPersonalOrderByTableOrderId retrieves a list of all personalOrders in a given tableOrder the return type is List
+			//it then adds it to personalOrderList
 			personalOrderList.addAll(daoPO.findPersonalOrderBytableOrderId(currentTableOrder.getTableOrderId()));
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (DataAccessException e) {
@@ -127,8 +130,10 @@ public class ViewGuestTableOrder extends JFrame
 		frameTheme.getPrimaryContentPanel().add(inputFieldAge);
 		*/
 		
+		// makes a dummyTableOrder which for the purpose of calculating totalPrice 
 		TableOrder dummyTableOrder = new TableOrder(currentTableOrder.getTableOrderId());
 		dummyTableOrder.setTimeOfArrival(currentTableOrder.getTimeOfArrival());
+		//this loop displays each personalOrder from the currentTableOrder
 		for (PersonalOrder pO : personalOrderList) 
 		{
 			// adds the name of the customer whoes personalOrder it is 
@@ -136,9 +141,10 @@ public class ViewGuestTableOrder extends JFrame
 
 			// Adds the panel that holds the order information
 			primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 45)));
+			//adds the personalOrder to the tableOrder
 			dummyTableOrder.addPersonalOrder(pO);
 		}
-			// Adds vertical spacing before the next order
+			//displays the total price of all the personalOrders within the TableOrder
 			primaryContentPanel.add(new ComponentGuestOrderTotalPrice("Total Pris:", dummyTableOrder.calculateTotalTableOrderPrice()));
 		
 		
@@ -242,7 +248,7 @@ public class ViewGuestTableOrder extends JFrame
 		// Adds an action listener for when the button is clicked
 		btnSendToKitchen.addActionListener(event ->
 		{
-			// Creates the new frame that should be opened when pressing the button
+			// Creates the new frame that should be opened when pressing the button the new Jframe carries over the tableOrder which was edited in this Jframe
 			ViewGuestTableOrderConfirmation nextView = new ViewGuestTableOrderConfirmation(currentTableOrder);
 
 			// Sets the visibility to true turning the previous view / window visible
