@@ -103,22 +103,7 @@ public class ViewGuestUniversalMainMenu extends JFrame
 		potatoCombo.setVisible(true);
 		primaryContentPanel.add(potatoCombo);
 		
-		// All the multiple choice selections
-		// TODO Fix retrieval of maincourse options
-		//multipleChoiceMenus = mainCourse.getListOfMultipleChoiceMenu();
-		
-		// Code for showing functionality, despite broken fetch.
-		multipleChoiceMenus = new ArrayList<>();
-		MultipleChoiceMenu choice1 = new MultipleChoiceMenu("Size");
-		choice1.addSelectionOption(new SelectionOption("Small", "size-small", 0));
-		choice1.addSelectionOption(new SelectionOption("Medium", "size-medium", 39));
-		choice1.addSelectionOption(new SelectionOption("Large", "size-large", 69));
-		multipleChoiceMenus.add(choice1);
-		MultipleChoiceMenu choice2 = new MultipleChoiceMenu("Doneness");
-		choice2.addSelectionOption(new SelectionOption("Rare", "rare-done", 0));
-		choice2.addSelectionOption(new SelectionOption("Well Done", "well-done", 0));
-		choice2.addSelectionOption(new SelectionOption("Medium", "medium-done", 0));
-		multipleChoiceMenus.add(choice2);
+		multipleChoiceMenus = mainCourse.getListOfMultipleChoiceMenu();
 		
 		
 		multipleChoiceBoxes = new ArrayList<>();
@@ -141,13 +126,7 @@ public class ViewGuestUniversalMainMenu extends JFrame
 			multipleChoiceBoxes.add(combobox);
 		}
 		
-		// AddOns
-		// TODO Fix fetching of options
-		//addOnOptions = mainCourse.getListOfAddOnOption();
-		
-		addOnOptions = new ArrayList<AddOnOption>();
-		addOnOptions.add(new AddOnOption("Garlic butter", "+garlic", 10));
-		addOnOptions.add(new AddOnOption("No herbs", "-herb", 0));
+		addOnOptions = mainCourse.getListOfAddOnOption();
 		
 		addOnCheckBoxes = new ArrayList<>();
 		for (AddOnOption option: addOnOptions)

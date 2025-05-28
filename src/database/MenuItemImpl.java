@@ -1,6 +1,7 @@
 package database;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import model.AddOnOption;
 import model.MenuItem;
@@ -42,7 +43,7 @@ public interface MenuItemImpl
      * @throws DataAccessException if there is an issue accessing the data
 	 * @throws SQLException 
      */
-	MultipleChoiceMenu findMultipleChoiceMenuByMainCourseId(int mainCourseId) throws DataAccessException, SQLException;
+	List<MultipleChoiceMenu> findMultipleChoiceMenusByMainCourseId(int mainCourseId) throws DataAccessException, SQLException;
 	
 	/**
      * Method creates a shallow clone of the selectionOption that has the given unique ID. 
@@ -53,7 +54,7 @@ public interface MenuItemImpl
      * @throws DataAccessException if there is an issue accessing the data
 	 * @throws SQLException 
      */
-	SelectionOption findSelectionOptionByMainCourseId(int mainCourseId) throws DataAccessException, SQLException;
+	List<SelectionOption> findSelectionsOptionByChoiceMenuId(int mainCourseId) throws DataAccessException, SQLException;
 	
 	/**
      * Method creates a shallow clone of the addOnOption that has the given unique ID. 
@@ -64,5 +65,5 @@ public interface MenuItemImpl
      * @throws DataAccessException if there is an issue accessing the data
 	 * @throws SQLException 
      */
-	AddOnOption findAddOnOptionByMainCourseId(int mainCourseId) throws DataAccessException, SQLException;
+	List<AddOnOption> findAddOnOptionsByMainCourseId(int mainCourseId) throws DataAccessException, SQLException;
 }
