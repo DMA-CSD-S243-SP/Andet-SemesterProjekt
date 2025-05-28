@@ -31,6 +31,7 @@ public interface PersonalOrderImpl
 
 
 	/**
+	 * The Method is used in FinishPersonalOrder in PersonalOrderController.
 	 * Inserts a new PersonalOrder into the PersonalOrder table in the Database. 
      *
 	 * @param personalOrder
