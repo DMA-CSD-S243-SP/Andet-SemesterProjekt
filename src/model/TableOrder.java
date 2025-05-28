@@ -3,9 +3,9 @@ package model;
 
 // Imports
 import java.util.List;
-
 import java.util.ArrayList;
 import java.time.LocalDateTime;
+
 
 /**
  * Represents the order of an entire table of guests sitting in one of Bone´s
@@ -22,10 +22,11 @@ import java.time.LocalDateTime;
  * 
  * 
  * @author Line Bertelsen & Christoffer Søndergaard
- * @version 09-05-2025 - 09:10
+ * @version 28/05/2025 - 21:24
  */
 public class TableOrder
 {
+	private int tableOrderId;
 	private LocalDateTime timeOfArrival;
 	private boolean isTableOrderClosed;
 	private String paymentType;
@@ -34,17 +35,25 @@ public class TableOrder
 	private boolean isSentToKitchen;
 	private boolean isRequestingService;
 	private int orderPreparationTime;
-	
-
-	private int tableOrderId;	
 
 	private List<PersonalOrder> listOfPersonalOrders;
 
+	
 	/**
 	 * Constructs a new TableOrder instance with tableOrderId as its identifier and
 	 * initializes the personal order list as an empty ArrayList.
 	 *
+	 * 
 	 * @param tableOrderId the unique identifier for this table order
+	 * @param timeOfArrival the time when the first guest arrived
+	 * @param isTableOrderClosed specifies whether the order is closed
+	 * @param paymentType the type of payment method used
+	 * @param totalTableOrderPrice the total price of the entire table order
+	 * @param totalAmountPaid how much of the total price that has been paid for so far
+	 * @param isSentToKitchen whether the order has been sent to to the kitchen for preparation
+	 * @param isRequestingService whether the table has requested service
+	 * @param orderPreparationTime the estimated time in seconds that the preparation of the food will take
+	 */
 	 */
 	public TableOrder(int tableOrderId, LocalDateTime timeOfArrival, boolean isTableOrderClosed, String paymentType, double totalTableOrderPrice, double totalAmountPaid, boolean isSentToKitchen, boolean isRequestingService, int orderPreparationTime)
 	{
@@ -62,18 +71,19 @@ public class TableOrder
 		this.listOfPersonalOrders = new ArrayList<>();
 	}
 
+	
 	/**
 	 * Sets the boolean state which indicates whether the table has requested
 	 * service, and is waiting for a waiter to pay a visit to the table.
 	 *
-	 * @param isRequestingService true if the guests are requesting service, else it
-	 *                            is set to false
+	 * @param isRequestingService true if the guests are requesting service, else it is set to false
 	 */
 	public void setRequestingService(boolean isRequestingService)
 	{
 		this.isRequestingService = isRequestingService;
 	}
 
+	
 	/**
 	 * Sets the boolean of the table order, to clearly show whether a table of
 	 * guests have sent their first table order out in the kitchen. Once a table
@@ -81,27 +91,28 @@ public class TableOrder
 	 * remain in this state, for the rest of the table's guests dining session.
 	 *
 	 * @param isSentToKitchen is set to true if the table has sent out the table
-	 *                        else it is false.
+	 * else it is false.
 	 */
 	public void setSentToKitchen(boolean isSentToKitchen)
 	{
 		this.isSentToKitchen = isSentToKitchen;
 	}
 
+	
 	/**
 	 * Sets the closed status of the table order. When the isTableOrderClosed
 	 * boolean is set to true, it means that the table has finished their dining
 	 * session and no longer wants to order, and are ready to begin the payment
 	 * process of their dining session.
 	 *
-	 * @param isTableOrderClosed true if the table order is finalized and closed;
-	 *                           false otherwise
+	 * @param isTableOrderClosed true if the table order is finalized and closed else it is set to false
 	 */
 	public void setTableOrderClosed(boolean isTableOrderClosed)
 	{
 		this.isTableOrderClosed = isTableOrderClosed;
 	}
 
+	
 	/**
 	 * Sets the estimated preparation time required for the table's full order, this
 	 * is being set in the form of an integer to illustrate seconds, the reason for
@@ -115,99 +126,76 @@ public class TableOrder
 		this.orderPreparationTime = orderPreparationTime;
 	}
 
-	/**
-	 * calculates the estimated time in seconds it would take to prepare the entire
-	 * table's order, by summarizing each PersonalOrder instance's preparation time,
-	 * adding the expected delay from before the kitchen receives the order in their
-	 * system, and accounts for starting on a new personal order, by adding 15
-	 * seconds per PersonalOrder.
-	 *
-	 * @return the estimated time it takes for the table order to be prepared.
-	 */
-	/*
-	 * TODO: Uncomment this line, when working more detailed on preparation time,
-	 * and reference it in the getOrderPreparationTime method public int
-	 * calculateTableOrderPreparationTime() { // The maximum of time in seconds we
-	 * expect it take before the information is relayed and displayed in the kitchen
-	 * int potentialQueueTime = 30;
-	 * 
-	 * // The time in seconds that is expected to be added for each individual
-	 * personal order that will be prepared int personalOrderMultiplier = 0;
-	 * 
-	 * // The time in seconds of the personal order that takes the longest to
-	 * prepare int longestPersonalOrderPreparationTime = 0;
-	 * 
-	 * // The time it is expected to take to prepare the entire table's meal int
-	 * tableOrderPreparationTime = 0;
-	 * 
-	 * // Iterates through the list of personal orders for (PersonalOrder
-	 * personalOrder : listOfPersonalOrders) { // If the personalOrder takes longer
-	 * time to prepare than the current value of longestPersonalOrderPreparationTime
-	 * then execute this section if(personalOrder.getPreparationTime() >
-	 * longestPersonalOrderPreparationTime) { // Sets the value of the
-	 * longestPersonalOrderPreparationTime variable to be the same as the
-	 * personalOrder's preparation time longestPersonalOrderPreparationTime =
-	 * personalOrder.getPreparationTime(); } }
-	 * 
-	 * // Adds additional seconds to the preparation time based on each personal
-	 * order in the list personalOrderMultiplier = listOfPersonalOrders.size() * 15;
-	 * 
-	 * // Adds the time values in seconds together to find the total time in seconds
-	 * it will take before the meal is ready tableOrderPreparationTime =
-	 * tableOrderPreparationTime + potentialQueueTime + personalOrderMultiplier;
-	 * 
-	 * return tableOrderPreparationTime; }
-	 */
 
 	/**
 	 * Sets the total price of the table's order, by accumulating the total prices
 	 * of each PersonalOrder object associated with this TableOrder instance.
 	 *
-	 * @param totalTableOrderPrice the total price of a full table's order, based on
-	 *                             the total pricings of each personal order
+	 * @param totalTableOrderPrice the total price of a full table's order, based on 
+	 * the total pricings of each personal order
 	 */
 	public void setTotalTableOrderPrice(double totalTableOrderPrice)
 	{
 		this.totalTableOrderPrice = totalTableOrderPrice;
 	}
 
+	
 	/**
 	 * Sets the total amount of the table order's price, that has already been paid.
 	 *
-	 * @param totalAmountPaid the amount received from the customer for this table
-	 *                        order so far
+	 * @param totalAmountPaid the amount received from the customer for this table order so far
 	 */
 	public void setTotalAmountPaid(double totalAmountPaid)
 	{
 		this.totalAmountPaid = totalAmountPaid;
 	}
+	
 
 	/**
 	 * Sets the payment method that the paying guest has chosen to pay for this
 	 * table order. Representing payment choices such as credit card payment or cash
 	 * payment.
 	 *
-	 * @param paymentType a string representing the payment method, 'Credit Card' og
-	 *                    'Cash Payment'
+	 * @param paymentType a string representing the payment method, "Credit Card" or "Cash Payment"
 	 */
 	public void setPaymentType(String paymentType)
 	{
 		this.paymentType = paymentType;
 	}
+	
 
 	/**
 	 * Sets the time of arrival based on the first guest of the table, to have their
 	 * personal order associated with the table order.
 	 *
-	 * @param timeOfArrival the LocalDateTime timestamp which indicates when the
-	 *                      first of the table guests started filling out their
-	 *                      personal order details.
+	 * @param timeOfArrival the LocalDateTime timestamp which indicates when the 
+	 * first of the table guests started filling out their personal order details.
 	 */
 	public void setTimeOfArrival(LocalDateTime timeOfArrival)
 	{
 		this.timeOfArrival = timeOfArrival;
 	}
 
+	
+	/**
+	 * Returns the list of all PersonalOrder objects linked to this table order.
+	 *
+	 * @return list of personal orders for this table
+	 */
+	public List<PersonalOrder> getPersonalOrders()
+	{
+		// Creates a new list containing PersonalOrders stored within the returnList variable
+		List<PersonalOrder> returnList = new ArrayList<PersonalOrder>();
+
+		// Adds all of the PersonalOrder objects stored within the existing listOfPersonalOrders to the returnList 
+		// essentially creating a copy of listOfPersonalOrders
+		returnList.addAll(listOfPersonalOrders);
+
+		// Returns the copy of the listOfPersonalOrders
+		return returnList;
+	}
+	
+	
 	/**
 	 * Adds a PersonalOrder object to the list of the individual personal orders,
 	 * that are associated with this TableOrder instance.
@@ -218,13 +206,7 @@ public class TableOrder
 	{
 		this.listOfPersonalOrders.add(personalOrder);
 	}
-	
-	public List<PersonalOrder> getPersonalOrders()
-	{
-		List<PersonalOrder> returnList = new ArrayList<PersonalOrder>();
-		returnList.addAll(listOfPersonalOrders);
-		return returnList;
-	}
+
 
 	/**
 	 * Uses the timeOfArrival to determine whether or not it should use lunch or
@@ -236,69 +218,135 @@ public class TableOrder
 	 */
 	public double calculateTotalTableOrderPrice()
 	{
+		// Creates a variable to store the total calculated price
 		double calculatedTableOrderPrice = 0;
-		int timeOfDay = timeOfArrival.getHour();
-		boolean isLunch = (timeOfDay < 16); // Lunch prices are given if guests arrive before 16:00
 
-		if (isLunch)
+		// Retrieves the hour of the day when the tabel started placing orders and store it within the timeOfDay variable
+		int timeOfDay = timeOfArrival.getHour();
+
+		// Specifies when the time is perceived to be lunch time which is any time before 16:00
+		boolean isLunch = (timeOfDay < 16);
+
+		// If isLunch is true then execute this section
+		if (isLunch == true)
 		{
-			// Calculate by using lunch price, if TableOrder started at lunch time.
+			// Loops through all of the personal orders within the listOfPersonalOrders
 			for (PersonalOrder personalOrder : listOfPersonalOrders)
 			{
+				// Adds the personal order's lunch price to the value of the calculatedTableOrderPrice variable
 				calculatedTableOrderPrice = calculatedTableOrderPrice + personalOrder.getTotalPersonalOrderLunchPrice();
 			}
-		} else
+		}
+
+		// If isLunch is false then execute this section
+		else
 		{
-			// Otherwise use evening price.
+			// Loops through all of the personal orders within the listOfPersonalOrders
 			for (PersonalOrder personalOrder : listOfPersonalOrders)
 			{
-				calculatedTableOrderPrice = calculatedTableOrderPrice
-						+ personalOrder.getTotalPersonalOrderEveningPrice();
+				// Adds the personal order's evening price to the value of the calculatedTableOrderPrice variable
+				calculatedTableOrderPrice += personalOrder.getTotalPersonalOrderEveningPrice();
 			}
 		}
+
+		// Returns the total calculated table order price
 		return calculatedTableOrderPrice;
 	}
 	
+	
+	/**
+	 * Returns the unique identifier for this table order.
+	 *
+	 * @return the table order ID
+	 */
 	public int getTableOrderId()
 	{
 		return tableOrderId;
 	}
 
+	
+	/**
+	 * Returns the timestamp for when the first guest at the table placed an order.
+	 *
+	 * @return time of arrival as LocalDateTime
+	 */
 	public LocalDateTime getTimeOfArrival()
 	{
 		return timeOfArrival;
 	}
 
+	
+	/**
+	 * Returns whether the table order is marked as closed.
+	 *
+	 * @return true if the order is closed, false otherwise
+	 */
 	public boolean isTableOrderClosed()
 	{
 		return isTableOrderClosed;
 	}
 
+	
+	/**
+	 * Returns the payment type used for this table order.
+	 *
+	 * @return payment method as a String (e.g. "Credit Card", "Cash")
+	 */
 	public String getPaymentType()
 	{
 		return paymentType;
 	}
 
+	
+	/**
+	 * Returns the total amount already paid for this table order.
+	 *
+	 * @return the amount paid by the guests so far
+	 */
 	public double getTotalAmountPaid()
 	{
 		return totalAmountPaid;
 	}
 
+	
+	/**
+	 * Returns whether the table order has been sent to the kitchen.
+	 *
+	 * @return true if the order has been dispatched to the kitchen
+	 */
 	public boolean isSentToKitchen()
 	{
 		return isSentToKitchen;
 	}
 
+	
+	/**
+	 * Returns whether the guests at the table are requesting service.
+	 *
+	 * @return true if the table has requested service
+	 */
 	public boolean isRequestingService()
 	{
 		return isRequestingService;
 	}
 
+
+	/**
+	 * Returns the total estimated preparation time for the order.
+	 *
+	 * @return preparation time in seconds
+	 */
 	public int getOrderPreparationTime()
 	{
 		return orderPreparationTime;
 	}
+
 	
+	/**
+	 * Returns the total calculated price for the table's complete order.
+	 *
+	 * @return total table order price
+	 */
 	public double getTotalTableOrderPrice()
 	{
 		return totalTableOrderPrice;
