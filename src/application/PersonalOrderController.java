@@ -1,17 +1,18 @@
 package application;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import database.DataAccessException;
 import database.PersonalOrderDB;
+import database.PersonalOrderImpl;
 import model.AddOnOption;
 import model.Discount;
 import model.MainCourse;
 import model.MenuCard;
 import model.MenuItem;
 import model.PersonalOrder;
-import model.Restaurant;
 import model.SelectionOption;
 import model.Table;
 import model.TableOrder;
@@ -19,7 +20,7 @@ import model.TableOrder;
 /**
  * 
  * @author Line Bertelsen, Anders trankjær & Christoffer Søndergaard
- * @version 18/05/2025 - 16:53
+ * @version 28/05/2025 - 10:00
  */
 
 public class PersonalOrderController
@@ -155,7 +156,7 @@ public class PersonalOrderController
 	{
 		try 
 		{
-			PersonalOrderDB personalOrderDB = new PersonalOrderDB();
+			PersonalOrderImpl personalOrderDB = new PersonalOrderDB();
 			//Insert personalOrder to PersonalOrderDB
 			if (!personalOrder.getPersonalOrderLines().isEmpty())
 			{
@@ -172,5 +173,22 @@ public class PersonalOrderController
 	public void clearMenuItemList()
 	{
 		personalOrder.clearMenuItemLine();
+	}
+	
+	
+	/**
+	 * this method calls personalOrderDB and retrieves a List of all PersonalOrders linked to the tableOrder
+	 * 
+	 * @param TableOrderId - the tableOrderId from which we want to retrieve personalOrders From
+	 * @return a List of all PersonalOrders from a specific tableOrder
+	 * @throws SQLException
+	 * @throws DataAccessException
+	 */
+	public List<PersonalOrder> findPersonalOrdersBytableOrderId(int TableOrderId) throws SQLException, DataAccessException
+	{
+		List<PersonalOrder> returnList = new ArrayList<PersonalOrder>();
+		PersonalOrderImpl personalOrderDB = new PersonalOrderDB();
+		returnList.addAll(personalOrderDB.findPersonalOrderBytableOrderId(TableOrderId));
+		return returnList;
 	}
 }

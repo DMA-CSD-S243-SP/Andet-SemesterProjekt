@@ -49,6 +49,7 @@ public class ViewGuestTableOrder extends JFrame
 	private List<PersonalOrder> personalOrderList;
 	private TableOrder currentTableOrder;
 	private PersonalOrderImpl daoPO;
+	private PersonalOrderController personalController;
 	
 	
 	/**
@@ -73,8 +74,7 @@ public class ViewGuestTableOrder extends JFrame
 		try {
 			//findPersonalOrderByTableOrderId retrieves a list of all personalOrders in a given tableOrder the return type is List
 			//it then adds it to personalOrderList
-			personalOrderList.addAll(daoPO.findPersonalOrderBytableOrderId(currentTableOrder.getTableOrderId()));
-
+			personalOrderList.addAll(personalController.findPersonalOrdersBytableOrderId(currentTableOrder.getTableOrderId()));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (DataAccessException e) {
