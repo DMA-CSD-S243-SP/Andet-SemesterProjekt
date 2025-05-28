@@ -83,10 +83,10 @@ public class PersonalOrderController
 	
 	public List<Discount> enterNameAndAge(String customerName, int customerAge)
 	{
-		//Adds customer name to personalOrder 
+		// Adds customer name to personalOrder 
 		personalOrder.setCustomerName(customerName);
 		
-		//Adds customer age to personalOrder
+		// Adds customer age to personalOrder
 		personalOrder.setCustomerAge(customerAge);
 		
 		// TODO: need to return a list of discount in GUI
@@ -100,20 +100,24 @@ public class PersonalOrderController
 		try
 		{
 			MenuCardController menuCardController = new MenuCardController();
-			//Adds all the discount object to personalOrder
-			personalOrder.addAllDiscounts(listOfDiscounts);	
 			
+			// Adds all the discount object to personalOrder
+			personalOrder.addAllDiscounts(listOfDiscounts);		
 			
-			//returns all the avalible menuCards for this restaurant by the given restaurantCode
-			return menuCardController.findMenuCardsByRestaurantCode(chosenTable.getTableCode().substring(0,3));
+			// Retrieves the restaurantCode based off of the first 3 digits in the chosenTable's tableCode and stores it within the restaurantCode variable
+			String restaurantCode = chosenTable.getTableCode().substring(0,3);
 			
-		} catch (Exception exception)
+			// Returns a list of MenuCard objects from the Restaurant instance that matches the supplied restaurantCode
+			return menuCardController.findMenuCardsByRestaurantCode(restaurantCode);
+		}
+		
+		catch (Exception exception)
 		{
-			// If an SQL error occurs a exception is thrown with the specified details
+			// If a SQL error occurs an exception is thrown with the specified details
 			throw new DataAccessException("Unable to find restaurant objects in the database" , exception);
-					
 		}
 	}
+	
 	
 	/**
 	 * this method adds a mainCourse object to the personalOrder
