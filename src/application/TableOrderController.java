@@ -22,18 +22,6 @@ public class TableOrderController
 		
 	}
 	
-	/**
-	 * this method will insert a given tableOrder object into the database.
-	 * 
-	 * @param tableOrder - the tableorder that is to be insertet
-	 * @throws SQLException
-	 * @throws DataAccessException 
-	 */
-	public void confirmSendToKitchen(TableOrder tableOrder) throws SQLException, DataAccessException
-	{
-		TableOrderImpl dao = new TableOrderDB();
-		dao.updateTableOrder(tableOrder);
-	}
 	
 	/**
 	 * sets the given tableOrder objects isSentToKitchen variable to true so its ready to be sent to the kitchen
@@ -44,6 +32,23 @@ public class TableOrderController
 	{
 		tableOrder.setSentToKitchen(true);
 	}
+	
+	
+	/**
+	 * This method is used in ViewGuesTableOrderConfirmation
+	 * it update a given tableOrder object into the database
+	 * when the customer press bthnConfirm "Ja, send til køkken".
+	 * 
+	 * @param tableOrder - the tableorder that is to be updated
+	 * @throws SQLException - is catch/caught in ViewGuesTableOrderConfirmation
+	 * @throws DataAccessException - is catch/caught in ViewGuesTableOrderConfirmation
+	 */
+	public void updateTableOrder(TableOrder tableOrder) throws SQLException, DataAccessException
+	{
+		TableOrderImpl dao = new TableOrderDB();
+		dao.updateTableOrder(tableOrder);
+	}
+	
 	
 	/**
 	 * returns a list of all tableOrders that have the isSentToKitchen variable to true 
