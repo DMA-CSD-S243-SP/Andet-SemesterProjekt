@@ -3,6 +3,7 @@ package model;
 
 // Imports
 import java.util.List;
+
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 
@@ -45,10 +46,19 @@ public class TableOrder
 	 *
 	 * @param tableOrderId the unique identifier for this table order
 	 */
-	public TableOrder(int tableOrderId)
+	public TableOrder(int tableOrderId, LocalDateTime timeOfArrival, boolean isTableOrderClosed, String paymentType, double totalTableOrderPrice, double totalAmountPaid, boolean isSentToKitchen, boolean isRequestingService, int orderPreparationTime)
 	{
 		this.tableOrderId = tableOrderId;
-
+		this.timeOfArrival = timeOfArrival;
+		this.isTableOrderClosed = isTableOrderClosed;
+		this.paymentType = paymentType;
+		this.totalTableOrderPrice = totalTableOrderPrice;
+		this.totalAmountPaid = totalAmountPaid;
+		this.isSentToKitchen = isSentToKitchen;
+		this.isRequestingService = isRequestingService;
+		this.orderPreparationTime = orderPreparationTime;
+		
+		// Instantiates the listOfPersonalOrders array list
 		this.listOfPersonalOrders = new ArrayList<>();
 	}
 
