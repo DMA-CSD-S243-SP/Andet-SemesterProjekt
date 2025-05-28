@@ -172,7 +172,7 @@ public class ViewGuestTableOrderConfirmation extends JFrame
 			tableOrderController.sendToKitchen(currentTableOrder);
 			try {
 				//updates a tableOrder in the database.
-				daoTO.updateTableOrder(currentTableOrder);
+				tableOrderController.confirmSendToKitchen(currentTableOrder);
 			} catch (DataAccessException e) {
 				e.printStackTrace();
 			} catch (SQLException e) {
