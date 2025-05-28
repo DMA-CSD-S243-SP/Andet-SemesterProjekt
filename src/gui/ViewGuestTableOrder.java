@@ -28,7 +28,7 @@ import model.TableOrder;
  * 
  * 
  * @author Christoffer Søndergaard & Anders Trankjær
- * @version 28/05/2025 - 09:40
+ * @version 28/05/2025 - 11:00
  */	
 public class ViewGuestTableOrder extends JFrame
 {
@@ -46,8 +46,12 @@ public class ViewGuestTableOrder extends JFrame
 	// Determines whether or not the 'Anmod om service' button is enabled in the navigational panel
 	boolean isServiceEnabled = true;
 	
+	//a list of personalOrders used for displaying what the customer has added to their order
 	private List<PersonalOrder> personalOrderList;
+	
+	// a tableOrder which will be carried over to the next Jframe 
 	private TableOrder currentTableOrder;
+	
 	private PersonalOrderController personalController;
 	
 	
@@ -134,7 +138,7 @@ public class ViewGuestTableOrder extends JFrame
 		//this loop displays each personalOrder from the currentTableOrder
 		for (PersonalOrder pO : personalOrderList) 
 		{
-			// adds the name of the customer whoes personalOrder it is 
+			// adds the name of the customer whoes personalOrder it is aswell as the price of the individual personalOrder and a list of each item they have ordered. 
 			primaryContentPanel.add(new ComponentGuestOrderSummary(pO.getCustomerName(), pO.getTotalPersonalOrderEveningPrice(), pO.getNameOfItemsInList()));
 
 			// Adds the panel that holds the order information
@@ -246,7 +250,7 @@ public class ViewGuestTableOrder extends JFrame
 		// Adds an action listener for when the button is clicked
 		btnSendToKitchen.addActionListener(event ->
 		{
-			// Creates the new frame that should be opened when pressing the button the new Jframe carries over the tableOrder which was edited in this Jframe
+			// Creates the new frame that should be opened when pressing the button the new Jframe carries over the tableOrder from this Jframe
 			ViewGuestTableOrderConfirmation nextView = new ViewGuestTableOrderConfirmation(currentTableOrder);
 
 			// Sets the visibility to true turning the previous view / window visible
