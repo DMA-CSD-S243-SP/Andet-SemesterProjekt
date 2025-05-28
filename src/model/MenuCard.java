@@ -74,18 +74,22 @@ public class MenuCard
 	     this.listOfAvailabilityTrackers.add(availabilityTracker);
 	 }
 	 
+	 
 	 public List<MenuItem> getAvailableMenuItems()
 	 {
-		 List<MenuItem> menuItems = new ArrayList<>();
-		 for (AvailabilityTracker tracker: listOfAvailabilityTrackers)
+		 List<MenuItem> listOfMenuItems = new ArrayList<>();
+		 
+		 for (AvailabilityTracker availabilityTracker: listOfAvailabilityTrackers)
 		 {
-			 if (tracker.isAvailable())
+			 if (availabilityTracker.isAvailable())
 			 {
-				 menuItems.add(tracker.getMenuItem());
+				 listOfMenuItems.add(availabilityTracker.getMenuItem());
 			 }
 		 }
-		 return menuItems;
+		 
+		 return listOfMenuItems;
 	 }
+	 
 	 
 	 public String getName()
 	 {
