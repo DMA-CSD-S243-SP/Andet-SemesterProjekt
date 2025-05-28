@@ -39,5 +39,5 @@ public interface PersonalOrderImpl
 	 */
 	PersonalOrder insertPersonalOrder(PersonalOrder personalOrder, int tableOrderId) throws DataAccessException;
 	
-	List<PersonalOrder> findPersonalOrderBytableOrderId(int TableOrderId) throws SQLException, DataAccessException;
+	List<PersonalOrder> findPersonalOrdersBytableOrderId (int TableOrderId) throws SQLException, DataAccessException;
 }
