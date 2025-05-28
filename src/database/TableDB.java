@@ -55,20 +55,20 @@ public class TableDB implements TableImpl
 			ResultSet resultSet = statementFindByTableCode.executeQuery();
 
 			// Creates and initializes an table object as null, which will later have table specific data
-			Table table = null;
+			Table chosenTable = null;
 
 			// Iterates through the resultSet while there are still more rows in the database's table
 			if (resultSet.next())
 			{
 				// Converts the retrieved database row into a table object using the buildTableObject method
-				table = buildTableObject(resultSet);
+				chosenTable = buildTableObject(resultSet);
 			}
 
 			databaseConnection.commit();
 			databaseConnection.setAutoCommit(true);
 			
 			// Returns a object with with a tableCode matching the parameterlist
-			return table;
+			return chosenTable;
 		}
 
 		catch (SQLException exception1)
@@ -95,9 +95,11 @@ public class TableDB implements TableImpl
 	{	
 		String tableCode = resultSet.getString("restaurantCode") + resultSet.getString("tableNumber");
 		
+		// Builds a table object based on the object that was found in the database
 		Table table = new Table(tableCode);
 		TableOrder tableOrder = new TableOrderDB().findTableOrderByTableOrderId(resultSet.getInt("tableOrderId"));
 		table.setCurrentTableOrder(tableOrder);
+		
 		return table;
 	}	
 }

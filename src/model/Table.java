@@ -86,7 +86,7 @@ public class Table
 
 	
 	/**
-	 * @return the currentTableOrder associated with the table
+	 * @return the currentTableOrder that is associated with this table instance
 	 */
 	public TableOrder getCurrentTableOrder() 
 	{
@@ -95,7 +95,8 @@ public class Table
 
 	
 	/**
-	 * @param tableOrder the new tableOrder to set
+	 * @param Specifies which tableOrder object instance to associate
+	 * this table with
 	 */
 	public void setCurrentTableOrder(TableOrder tableOrder) 
 	{

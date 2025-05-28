@@ -219,8 +219,7 @@ public class TableOrderDB implements TableOrderImpl
 		tableOrder.setSentToKitchen(resultSet.getBoolean("isSentToKitchen"));
 		tableOrder.setRequestingService(resultSet.getBoolean("isRequestingService"));
 		tableOrder.setOrderPreparationTime(resultSet.getInt("orderPreparationTime"));
-				
-
+		
 		return tableOrder;	
 	}
 

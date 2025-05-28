@@ -28,9 +28,9 @@ public class PersonalOrderController
 	private MainCourse mainCourse; 
 	private PersonalOrder personalOrder; 
 	private TableOrder tableOrder;
-	private Table table;
+	private Table chosenTable;
 	
-	//Constructor
+	// Creates an empty constructor for this instance
 	public PersonalOrderController()
 	{
 		
@@ -56,16 +56,19 @@ public class PersonalOrderController
 		{
 			TableController tableController = new TableController();
 			//Assigns to tableController instance to find a table by the given tableCode
-			table = tableController.findTableByCode(tableNumber, restaurantCode);
+			chosenTable = tableController.findTableByCode(tableNumber, restaurantCode);
 			
-			if (table == null) 
+			if (chosenTable == null) 
 			{
 	            throw new IllegalArgumentException("No table found with tableCode: " + tableCode);
 	        }
 			
-			this.tableOrder = tableController.getCurrentTableOrder(table);
+			// this.tableOrder = tableController.getCurrentTableOrder(chosenTable);
+			tableOrder = tableController.getCurrentTableOrder(chosenTable);
+			
 			personalOrder = new PersonalOrder(tableOrder);
-			return table;
+			
+			return chosenTable;
 		} 
 		
 		// Attempts to catch exceptions of the DataAccessException type
@@ -88,8 +91,8 @@ public class PersonalOrderController
 		// TODO: need to return a list of discount in GUI
 		// return discount.getListOfDiscount();
 		return null;
-		
 	}
+	
 	
 	public List<MenuCard> enterDiscounts(List<Discount> listOfDiscounts) throws DataAccessException, SQLException
 	{
@@ -101,7 +104,7 @@ public class PersonalOrderController
 			
 			
 			//returns all the avalible menuCards for this restaurant by the given restaurantCode
-			return menuCardController.findMenuCardsByRestaurantCode(table.getTableCode().substring(0,3));
+			return menuCardController.findMenuCardsByRestaurantCode(chosenTable.getTableCode().substring(0,3));
 			
 		} catch (Exception exception)
 		{
