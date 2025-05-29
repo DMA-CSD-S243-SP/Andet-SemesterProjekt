@@ -55,16 +55,16 @@ public class TableOrderDB implements TableOrderImpl
 	public TableOrderDB() throws SQLException
 	{
 		//Prepares the SQL statement for retrieving all TableOrder
-		statementFindAllTableOrders = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_AllTABLEORDERS_QUERY);
+		//statementFindAllTableOrders = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_AllTABLEORDERS_QUERY);
 
 		//Prepares the SQL statement for retrieving a TableOrder by a matching TableOrderId
-		statementFindTableOrderByTableOrderId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_TABLEORDER_BY_TABLEORDERID_QUERY);
+		//statementFindTableOrderByTableOrderId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_TABLEORDER_BY_TABLEORDERID_QUERY);
 		
 		//Prepares the SQL statement for updating TableOrder for the matching tableOrderId
-		statementUpdateTableOrder = DataBaseConnection.getInstance().getConnection().prepareStatement(UPDATE_TABLEORDER_QUERY);
+		//statementUpdateTableOrder = DataBaseConnection.getInstance().getConnection().prepareStatement(UPDATE_TABLEORDER_QUERY);
 		
 		//Prepares the SQL statement for retrieving all TableOrder where isSentToKitchen is true and isTableClosed is false
-		statementFindVisibleToKitchenTableOrders = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_VISIBLE_TO_KITCHEN_TABLE_ORDERS_QUERY);
+		//statementFindVisibleToKitchenTableOrders = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_VISIBLE_TO_KITCHEN_TABLE_ORDERS_QUERY);
 	}
 	
 	
@@ -83,6 +83,8 @@ public class TableOrderDB implements TableOrderImpl
 
 		try
 		{
+			// Turns off the auto-commit in the database, so it doesn't automatically save changes after each SQL statement.
+			// When turned off multiple SQL statements is grouped into one transaction.
 			databaseConnection.setAutoCommit(false);
 			
 			// Reading tableOrders happens many times per day. However it occurs almost exclusively during business
@@ -98,7 +100,10 @@ public class TableOrderDB implements TableOrderImpl
 			// Converts the result set into a list of TableOrder objects
 			List<TableOrder> resultListOfTableOrder = buildTableOrderObjects(resultSetTableOrder);
 
+			//All the changes you've made since setAutoCommit(false), is manually saved into the database
 			databaseConnection.commit();
+			
+			//Restores the default behavior and turns on auto-commit
 			databaseConnection.setAutoCommit(true);
 			
 			// Returns the list of TableOrder objects
@@ -108,7 +113,10 @@ public class TableOrderDB implements TableOrderImpl
 		catch (SQLException exception1)
 		{
 			
+			//Undo all changes made so far in the transaction
 			databaseConnection.rollback();
+			
+			//Restores the default behavior and turns on auto-commit
 			databaseConnection.setAutoCommit(true);
 			
 			// If an SQL error occurs a custom exception is thrown with the specified details
@@ -182,7 +190,10 @@ public class TableOrderDB implements TableOrderImpl
 				tableOrder = buildTableOrderObject(resultSet);
 			}
 
+			//All the changes you've made since setAutoCommit(false), is manually saved into the database
 			databaseConnection.commit();
+			
+			//Restores the default behavior and turns on auto-commit
 			databaseConnection.setAutoCommit(true);
 			
 			// Returns the MultipleChoiceMenu with a matching choiceMenuId or null if no multipleChoiceMenu has the specified choiceMenuId
@@ -192,7 +203,10 @@ public class TableOrderDB implements TableOrderImpl
 		catch (SQLException exception1)
 		{
 			
+			//Undo all changes made so far in the transaction
 			databaseConnection.rollback();
+			
+			//Restores the default behavior and turns on auto-commit
 			databaseConnection.setAutoCommit(true);
 			
 			// If an SQL error occurs a custom exception is thrown with the specified details
@@ -241,7 +255,9 @@ public class TableOrderDB implements TableOrderImpl
 
 	    try 
 	    {
-	        databaseConnection.setAutoCommit(false);
+	    	// Turns off the auto-commit in the database, so it doesn't automatically save changes after each SQL statement.
+	    	// When turned off multiple SQL statements is grouped into one transaction.
+	    	databaseConnection.setAutoCommit(false);
 
 	        // Set transaction isolation level
 	        databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
@@ -260,17 +276,22 @@ public class TableOrderDB implements TableOrderImpl
 	        // Execute update
 	        statementUpdateTableOrder.executeUpdate();
 
-	        // Commit changes
-	        databaseConnection.commit();
-	        databaseConnection.setAutoCommit(true);
+			//All the changes you've made since setAutoCommit(false), is manually saved into the database
+			databaseConnection.commit();
+			
+			//Restores the default behavior and turns on auto-commit
+			databaseConnection.setAutoCommit(true);
 
 	    } 
 	    catch (SQLException exception) 
 	    {
 	        try 
 	        {
-	            databaseConnection.rollback();
-	            databaseConnection.setAutoCommit(true);
+				//Undo all changes made so far in the transaction
+				databaseConnection.rollback();
+				
+				//Restores the default behavior and turns on auto-commit
+				databaseConnection.setAutoCommit(true);
 	        } 
 	        
 	        catch (SQLException rollbackEx) 
@@ -292,8 +313,12 @@ public class TableOrderDB implements TableOrderImpl
 
 	    try 
 	    {
-	        databaseConnection.setAutoCommit(false);
+	    	// Turns off the auto-commit in the database, so it doesn't automatically save changes after each SQL statement.
+	    	// When turned off multiple SQL statements is grouped into one transaction.
+	    	databaseConnection.setAutoCommit(false);;
 	        
+	    	// Prevent data from changing between reads, to ensure stable views of the data in multi-user environments
+	    	// Once a row had been read, it can be changed during the transaction		
 	        databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
 
 			// Prepares a SQL statement to find all tableOrder visible to kitchen
@@ -305,8 +330,11 @@ public class TableOrderDB implements TableOrderImpl
 	        // Convert resultSet to a list
 	        List<TableOrder> tableOrders = buildTableOrderObjects(resultSet);
 
-	        databaseConnection.commit();
-	        databaseConnection.setAutoCommit(true);
+	        //All the changes you've made since setAutoCommit(false), is manually saved into the database
+			databaseConnection.commit();
+			
+			//Restores the default behavior and turns on auto-commit
+			databaseConnection.setAutoCommit(true);
 
 	        return tableOrders;
 	    } 
@@ -315,10 +343,14 @@ public class TableOrderDB implements TableOrderImpl
 		{
 			try
 			{
+				//Undo all changes made so far in the transaction
 				databaseConnection.rollback();
+				
+				//Restores the default behavior and turns on auto-commit
 				databaseConnection.setAutoCommit(true);
 			}
 			
+			//If a rollback error happens it throws an exception
 			catch (SQLException exception2) 
 			{
 				throw new DataAccessException("Rollback failed after updateTableOrder error", exception2);
