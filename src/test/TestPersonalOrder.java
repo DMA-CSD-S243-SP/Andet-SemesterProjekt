@@ -20,7 +20,7 @@ import model.SideDish;
  * this class tests the functionality of personalOrder 
  * 
  * @author Anders Trankjær & Line Bertelsen
- * @version 21-05-2025 - 14.41
+ * @version 29-05-2025 - 15.35
  */
 public class TestPersonalOrder 
 {
@@ -110,14 +110,21 @@ public class TestPersonalOrder
 	@Test
 	public void testSetAndGetCustomerInfo()
 	{
+		//ACT
+		//p0rder is defined in setUp()
+		
+		//ARRANGE
 		pOrder.setCustomerAge(25);
 		pOrder.setCustomerName("Ben Dover");
+		
+		//ASSERT
 		assertEquals(25, pOrder.getCustomerAge());
 		assertEquals("Ben Dover", pOrder.getCustomerName());
 	}
 	
 	@Test
     void testGetTotalPersonalOrderLunchAndEveningPrice() {
+		//ACT
 		SelfServiceBar salad = new SelfServiceBar(EnumBarType.SALADBAR, 50, 75);
 		SelfServiceBar softice = new SelfServiceBar(EnumBarType.SOFTICEBAR, 50, 75);
 		MainCourse burger = new MainCourse("big fat burger", 100, 150);
@@ -128,11 +135,13 @@ public class TestPersonalOrder
         PersonalOrderLine orderLine3 = new PersonalOrderLine(burger);
         PersonalOrderLine orderLine4 = new PersonalOrderLine(ribeye);
         
+        //ARRANGE
         pOrder.addPersonalOrderLine(orderLine1);
         pOrder.addPersonalOrderLine(orderLine2);
         pOrder.addPersonalOrderLine(orderLine3);
         pOrder.addPersonalOrderLine(orderLine4);
 
+        //ASSERT
         assertEquals(350, pOrder.getTotalPersonalOrderLunchPrice());
         
         assertEquals(505, pOrder.getTotalPersonalOrderEveningPrice());
