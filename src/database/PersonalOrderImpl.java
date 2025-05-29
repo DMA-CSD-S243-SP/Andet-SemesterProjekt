@@ -26,8 +26,9 @@ public interface PersonalOrderImpl
      * @param personalOrderId the code of the personalOrder to be retrieved
      * @return the PersonalOrder object that matches the provided ID
      * @throws DataAccessException if there is an issue accessing the data
+	 * @throws SQLException 
      */
-	PersonalOrder findPersonalOrderById(int personalOrderId) throws DataAccessException;
+	PersonalOrder findPersonalOrderById(int personalOrderId) throws DataAccessException, SQLException;
 
 
 	/**
