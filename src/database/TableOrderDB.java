@@ -262,6 +262,9 @@ public class TableOrderDB implements TableOrderImpl
 	        // Set transaction isolation level
 	        databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 
+	        //Prepares the SQL statement for updating TableOrder for the matching tableOrderId
+	        statementUpdateTableOrder = databaseConnection.prepareStatement(UPDATE_TABLEORDER_QUERY);
+
 	        // Set values in the prepared statement
 	        statementUpdateTableOrder.setTimestamp(1, java.sql.Timestamp.valueOf(tableOrder.getTimeOfArrival()));
 	        statementUpdateTableOrder.setBoolean(2, tableOrder.isTableOrderClosed());
