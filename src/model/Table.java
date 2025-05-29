@@ -1,32 +1,57 @@
+// Packages
 package model;
 
 
-/*
- * The table class represents a physical table in
- * @Author Anders Trankjær & Christoffer Søndergaard
- * @Version 18/05/2025 - 15:59
+/**
+ * Represents a physical table in one of Bone's restaurants.
+ * 
+ * Each physical table will have a unique identifiable code that consists
+ * of a combination of the restaurant's unique ID and the table's ID.
+ * By combining the two a uniquely identifiable string for each table
+ * will exist.
+ * 
+ * 
+ * @author Anders Trankjær & Christoffer Søndergaard
+ * @version 29/05/2025 - 11:37
  */
 public class Table 
 {
+	// Instance variables
 	private String tableNumber;
 	private String restaurantCode;
 	private TableOrder currentTableOrder;
 
-	public Table(String tableCode) 
-	{
-		this.tableNumber = tableCode.substring(3, 7);
-		this.restaurantCode = tableCode.substring(0, 3);
-	}
 	
 	/**
-	 * @return the tableNumber
+	 * Constructs a new Table instance with the specified tableCode
+	 * in the parameter list.
+	 *
+	 * @param tableCode the unique identifier for this particular table
+	 */
+	public Table(String tableCode) 
+	{
+		// Retrieves the 3 first digits from the supplied tableCode and stores it within the restaurantCode instance variable
+		this.restaurantCode = tableCode.substring(0, 3);
+		
+		// Retrieves the 4 last digits from the supplied tableCode and stores it within the tableNumber instance variable
+		this.tableNumber = tableCode.substring(3, 7);
+	}
+	
+	
+	/**
+	 * Retrieves the Table object's assigned tableNumber.
+	 * 
+	 * @return the table instance's tableNumber
 	 */
 	public String getTableNumber() 
 	{
 		return tableNumber;
 	}
 
+	
 	/**
+	 * Sets the Table object's assigned tableNumber.
+	 * 
 	 * @param tableNumber the new tableNumber to set
 	 */
 	public void setTableNumber(String tableNumber) 
@@ -34,58 +59,39 @@ public class Table
 		this.tableNumber = tableNumber;
 	}
 
+	
 	/**
-	 * @return the tableCode
+	 * Performs string concatenation on the restaurantCode instance variabble
+	 * with the tableNumber instance variable, to create a uniquely identifiable
+	 * tableCode and retrieves this combined string.
+	 * 
+	 * @return the uniquely identifiable tableCode of this table.
 	 */
 	public String getTableCode() 
 	{
-		return restaurantCode+tableNumber;
+		return this.restaurantCode + this.tableNumber;
 	}
 
+	
 	/**
-	 * the tableCode variable is made of two other variables tableNumber and restaurantCode
+	 * Changes the values of the tableNumber and restaurantCode instance variables to
+	 * the values supplied in the parameter list, which are the two values that 
+	 * make up a table object's uniquely identifiable tableCode.
 	 * 
-	 * @param tableNumber a unique four-digit number in the form of a string for each table in a restaurant
-	 * @param restaurantCode a unique number that identifies a restaurant
+	 * @param tableNumber the table's 4-digit number used to identify the table in a given restaurant
+	 * @param restaurantCode the unique 3-digit number used to identify the specific restaurant
 	 */
 	public void setTableCode(String tableNumber, String restaurantCode) 
 	{
-/* TODO - Clean this up later
-		// Retrieves the inputted tableNumber's length and store it within the tableNumberLength variable
-		int tableNumberLength = String.valueOf(tableNumber).length();
-		
-		// Creates a String object with the name formattedTableNumberString 
-		String formattedTableNumberString = null;
-		
-		// If the length of the supplied tableNumber is only 1 digit long then execute this section
-		if(tableNumberLength == 1)
-		{
-			formattedTableNumberString = "000";
-		}
-		
-		// If the length of the supplied tableNumber is only 2 digit long then execute this section
-		else if(tableNumberLength == 2)
-		{
-			formattedTableNumberString = "00";
-		}
-		
-		// If the length of the supplied tableNumber is only 3 digit long then execute this section
-		else if(tableNumberLength == 3)
-		{
-			formattedTableNumberString = "0";
-		}
-		
-		// Combines the tableNumber with the formattedTableNumberString variable to form a four digit string
-		// E.g. supplying 1 will make this string be equivilant to "0001"
-		formattedTableNumberString = formattedTableNumberString + tableNumber;
-*/
-		
 		this.tableNumber = tableNumber;
 		this.restaurantCode = restaurantCode;
 	}
 
 	
 	/**
+	 * Returns the TableOrder instance that is associated with this particular
+	 * Table instance.
+	 * 
 	 * @return the currentTableOrder that is associated with this table instance
 	 */
 	public TableOrder getCurrentTableOrder() 
@@ -95,8 +101,10 @@ public class Table
 
 	
 	/**
-	 * @param Specifies which tableOrder object instance to associate
-	 * this table with
+	 * Sets the TableOrder object instance that is associated with this particular
+	 * Table instance.
+	 * 
+	 * @param Specifies the TableOrder object to associate this table with
 	 */
 	public void setCurrentTableOrder(TableOrder tableOrder) 
 	{
