@@ -16,8 +16,8 @@ import java.util.ArrayList;
 * restaurant's guests.
 * 
 * 
-* @author Christoffer Søndergaard
-* @version 08-05-2025 - 20:12
+* @author Christoffer Søndergaard & Anders Trankjær
+* @version 29-05-2025 - 11:55
 */
 public class MenuCard
 {
@@ -75,14 +75,22 @@ public class MenuCard
 	 }
 	 
 	 
+	 /**
+	  * finds all the available menuItems objects in the menuCards list of availabilitytrackers
+	  * 
+	  * @return a list of all menuitems which are available
+	  */
 	 public List<MenuItem> getAvailableMenuItems()
 	 {
+		 //initializes a new list which will be returned 
 		 List<MenuItem> listOfMenuItems = new ArrayList<>();
 		 
+		 //the loop runs through all AvailabiltyTrackers in a menu and sees which MenuItems are available 
 		 for (AvailabilityTracker availabilityTracker: listOfAvailabilityTrackers)
 		 {
 			 if (availabilityTracker.isAvailable())
 			 {
+				 // adds the available menuItems to the returnlist
 				 listOfMenuItems.add(availabilityTracker.getMenuItem());
 			 }
 		 }
@@ -91,6 +99,11 @@ public class MenuCard
 	 }
 	 
 	 
+	 /**
+	  *  retrieves the name variable of the MenuCard
+	  *  
+	  * @return name
+	  */
 	 public String getName()
 	 {
 		 return name;
