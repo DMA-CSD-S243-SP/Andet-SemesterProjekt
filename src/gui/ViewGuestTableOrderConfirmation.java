@@ -11,11 +11,6 @@ import javax.swing.JPanel;
 import application.PersonalOrderController;
 import application.TableOrderController;
 import database.DataAccessException;
-import database.PersonalOrderDB;
-import database.PersonalOrderImpl;
-import database.TableOrderDB;
-import database.TableOrderImpl;
-import model.PersonalOrder;
 import model.TableOrder;
 
 
@@ -52,7 +47,7 @@ public class ViewGuestTableOrderConfirmation extends JFrame
 	 * Create the frame.
 	 * @param currentTableOrder 
 	 */
-	public ViewGuestTableOrderConfirmation(TableOrder currentTableOrder)
+	public ViewGuestTableOrderConfirmation()
 	{
 		tableOrderController = new TableOrderController();
 		this.currentTableOrder = UtilityGuestInformation.getInstance().getTableOrder();

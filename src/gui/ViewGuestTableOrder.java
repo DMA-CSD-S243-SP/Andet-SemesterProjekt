@@ -15,9 +15,6 @@ import javax.swing.JPanel;
 
 import application.PersonalOrderController;
 import database.DataAccessException;
-import database.PersonalOrderDB;
-import database.PersonalOrderImpl;
-import database.TableOrderImpl;
 import model.PersonalOrder;
 import model.TableOrder;
 
@@ -251,7 +248,7 @@ public class ViewGuestTableOrder extends JFrame
 		btnSendToKitchen.addActionListener(event ->
 		{
 			// Creates the new frame that should be opened when pressing the button the new Jframe carries over the tableOrder from this Jframe
-			ViewGuestTableOrderConfirmation nextView = new ViewGuestTableOrderConfirmation(currentTableOrder);
+			ViewGuestTableOrderConfirmation nextView = new ViewGuestTableOrderConfirmation();
 
 			// Sets the visibility to true turning the previous view / window visible
 			nextView.setVisible(true);
