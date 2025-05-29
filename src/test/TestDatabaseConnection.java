@@ -17,7 +17,7 @@ import database.DataBaseConnection;
  * 
  * 
  * @author Anders Have
- * @version 13/05/2025 - 8:50
+ * @version 29/05/2025 - 15.34
  */
 public class TestDatabaseConnection 
 {
@@ -50,9 +50,14 @@ public class TestDatabaseConnection
     @Test
     public void testConnection()
     {
+    	// ARRANGE
+        // No specific arrangement needed beyond setup (already handled in @BeforeAll)
+    	
+    	 // ACT
     	// sets connection to house the database connection
         Connection connection = databaseConnection.getConnection();
 
+        // ASSERT
         // checks if the connection isnt null
         assertNotNull(connection, "Connection should not be null");
 
