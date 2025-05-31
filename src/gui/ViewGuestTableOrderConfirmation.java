@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.lang.reflect.Field;
 import java.sql.SQLException;
 
 import javax.swing.Box;
@@ -11,6 +12,7 @@ import javax.swing.JPanel;
 import application.PersonalOrderController;
 import application.TableOrderController;
 import database.DataAccessException;
+import model.PersonalOrder;
 import model.TableOrder;
 
 
@@ -167,26 +169,48 @@ public class ViewGuestTableOrderConfirmation extends JFrame
 			} 
 			
 			//DataAccessException is thrown in TableOrderController
-			catch (DataAccessException exception) 
+			catch (DataAccessException e) 
+			
 			{
-				exception.printStackTrace();
+				e.printStackTrace();
 			} 
 			
 			//SQLException is thrown in TableOrderController
-			catch (SQLException exception) 
+			catch (SQLException e) 
 			{
-				exception.printStackTrace();
+				e.printStackTrace();
 			}
-			
-				try 
-				{
-					personalOrderController.finishPersonalOrder();
-				} 
 				
-				catch (DataAccessException e) 
-				{
-					e.printStackTrace();
-				}
+						
+			for (PersonalOrder personalOrder : currentTableOrder.getPersonalOrders()) 
+			
+			{
+			    try 
+			    {
+			        personalOrderController.setPersonalOrder(personalOrder);
+			        personalOrderController.setTableOrder(currentTableOrder);
+			        personalOrderController.finishPersonalOrder();
+			    }
+			    
+			    catch (DataAccessException e) 
+			    {
+			        e.printStackTrace();
+			    }
+			 }
+			
+			/**
+			 * 
+		       try
+		       	{
+		        	personalOrderController.finishPersonalOrder();
+			    }
+			   
+			    catch (DataAccessException e) 
+			    {
+			        e.printStackTrace();
+			    }
+			 }
+			*/
 			
 			// Creates the new frame that should be opened when pressing the button
 			ViewGuestOrderOverview nextView = new ViewGuestOrderOverview();
@@ -226,4 +250,24 @@ public class ViewGuestTableOrderConfirmation extends JFrame
 		// Find and closes the current view / window
 		this.dispose();
 	}
+	
+	private void injectIntoController(PersonalOrderController personalOrderController, PersonalOrder personalOrder, TableOrder tableOrder) 
+	{
+		try 
+		{
+			Field personalOrderField = PersonalOrderController.class.getDeclaredField("personalOrder");
+			personalOrderField.setAccessible(true);
+			personalOrderField.set(personalOrderController, personalOrder);
+
+			Field tableOrderField = PersonalOrderController.class.getDeclaredField("tableOrder");
+			tableOrderField.setAccessible(true);
+			tableOrderField.set(personalOrderController, tableOrder);
+		} 
+		
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+	}
+
 }
