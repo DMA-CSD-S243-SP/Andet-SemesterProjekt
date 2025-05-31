@@ -36,6 +36,8 @@ public class RestaurantDB implements RestaurantImpl
 		
 		try
 		{
+			// Turns off the auto-commit in the database, so it doesn't automatically save changes after each SQL statement.
+			// When turned off multiple SQL statements is grouped into one transaction.
 			databaseConnection.setAutoCommit(false);
 			
 			// Reading restaurantscodes happens many times per day. However it occurs almost exclusively during business
@@ -61,7 +63,10 @@ public class RestaurantDB implements RestaurantImpl
 				restaurant = buildRestaurantObject(resultSet);
 			}
 			
+			//All the changes you've made since setAutoCommit(false), is manually saved into the database
 			databaseConnection.commit();
+			
+			//Restores the default behavior and turns on auto-commit
 			databaseConnection.setAutoCommit(true);
 			
 			// Returns an object with with a restaurantCode matching the parameterlist after it was built
@@ -70,7 +75,10 @@ public class RestaurantDB implements RestaurantImpl
 		
 		catch (SQLException exception)
 		{
+			//Undo all changes made so far in the transaction
 			databaseConnection.rollback();
+			
+			//Restores the default behavior and turns on auto-commit
 			databaseConnection.setAutoCommit(true);
 			
 			// If an SQL error occurs a custom exception is thrown with the specified details
