@@ -41,7 +41,7 @@ public class TableOrderDB implements TableOrderImpl
 	// Selects a row from the table menuItem in the database, based on the given tableOrderId
 	private static final String UPDATE_TABLEORDER_QUERY = "UPDATE TableOrder SET timeOfArrival = ?, isTableOrderClosed = ?, paymentType = ?, totalTableOrderPrice = ?, totalAmountPaid = ?, isSentToKitchen = ?, isRequestingService = ?, orderPreparationTime = ? WHERE tableOrderId = ?";
 	
-	// PreparedStatement for inserting a TableOrder
+	// PreparedStatement for update a TableOrder
 	private PreparedStatement statementUpdateTableOrder;
 	
 	
@@ -224,7 +224,8 @@ public class TableOrderDB implements TableOrderImpl
      */
 	private TableOrder buildTableOrderObject(ResultSet resultSet) throws SQLException
 	{
-		// Retrieves the SQL Timestamp object from the "timeOfArrival" column in the supplied result set
+		// Retrieves the timeOfArrival from the current row in the result set 
+		// and combines it into Timestamp object
 		Timestamp timeOfArrivalTimeStamp = resultSet.getTimestamp("timeOfArrival");
 
 		// Creates an instance of LocalDateTime and sets it to null, this will later hold a converted date-time value
