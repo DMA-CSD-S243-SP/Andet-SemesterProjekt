@@ -156,6 +156,20 @@ public class PersonalOrderController
 		personalOrder.addMenuItemLine(sideOrderItem);
 	}
 	
+	
+	public void setPersonalOrder(PersonalOrder personalOrder)
+	{
+		this.personalOrder = personalOrder;
+		
+	}
+
+
+	public void setTableOrder(TableOrder currentTableOrder)
+	{
+		this.tableOrder = currentTableOrder;	
+	}
+
+	
 	public void finishPersonalOrder() throws DataAccessException
 	{
 		try 
@@ -195,4 +209,6 @@ public class PersonalOrderController
 		returnList.addAll(personalOrderDB.findPersonalOrdersBytableOrderId(TableOrderId));
 		return returnList;
 	}
+	
+	
 }
