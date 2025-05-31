@@ -249,7 +249,7 @@ public class PersonalOrderDB implements PersonalOrderImpl
 
 			// Prevent data from changing between reads, to ensure stable views of the data in multi-user environments
 			// Once a row had been read, it can be changed during the transaction
-			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
 
 			// Prepares a SQL statement to insert PersonalOrder and return a generated key
 			statementInsertPersonalOrder = databaseConnection.prepareStatement(INSERT_PERSONALORDER,
