@@ -8,7 +8,7 @@ package gui;
  * 
  * 
  * @author Christoffer Søndergaard
- * @version 20/05/2025 - 13:32
+ * @version 21/05/2025 - 12:32
  */	
 public class Main
 {
@@ -18,10 +18,17 @@ public class Main
 		try
 		{
 			// Creates a ViewGuestTableInformation instance and stores it within the viewGuestTableInformation variable
-			ViewGuestTableInformation viewGuestTableInformation = new ViewGuestTableInformation();
+			ViewGuestTableInformation  viewGuestTableInformation = new ViewGuestTableInformation();
+			
+			
 			
 			// Changes the visibility of the LoginView window to be visible
 			viewGuestTableInformation.setVisible(true);
+			
+			ViewStaffLogin viewStaffLogin = new ViewStaffLogin();
+
+			// Changes the visibility of the LoginView window to be visible
+			viewStaffLogin.setVisible(true);
 		}
 		
 		// Catches any type of exception that may occur while running the above code
