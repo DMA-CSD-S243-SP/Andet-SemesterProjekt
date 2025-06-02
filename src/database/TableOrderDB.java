@@ -18,7 +18,7 @@ import model.TableOrder;
  * It implements the TableOrderImpl, meaning it implements its methods
  * 
  * @author Line Bertelsen
- * @version 110/05/25 - 12:31
+ * @version 02/06/2025 - 13:54
  */
 
 public class TableOrderDB implements TableOrderImpl
@@ -45,12 +45,12 @@ public class TableOrderDB implements TableOrderImpl
 	private PreparedStatement statementUpdateTableOrder;
 	
 	
-	// Selects every row from the TableOrder where 
-	// isSentToKitchen = true and isTableOrderClsoed = false, in the database
+	// Selects every row from the TableOrder where isSentToKitchen = true and isTableOrderClsoed = false, in the database
 	private static final String FIND_VISIBLE_TO_KITCHEN_TABLE_ORDERS_QUERY =  "SELECT * FROM TableOrder WHERE isSentToKitchen = 1 AND isTableOrderClosed = 0";
 			
-	// PreparedStatement for retrieving an TableOrder based on the tableOrderId
+	// PreparedStatement for retrieving a TableOrder based on the tableOrderId
 	private PreparedStatement statementFindVisibleToKitchenTableOrders;
+	
 	
 	public TableOrderDB() throws SQLException
 	{
@@ -71,9 +71,9 @@ public class TableOrderDB implements TableOrderImpl
 	/**
      * Retrieves all tableOrder from the database.
      * 
-     * @return a list of all tableOrders
-     * @throws DataAccessException if retrieval fails
-	 * @throws SQLException 
+     * @return resultListOfTableOrdera 	- list of all tableOrders
+	 * @throws DataAccessException 		- if an error occurs during data access, such as rollback or connection issues
+	 * @throws SQLException				- if a SQL operation fails
      */
 	@Override
 	public List<TableOrder> findAllTableOrders() throws DataAccessException, SQLException
@@ -110,7 +110,7 @@ public class TableOrderDB implements TableOrderImpl
 			return resultListOfTableOrder;
 		}
 
-		catch (SQLException exception1)
+		catch (SQLException exception)
 		{
 			
 			//Undo all changes made so far in the transaction
@@ -119,8 +119,8 @@ public class TableOrderDB implements TableOrderImpl
 			//Restores the default behavior and turns on auto-commit
 			databaseConnection.setAutoCommit(true);
 			
-			// If an SQL error occurs a custom exception is thrown with the specified details
-			throw new DataAccessException("Unable to find TableOrder objects in the database", exception1);
+			// If an SQL error occurs an exception is thrown with the specified details
+			throw new DataAccessException("Unable to find TableOrder objects in the database", exception);
 		}
 	}
 	
@@ -128,9 +128,9 @@ public class TableOrderDB implements TableOrderImpl
 	/**
      * Converts a result set into a list of TableOrder objects.
      * 
-     * @param resultSet the result set containing multiple TableOrder records
-     * @return a list of TableOrder objects
-     * @throws SQLException if accessing the result set fails
+     * @param resultSet 			- the result set containing multiple TableOrder records
+     * @return tableOrders  		- a list of TableOrder objects
+	 * @throws SQLException			- if a SQL operation fails
      */
 	private List<TableOrder> buildTableOrderObjects(ResultSet resultSet) throws SQLException
 	{
@@ -153,9 +153,10 @@ public class TableOrderDB implements TableOrderImpl
 	/**
      * Builds a specific TableOrder object from a database resultSet.
      * 
-     * @param resultSet the result set containing TableOrder data
-     * @return an TableOrder object with the extracted data
-     * @throws SQLException if accessing the resultSet fails
+     * @param resultSet 			- the result set containing TableOrder data
+     * @return tableOrder 			- an TableOrder object with the extracted data
+	 * @throws DataAccessException 	- if an error occurs during data access, such as rollback or connection issues
+	 * @throws SQLException			- if a SQL operation fails
      */
 	@Override
 	public TableOrder findTableOrderByTableOrderId(int tableOrderId) throws DataAccessException, SQLException
@@ -200,7 +201,7 @@ public class TableOrderDB implements TableOrderImpl
 			return tableOrder;
 		}
 
-		catch (SQLException exception1)
+		catch (SQLException exception)
 		{
 			
 			//Undo all changes made so far in the transaction
@@ -209,8 +210,8 @@ public class TableOrderDB implements TableOrderImpl
 			//Restores the default behavior and turns on auto-commit
 			databaseConnection.setAutoCommit(true);
 			
-			// If an SQL error occurs a custom exception is thrown with the specified details
-			throw new DataAccessException("Unable to find an TableOrder object with an tableOrderId matching: " + tableOrderId, exception1);
+			// If an SQL error occurs while trying to find tableOrder, an exception is thrown with the specified details
+			throw new DataAccessException("Unable to find an TableOrder object with an tableOrderId matching: " + tableOrderId, exception);
 		}
 	}
 	
@@ -218,9 +219,9 @@ public class TableOrderDB implements TableOrderImpl
 	/**
      * Builds a specific TableOrder object from a database result set.
      * 
-     * @param resultSet the result set containing TableOrder data
-     * @return an TableOrder object with the extracted data
-     * @throws SQLException if accessing the result set fails
+     * @param resultSet  			- the result set containing TableOrder data
+     * @return tableOrder 			- an TableOrder object with the extracted data
+	 * @throws SQLException			- if a SQL operation fails
      */
 	private TableOrder buildTableOrderObject(ResultSet resultSet) throws SQLException
 	{
@@ -247,6 +248,13 @@ public class TableOrderDB implements TableOrderImpl
 	}
 	
 
+	/**
+	 * Method updates a given TableOrder in data storage. Doesn't add associations, just updates the specific TableOrderRow.
+	 * Rolls back the transaction and restores auto-commit if an error occurs.
+	 * 
+	 * @param tableOrder			- the TableOrder object containing the updated data to persist. 
+	 * @throws DataAccessException 	- if an error occurs during data access, such as rollback or connection issues
+	 */
 	@Override
 	public void updateTableOrder(TableOrder tableOrder) throws DataAccessException 
 	{
@@ -298,18 +306,26 @@ public class TableOrderDB implements TableOrderImpl
 				databaseConnection.setAutoCommit(true);
 	        } 
 	        
-	        catch (SQLException rollbackEx) 
+	        catch (SQLException rollbackException) 
 	        {
-	            throw new DataAccessException("Rollback failed after updateTableOrder error", rollbackEx);
+	        	// If rollback fails, throw a custom exception with details
+	        	throw new DataAccessException("Rollback failed after updateTableOrder error", rollbackException);
 	        }
 
+	        // If an SQL error occurs while updating the tableOrder an exception is thrown with the specified details
 	        throw new DataAccessException("Failed to update TableOrder in database", exception);
 	    }
 	}
 
 
-
-
+	/**
+	 * Method gets all the TableOrders that the kitchen should be able to see.
+	 * 
+	 * @return tableOrder 			- A List containing every TableOrder where isSentToKitchen is set to
+	 *         				  		  true, and isTableOrderClosed is set to false
+	 * @throws DataAccessException 	- if an error occurs during data access, such as rollback or connection issues
+	 * @throws SQLException			- if a SQL operation fails
+	 */
 	@Override
 	public List<TableOrder> findAllVisibleToKitchenTableOrders() throws DataAccessException, SQLException {
 	   
@@ -343,23 +359,16 @@ public class TableOrderDB implements TableOrderImpl
 	        return tableOrders;
 	    } 
 	    
-	    catch (SQLException exception) 
+	    catch (SQLException exception)
 		{
-			try
-			{
-				//Undo all changes made so far in the transaction
-				databaseConnection.rollback();
-				
-				//Restores the default behavior and turns on auto-commit
-				databaseConnection.setAutoCommit(true);
-			}
 			
-			//If a rollback error happens it throws an exception
-			catch (SQLException exception2) 
-			{
-				throw new DataAccessException("Rollback failed after updateTableOrder error", exception2);
-			}
-
+	    	//Undo all changes made so far in the transaction
+			databaseConnection.rollback();
+			
+			//Restores the default behavior and turns on auto-commit
+			databaseConnection.setAutoCommit(true);
+			
+			// If an SQL error occurs while finding all visible tableOrders, an exception is thrown with the specified details
 			throw new DataAccessException("Failed to update TableOrder in database", exception);
 		}
 	}
