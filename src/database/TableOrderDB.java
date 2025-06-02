@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.PersonalOrder;
 import model.TableOrder;
 
 /**
@@ -348,7 +349,7 @@ public class TableOrderDB implements TableOrderImpl
 	        ResultSet resultSet = statementFindVisibleToKitchenTableOrders.executeQuery();
 
 	        // Convert resultSet to a list
-	        List<TableOrder> tableOrders = buildTableOrderObjects(resultSet);
+	        List<TableOrder> tableOrders = buildTableOrderObjectsAssociated(resultSet);
 
 	        //All the changes you've made since setAutoCommit(false), is manually saved into the database
 			databaseConnection.commit();
@@ -371,6 +372,60 @@ public class TableOrderDB implements TableOrderImpl
 			// If an SQL error occurs while finding all visible tableOrders, an exception is thrown with the specified details
 			throw new DataAccessException("Failed to update TableOrder in database", exception);
 		}
+	}
+	
+	private List<TableOrder> buildTableOrderObjectsAssociated(ResultSet resultSet) throws SQLException
+	{
+		// Creates an empty list to store Employee objects within
+		List<TableOrder> tableOrder = new ArrayList<>();
+
+		// Iterates through the result set while there are still more rows in the database's table
+		while (resultSet.next())
+		{
+			// Converts each row into a Employee object and add it to the list
+			tableOrder.add(buildTableOrderObjectAssociated(resultSet));
+		}
+
+		// Returns the populated list of Employee objects
+		return tableOrder;
+		
+	}
+	
+	private TableOrder buildTableOrderObjectAssociated(ResultSet resultSet) throws SQLException
+	{
+		// Retrieves the timeOfArrival from the current row in the result set 
+		// and combines it into Timestamp object
+		Timestamp timeOfArrivalTimeStamp = resultSet.getTimestamp("timeOfArrival");
+
+		// Creates an instance of LocalDateTime and sets it to null, this will later hold a converted date-time value
+		LocalDateTime timeOfArrivalLocalDate = null;
+
+		// If the timestamp that is retrieved from the database is not null then execute this section
+		if (timeOfArrivalTimeStamp != null)
+		{
+		    // Converts the SQL Timestamp to a LocalDateTime and stores it within the timeOfArrivalLocalDate variable
+		    timeOfArrivalLocalDate = timeOfArrivalTimeStamp.toLocalDateTime();
+		}
+		
+		// Creates a TableOrder object with the data that was retrieved from the database
+		TableOrder tableOrder = new TableOrder(resultSet.getInt("tableOrderId"), timeOfArrivalLocalDate, resultSet.getBoolean("isTableOrderClosed"),
+				resultSet.getString("paymentType"), resultSet.getDouble("totalTableOrderPrice"), resultSet.getDouble("totalAmountPaid"),
+				resultSet.getBoolean("isSentToKitchen"), resultSet.getBoolean("isRequestingService"), resultSet.getInt("orderPreparationTime"));
+		
+		try
+		{
+			List<PersonalOrder> personalOrders = new PersonalOrderDB().findPersonalOrdersBytableOrderId(tableOrder.getTableOrderId());
+			for (PersonalOrder order: personalOrders)
+			{
+				tableOrder.addPersonalOrder(order);
+			}
+		} catch (SQLException | DataAccessException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return tableOrder;
 	}
 
 }
