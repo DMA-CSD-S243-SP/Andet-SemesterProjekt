@@ -18,7 +18,7 @@ import model.MenuItem;
  * It implements the MenuCardImpl, meaning it implements its methods
  * 
  * @author Line Bertelsen & Lumière Schack
- * @version 13.05.25 - 11.36
+ * @version 02/06/2025 - 16.02
  */
 
 public class MenuCardDB implements MenuCardImpl
@@ -51,9 +51,10 @@ public class MenuCardDB implements MenuCardImpl
 	/**
 	 * Retrieves all MenuCards from the database.
 	 * 
-	 * @param restaurantCode the code of the MenuCard to search for
-	 * @return the corresponding MenuCard object, or null if not found
-	 * @throws DataAccessException if retrieval fails
+	 * @param restaurantCode 			- the code of the MenuCard to search for
+	 * @return availableMenuCards 		- the corresponding MenuCard object, or null if not found
+	 * @throws DataAccessException 		- if an error occurs during data access, such as rollback or connection issues
+	 * @throws SQLException				- if a SQL operation fails
 	 */
 	@Override
 	public List<MenuCard> findMenuCardsByRestaurantCode(String restaurantCode) throws DataAccessException, SQLException
@@ -63,6 +64,8 @@ public class MenuCardDB implements MenuCardImpl
 
 		try
 		{
+			// Turns off the auto-commit in the database, so it doesn't automatically save changes after each SQL statement.
+			// When turned off multiple SQL statements is grouped into one transaction.
 			databaseConnection.setAutoCommit(false);
 			
 			// Reading MenuCards happens thousands of times per day. However it occurs almost exclusively during
@@ -79,8 +82,10 @@ public class MenuCardDB implements MenuCardImpl
 			// Converts the result set into a list of Employee objects
 			List<MenuCard> availableMenuCards = buildMenuCardObjects(resultSet);
 
-			
+			//All the changes you've made since setAutoCommit(false), is manually saved into the database
 			databaseConnection.commit();
+			
+			//Restores the default behavior and turns on auto-commit
 			databaseConnection.setAutoCommit(true);
 			
 			// Returns the list of Employee objects
@@ -89,9 +94,13 @@ public class MenuCardDB implements MenuCardImpl
 		
 		catch (SQLException exception)
 		{
+			//Undo all changes made so far in the transaction
 			databaseConnection.rollback();
+			
+			//Restores the default behavior and turns on auto-commit
 			databaseConnection.setAutoCommit(true);
-			// If an SQL error occurs a custom exception is thrown with the specified details
+			
+			// If an SQL error occurs an exception is thrown with the specified details
 			throw new DataAccessException("Unable to find MenuCards objects in the database with a matching restaurant code" + restaurantCode, exception);
 		}
 	}
@@ -100,32 +109,37 @@ public class MenuCardDB implements MenuCardImpl
 	/**
      * Builds a specific MenuCard object from a database result set.
      * 
-     * @param resultSet the result set containing MenuCard data
-     * @return an MenuCard object with the extracted data
-     * @throws SQLException if accessing the result set fails
+     * @param resultSet 		- the result set containing MenuCard data
+     * @return menuCard 		- an MenuCard object with the extracted data
+	 * @throws SQLException		- if a SQL operation fails
      */
 	private MenuCard buildMenuCardObject(ResultSet resultSet) throws SQLException
 	{
-		// Creates a MenuCard object stored within the menuCard variable based off of the method's provided resultSet
+		// Creates a new MenuCard object using the 'name' column from the result set
 		MenuCard menuCard = new MenuCard(resultSet.getString("name"));
 		
+		// Extracts the menuCardId from the result set to be used in a lookup for availability trackers
 		int menuCardId = resultSet.getInt("menuCardId");
 		
 		try
 		{
+			// Retrieves all AvailabilityTracker objects linked to the MenuCard by its ID
 			List<AvailabilityTracker> availabilityTrackers = findAvailabilityTrackersByMenuCardId(menuCardId);
+			
+			// Adds each retrieved AvailabilityTracker to the MenuCard
 			for (AvailabilityTracker availabilityTracker: availabilityTrackers)
 			{
 				menuCard.addAvailabilityTracker(availabilityTracker);
 			}
-			
 		}
 		
-		catch (DataAccessException e)
+		catch (DataAccessException exception)
 		{
-			throw new SQLException("Unable to find trackers with given menuCardId");
+			// If an SQL error occurs an exception is thrown with the specified details
+			throw new SQLException("Unable to find trackers with given menuCardId", exception);
 		}
 		
+		// Returns the complete MenuCard object including its availability data
 		return menuCard;
 	}
 	
@@ -133,9 +147,9 @@ public class MenuCardDB implements MenuCardImpl
 	/**
      * Converts a result set into a list of MenuCard objects.
      * 
-     * @param resultSet the result set containing multiple MenuCards records
-     * @return a list of MenuCards objects
-     * @throws SQLException if accessing the result set fails
+     * @param resultSet 		- the result set containing multiple MenuCards records
+     * @return menuCards 		- a list of MenuCards objects
+     * @throws SQLException 	- if accessing the result set fails
      */
 	private List<MenuCard> buildMenuCardObjects(ResultSet resultSet) throws SQLException
 	{
@@ -158,9 +172,9 @@ public class MenuCardDB implements MenuCardImpl
 	/**
 	 * Finds a AvailabilityTracker object by searching for a AvailabilityTracker with a matching menuCardId id.
 	 * 
-	 * @param menuCardId the id of the menuItem to search for
-	 * @return the corresponding AvailabilityTracker object, or null if not found
-	 * @throws DataAccessException if retrieval fails
+	 * @param menuCardId 				- the id of the menuItem to search for
+	 * @return availabilityTrackers		- the AvailabilityTrackers object that matches the provided id
+	 * @throws DataAccessException 		- if an error occurs during data access, such as rollback or connection issues
 	 */
 	@Override
 	public List<AvailabilityTracker> findAvailabilityTrackersByMenuCardId(int menuCardId) throws DataAccessException
@@ -203,31 +217,37 @@ public class MenuCardDB implements MenuCardImpl
 	/**
      * Builds a specific AvailabilityTracker object from a database resultSet.
      * 
-     * @param resultSet the result set containing AvailabilityTracker data
-     * @return a AvailabilityTracker object with the extracted data
-     * @throws SQLException if accessing the resultSet fails
-     */
+     * @param resultSet 			- the result set containing AvailabilityTracker data
+     * @return availabilityTracker 	- a AvailabilityTracker object with the extracted data
+	 * @throws SQLException			- if a SQL operation fails
+      */
 	private AvailabilityTracker buildAvailabilityTrackerObject(ResultSet resultSet) throws SQLException
 	{
-		// Creates a AvailabilityTracker object stored within the availabilityTracker variable based off of the method's provided resultSet
+		// Creates a new AvailabilityTracker object using the 'isAvailable' boolean from the result set
 		AvailabilityTracker availabilityTracker = new AvailabilityTracker(resultSet.getBoolean("isAvailable"));
 		
+		// Placeholder for the associated MenuItem object
 		MenuItem menuItem = null;
 		
+		// Retrieves the menuItemId from the result set, which is used to look up the full MenuItem object
 		int menuItemId = resultSet.getInt("menuItemId");
 		
 		try
 		{
+			// Uses MenuItemDB to retrieve the full MenuItem object by its ID
 			menuItem = new MenuItemDB().findMenuItemByMenuItemId(menuItemId);
 		}
 		
-		catch (DataAccessException e)
+		catch (DataAccessException exception)
 		{
-			e.printStackTrace();
+			// If a SQL operation fails, print the stack trace
+			exception.printStackTrace();
 		}
 		
+		// Links the found MenuItem to the AvailabilityTracker
 		availabilityTracker.setMenuItem(menuItem);
 		
+		// Returns the fully constructed AvailabilityTracker object
 		return availabilityTracker;
 	}
 }
