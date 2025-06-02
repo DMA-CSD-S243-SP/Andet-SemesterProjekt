@@ -15,7 +15,7 @@ import model.TableOrder;
  * It implements the tableImpl interface. 
  * 
  * @author Anders Trankjær, Line Bertelsen & Christoffer Søndergaard
- * @version 18/05/2025 - 16:46
+ * @version 02/06/2025 - 13:54
  */
 public class TableDB implements TableImpl
 {
@@ -34,6 +34,12 @@ public class TableDB implements TableImpl
 	/**
 	 * Retrieve table by table code
 	 * tableCode is made up by tableNumber and restaurantCode
+	 * 
+	 * @param tableNumber 			- the tableCode used in the search
+	 * @param restaurantCode 		- the restaurantCode used in the search
+	 * @return chosenTable 			- a clone of a table that matches the search parameters
+	 * @throws DataAccessException 	- if an error occurs during data access, such as rollback or connection issues
+	 * @throws SQLException			- if a SQL operation fails
 	 */
 	@Override
 	public Table findTableByCode(String tableNumber, String restaurantCode) throws DataAccessException, SQLException 
@@ -96,13 +102,14 @@ public class TableDB implements TableImpl
 		}
 	}
 	
+	
 	/**
-	 * this method builds a table object with the data provided from the database. 
+	 * This method builds a table object with the data provided from the database. 
 	 * 
-	 * @param resultSet - the data about the object from the database
-	 * @return an instance of the table class with the specific data from the database
-	 * @throws SQLException
-	 * @throws DataAccessException 
+	 * @param resultSet 			- the data about the object from the database
+	 * @return table 				- an instance of the table class with the specific data from the database
+	 * @throws DataAccessException 	- if an error occurs during data access, such as rollback or connection issues
+	 * @throws SQLException			- if a SQL operation fails
 	 */
 	private Table buildTableObject(ResultSet resultSet) throws SQLException, DataAccessException
 	{	
