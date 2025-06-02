@@ -14,20 +14,31 @@ import model.Restaurant;
  * It implements the restaurantImpl interface. 
  * 
  * @author Anders Trankjær & Line Bertelsen
- * @version 15.05.25 - 10:17
+ * @version 02/06/2025 - 14:19
  */
 public class RestaurantDB implements RestaurantImpl
 {
-//  selects a specific row from table_object
+	// selects a specific row from restaurant table in the database
 	private static final String FIND_RESTAURANT_BY_RESTAURANTCODE_QUERY = "SELECT * FROM Restaurant WHERE restaurantCode = ?";
-		
-	private PreparedStatement statementFindByTableCode; 
+	
+	// PreparedStatement for retrieving a restaurant based on the restaurantCode
+	private PreparedStatement statementFindByRestaurantCode; 
+	
 	
 	public RestaurantDB() throws SQLException
 	{
-		statementFindByTableCode = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_RESTAURANT_BY_RESTAURANTCODE_QUERY);
+		statementFindByRestaurantCode = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_RESTAURANT_BY_RESTAURANTCODE_QUERY);
 	}
 
+	/**
+	 * This method will search through the database using the search criteria from the parameterlist
+	 * make a clone of using the data found and return that. 
+	 * 
+	 * @param restaurantCode 		- the Restaurant object containing the restaurant code
+	 * @return restaurant 			- that match the restaurantCode 
+	 * @throws DataAccessException 	- if an error occurs during data access, such as rollback or connection issues
+	 * @throws SQLException			- if a SQL operation fails
+	 */
 	@Override
 	public Restaurant findRestaurantByCode(String restaurantCode) throws DataAccessException, SQLException 
 	{
@@ -45,13 +56,13 @@ public class RestaurantDB implements RestaurantImpl
 			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
 			
 			// Prepares a SQL statement to find and retrieve a restaurant with a matching tableCode
-			statementFindByTableCode = databaseConnection.prepareStatement(FIND_RESTAURANT_BY_RESTAURANTCODE_QUERY);
+			statementFindByRestaurantCode = databaseConnection.prepareStatement(FIND_RESTAURANT_BY_RESTAURANTCODE_QUERY);
 			
 			// Adds the tableCode from the methods parameterlist to the String instead of the placeholder
-			statementFindByTableCode.setString(1, restaurantCode);
+			statementFindByRestaurantCode.setString(1, restaurantCode);
 			
 			// Executes the query, and stores the retrieved data as a ResultSet
-			ResultSet resultSet = statementFindByTableCode.executeQuery();
+			ResultSet resultSet = statementFindByRestaurantCode.executeQuery();
 			
 			// Creates and initializes an restaurant object as null
 			Restaurant restaurant = null;
@@ -81,11 +92,19 @@ public class RestaurantDB implements RestaurantImpl
 			//Restores the default behavior and turns on auto-commit
 			databaseConnection.setAutoCommit(true);
 			
-			// If an SQL error occurs a custom exception is thrown with the specified details
+			// If an SQL error occurs while trying to find restaurant, an exception is thrown with the specified details
 			throw new DataAccessException("Unable to find an resetaurant object with a restaurantCode matching: " + restaurantCode, exception);
 		}
 	}
 
+
+	/**
+     * Builds a specific Restaurant object from a database resultSet.
+     * 
+     * @param resultSet 			- the result set containing Restaurant data
+     * @return restaurant 			- an Restaurant object with the extracted data
+	 * @throws SQLException			- if a SQL operation fails
+     */
 	private Restaurant buildRestaurantObject(ResultSet resultSet) throws SQLException 
 	{
 		// creates a restaurant object using the resultSets data
