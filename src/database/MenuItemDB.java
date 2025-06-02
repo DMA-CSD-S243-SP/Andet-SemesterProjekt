@@ -26,7 +26,7 @@ import model.SideDish;
  * It implements the employeeDaoImpl, meaning it implements its methods
  * 
  * @author Line Bertelsen
- * @version 15.05.2025 - 10:24
+ * @version 02/06/2025 - 16.00
  */
 
 public class MenuItemDB implements MenuItemImpl
@@ -154,10 +154,10 @@ public class MenuItemDB implements MenuItemImpl
 	/**
 	 * Finds a MenuItem object by searching for a MenuItem with a matching menuItem id.
 	 * 
-	 * @param menuItemId the id of the menuItem to search for
-	 * @return the corresponding MenuItem object, or null if not found
-	 * @throws DataAccessException if retrieval fails
-	 * @throws SQLException 
+	 * @param menuItemId 			- the id of the menuItem to search for
+	 * @return menuItem 			- the corresponding MenuItem object, or null if not found
+ 	 * @throws DataAccessException 	- if an error occurs during data access, such as rollback or connection issues
+	 * @throws SQLException			- if a SQL operation fails
 	 */
 	@Override
 	public MenuItem findMenuItemByMenuItemId(int menuItemId) throws DataAccessException, SQLException
@@ -209,9 +209,9 @@ public class MenuItemDB implements MenuItemImpl
 	/**
      * Builds a specific MenuItem object from a database resultSet.
      * 
-     * @param resultSet the result set containing MenuItem data
-     * @return a MenuItem object with the extracted data
-     * @throws SQLException if accessing the resultSet fails
+     * @param resultSet 		- the result set containing MenuItem data
+     * @return menuItem 		- a MenuItem object with the extracted data
+     * @throws SQLException 	- if accessing the resultSet fails
      */
 	private MenuItem buildMenuItemObject(ResultSet resultSet) throws SQLException
 	{		
@@ -397,6 +397,11 @@ public class MenuItemDB implements MenuItemImpl
 				menuItem = mainCourse;
 			}
 		}
+		
+		// All subclasses of MenuItem (like Drink and MainCourse...) 
+		// only initialize subclass-specific attributes in their constructors (e.g., isAlcoholic, price).
+		// Common attributes (like name, description...) inherited from MenuItem 
+		// are set separately below once the correct subclass instance has been created.
 		if (menuItem != null)
 		{
 			menuItem.setDescription(description);
@@ -405,6 +410,7 @@ public class MenuItemDB implements MenuItemImpl
 			menuItem.setName(name);
 			menuItem.setPreparationTime(preparationTime);
 		}
+		
 		// Returns the fully build MenuItem (or subclass) object
 		return menuItem; 
 		}
@@ -414,10 +420,10 @@ public class MenuItemDB implements MenuItemImpl
 	/**
 	 * Finds a MultipleChoiceMenu object by searching for a MultipleChoiceMenu with a matching mainCourseId.
 	 * 
-	 * @param mainCourseId the id of the MultipleChoiceMenu to search for
-	 * @return the corresponding MultipleChoiceMenu object, or null if not found
-	 * @throws DataAccessException if retrieval fails
-	 * @throws SQLException 
+     * @param multipleChoiceMenu 	- the ID of the multiple choice menu to be retrieved
+     * @return multipleChoiceMenu 	- a list of MultipleChoiceMenu object that matches the provided ID
+	 * @throws DataAccessException 	- if an error occurs during data access, such as rollback or connection issues
+	 * @throws SQLException			- if a SQL operation fails
 	 */
 	@Override
 	public List<MultipleChoiceMenu> findMultipleChoiceMenusByMainCourseId(int mainCourseId) throws DataAccessException, SQLException
@@ -459,30 +465,35 @@ public class MenuItemDB implements MenuItemImpl
 	/**
      * Builds a specific MutipleChoiceMenu object from a database result set.
      * 
-     * @param resultSet the result set containing MutipleChoiceMenu data
-     * @param mainCourseId the id of the mainCourse that the MultipleChoiceMenu belong to
-     * @return an MutipleChoiceMenu object with the extracted data
-     * @throws SQLException if accessing the result set fails
+     * @param resultSet 			- the result set containing a list of MultipleChoiceMenu data
+	 * @return multipleChoiceMenu	- MutipleChoiceMenu object that matches the provided ID
+	 * @throws DataAccessException 	- if an error occurs during data access, such as rollback or connection issues
+	 * @throws SQLException			- if a SQL operation fails
      */
 	private MultipleChoiceMenu buildMultipleChoiceMenuObject(ResultSet resultSet) throws SQLException
 	{
 		// Creates a MutipleChoiceMenu object stored within the mutipleChoiceMenu variable based off of the method's provided resultSet
-		MultipleChoiceMenu multipleChoiceMenu = new MultipleChoiceMenu(
-			resultSet.getString("selectionDescription")			
-			);		
+		MultipleChoiceMenu multipleChoiceMenu = new MultipleChoiceMenu(resultSet.getString("selectionDescription"));		
+		
 		try
 		{
+			// Retrieves all SelectionOption objects linked to this MultipleChoiceMenu using its choiceMenuId
 			List<SelectionOption> selectionOptions = findSelectionOptionsByChoiceMenuId(resultSet.getInt("choiceMenuId"));
+			
+			// Adds each SelectionOption to the MultipleChoiceMenu
 			for (SelectionOption option: selectionOptions)
 			{
 				multipleChoiceMenu.addSelectionOption(option);
 			}
-		} catch (DataAccessException | SQLException e)
+		} 
+		
+		catch (DataAccessException | SQLException exception)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// Prints any database-related exceptions to help with debugging
+			exception.printStackTrace();
 		}
 			
+		
 		return multipleChoiceMenu;
 
 	}
@@ -491,11 +502,10 @@ public class MenuItemDB implements MenuItemImpl
 	 * Finds a SelectionOption object whose choiceMenuId is linked to a
 	 * MultipleChoiceMenu entry that belongs to the specified mainCourseId.
 	 *
-	 * @param mainCourseId the ID of the main course to find related selection options for
-	 * @return the corresponding SelectionOption object, or null if not found
-	 * @throws DataAccessException if a database access error occurs
-	 * @throws SQLException 
-
+	 * @param choiceMenuId 			- the ID of the SelectionOptions to be retrieved
+     * @return selectionOption 		- a list of SelectionOption object that matches the provided ID
+	 * @throws DataAccessException 	- if an error occurs during data access, such as rollback or connection issues
+	 * @throws SQLException			- if a SQL operation fails
 	 */
 	@Override
 	public List<SelectionOption> findSelectionOptionsByChoiceMenuId(int choiceMenuId) throws DataAccessException, SQLException
@@ -532,7 +542,13 @@ public class MenuItemDB implements MenuItemImpl
 		}	
 	}
 	 
-	
+	/**
+	 * Builds a specific SelectionOption object from a database resultSet.
+	 * 
+	 * @param resultSet 		- the result set containing SelectionOption data
+	 * @return selectionOption 	- a SelectionOption object
+	 * @throws SQLException		- if a SQL operation fails
+	 */
 	private SelectionOption buildSelectionOptionObject(ResultSet resultSet) throws SQLException
 	{
 		// Creates a AddOnOption object stored within the SelectionOption variable based off of the method's provided resultSet
@@ -549,9 +565,10 @@ public class MenuItemDB implements MenuItemImpl
 	/**
 	 * Finds all AddOnOptions associated with a given mainCourseId.
 	 * 
-	 * @param mainCourseId - The id of the specific MainCourse
-	 * @return A list of AddOnOptions
-	 * @throws DataAcessException if an error occurs during retrieval.
+     * @param addOnOption 			- the ID of the menu item to be retrieved
+     * @return addOnOption 			- a list of AddOnOption object that matches the provided ID
+	 * @throws DataAccessException 	- if an error occurs during data access, such as rollback or connection issues
+	 * @throws SQLException			- if a SQL operation fails
 	 */
 	@Override
 	public List<AddOnOption> findAddOnOptionsByMainCourseId(int mainCourseId) throws DataAccessException, SQLException
@@ -593,12 +610,13 @@ public class MenuItemDB implements MenuItemImpl
 		}
 	}
 	 
+	
 	/**
      * Builds a specific AddOnOption object from a database result set.
      * 
-     * @param resultSet the result set containing AddOnOption data
-     * @return an AddOnOption object with the extracted data
-     * @throws SQLException if accessing the result set fails
+     * @param resultSet 	- the result set containing AddOnOption data
+     * @return addOnOption 	- an AddOnOption object with the extracted data
+     * @throws SQLException - if accessing the result set fails
      */
 	private AddOnOption buildAddOnOptionObject(ResultSet resultSet) throws SQLException
 	{
