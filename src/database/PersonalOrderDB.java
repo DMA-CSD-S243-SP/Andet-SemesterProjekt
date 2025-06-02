@@ -12,7 +12,6 @@ import model.EnumStatusType;
 import model.MenuItem;
 import model.PersonalOrder;
 import model.PersonalOrderLine;
-import model.TableOrder;
 
 /**
  * This class is responsible for accessing and managing PersonalOrders objects
@@ -24,7 +23,7 @@ import model.TableOrder;
  * It implements the PersonalOrderImpl, meaning it implements its methods
  * 
  * @author Line Bertelsen, Anders Trankjær & Lumière Schack
- * @version 29.05.25 - 12.54
+ * @version 02/06/2025 - 15:08
  */
 public class PersonalOrderDB implements PersonalOrderImpl
 {
@@ -65,10 +64,10 @@ public class PersonalOrderDB implements PersonalOrderImpl
 	 * - If a matching result exists, build a PersonalOrder object from the result.
 	 * - Return the fully constructed PersonalOrder.
 	 * 
-	 * @param personalOrderId the id of the personalOrderId to search for
-	 * @return the corresponding PersonaOrder object, or null if not found
-	 * @throws DataAccessException if retrieval fails
-	 * @throws SQLException 
+	 * @param personalOrderId 		- the id of the personalOrderId to search for
+	 * @return personalOrder 		- the corresponding PersonaOrder object, or null if not found
+	 * @throws DataAccessException 	- if an error occurs during data access, such as rollback or connection issues
+	 * @throws SQLException			- if a SQL operation fails
 	 */
 	@Override
 	public PersonalOrder findPersonalOrderById(int personalOrderId) throws DataAccessException, SQLException
@@ -117,7 +116,7 @@ public class PersonalOrderDB implements PersonalOrderImpl
 			// Reset auto-commit
 			databaseConnection.setAutoCommit(true);
 			
-			// If an SQL error occurs a custom exception is thrown with the specified details
+			// If an SQL error occurs while trying to find personalOrder, an exception is thrown with the specified details
 			throw new DataAccessException("Unable to find an AvailabilityTracker object with an choiceMenuId matching Id: " + personalOrderId,
 						exception);
 		}	
@@ -135,8 +134,8 @@ public class PersonalOrderDB implements PersonalOrderImpl
 	 * 
 	 * @param resultSet 			- the result set containing PersonalOrder data
 	 * @return PersonalOrder 		- a PersonalOrder object with the extracted data
-	 * @throws SQLException   		- if accessing the resultSet fails
-	 * @throws DataAccessException
+	 * @throws DataAccessException 	- if an error occurs during data access, such as rollback or connection issues
+	 * @throws SQLException			- if a SQL operation fails
 	 */
 	private PersonalOrder buildPersonalOrderObject(ResultSet resultSet) throws SQLException, DataAccessException
 	{
@@ -169,7 +168,7 @@ public class PersonalOrderDB implements PersonalOrderImpl
 	 * 
 	 * @param personalOrderLineId 		- ID of the PersonalOrder
 	 * @return personalOrderLineList 	- List of PersonalOrderLine objects
-	 * @throws DataAccessException
+	 * @throws DataAccessException 		- if an error occurs during data access, such as rollback or connection issues
 	 */
 	private List<PersonalOrderLine> findPersonalOrderLinesByPersonalOrderLineId(int personalOrderLineId) throws DataAccessException
 	{
@@ -209,10 +208,10 @@ public class PersonalOrderDB implements PersonalOrderImpl
 	/**
 	 * Builds a specific PersonalOrder object from a database resultSet.
 	 * 
-	 * @param resultSet the result set containing PersonalOrder data
-	 * @return a PersonalOrder object with the extracted data
-	 * @throws SQLException if accessing the resultSet fails
-	 * @throws DataAccessException
+	 * @param resultSet 			- the result set containing PersonalOrder data
+	 * @return personalOrder 		- a PersonalOrder object with the extracted data
+	 * @throws DataAccessException 	- if an error occurs during data access, such as rollback or connection issues
+	 * @throws SQLException			- if a SQL operation fails
 	 */
 	private PersonalOrderLine buildPersonalOrderLineObject(ResultSet resultSet) throws SQLException, DataAccessException
 	{
@@ -232,8 +231,14 @@ public class PersonalOrderDB implements PersonalOrderImpl
 
 	
 	/**
-	 * The method is use in ViewGuesTableOrderConfirmation in gui layer
-	 * to insert a personalOrder that is listed in the currentTableOrder
+	 * The method is used in ViewGuesTableOrderConfirmation in gui layer.
+	 * and the method FinishPersonalOrder in PersonalOrderController.
+	 * Inserts a new PersonalOrder into the PersonalOrder table in the Database.
+	 * 
+	 * @param personalOrder			- the PersonalOrder object containing customer.
+	 * @param tableOrderId 			- the Id that belongs to this personal order
+	 * @return personalOrder		- that PersonalOrder object, now considered persisted in the database
+	 * @throws DataAccessException 	- if an error occurs during data access, such as rollback or connection issues
 	 */
 	@Override
 	public PersonalOrder insertPersonalOrder(PersonalOrder personalOrder, int tableOrderId) throws DataAccessException
@@ -262,12 +267,18 @@ public class PersonalOrderDB implements PersonalOrderImpl
 
 			statementInsertPersonalOrder.executeUpdate();
 
+			// The database generates a key and retrieve the new personalOrderId 
+			// and the data is stored in the ResultSet object called generatedKey
 			ResultSet generatedKey = statementInsertPersonalOrder.getGeneratedKeys();
 			
+			// Iterates through the resultSet while there are still more rows in the database's table
 			if (generatedKey.next())
 			{
-				// int personalOrderId = generatedKey.getInt("personalOrderId");
+				// Give the value of the first(1) column in the current row of the result set
+				// Store it in the personalOrderId variable
 				int personalOrderId = generatedKey.getInt(1);
+				
+				// The new generated key is stored in the PersonalOrderLine table in the database 
 				insertPersonalOrderLines(personalOrder.getPersonalOrderLines(), personalOrderId);
 			}
 			
@@ -295,17 +306,24 @@ public class PersonalOrderDB implements PersonalOrderImpl
 			//If a rollback error happens it throws an exception
 			catch (SQLException rollbackException)
 			{
+				// If rollback fails, throw a custom exception with details
 				throw new DataAccessException("Rollback failed after updateTableOrder error", rollbackException);
 			}
 			
+			// If an SQL error occurs while updating the tableOrder an exception is thrown with the specified details
 			throw new DataAccessException("Failed to insert PersonalOrder", exception);
 		}
 
 		return personalOrder;
 	}
 
+	
 	/**
-	 * This method is being used by insertPersonalOrder
+	 * This method inserts a list of PersonalOrderLine objects into the database, each linked to a specific PersonalOrderId.
+	 * 
+	 * @param personalOrderLines  	- a list of PersonalOrderLine objects to be inserted
+	 * @param personalOrderId     	- the ID of the PersonalOrder that each line is linked to
+	 * @throws DataAccessException 	- if an error occurs during data access, such as rollback or connection issues
 	 */
 	private void insertPersonalOrderLines(List<PersonalOrderLine> personalOrderLines, int personalOrderId) throws SQLException
 	{
@@ -329,6 +347,7 @@ public class PersonalOrderDB implements PersonalOrderImpl
 			statementInsertPersonalOrderLine.addBatch();
 		}
 		
+		// Execute insertion of the listed data
 		statementInsertPersonalOrderLine.executeBatch();
 	}
 	
@@ -336,9 +355,13 @@ public class PersonalOrderDB implements PersonalOrderImpl
 	/**
 	 * The method is use in ViewGuesTableOrder in gui layer
 	 * to find all personalOrders that is listed in the currentTableOrder
+	 * 
+	 * @param tableOrderId 			- the Id to find matching personalOrders
+	 * @throws DataAccessException 	- if an error occurs during data access, such as rollback or connection issues
+	 * @throws SQLException			- if a SQL operation fails
 	 */
 	@Override
-	public List<PersonalOrder> findPersonalOrdersBytableOrderId(int TableOrderId) throws SQLException, DataAccessException 
+	public List<PersonalOrder> findPersonalOrdersBytableOrderId(int tableOrderId) throws SQLException, DataAccessException 
 	{
 		// Gets a connection to the database
 		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
@@ -357,7 +380,7 @@ public class PersonalOrderDB implements PersonalOrderImpl
 			statementFindByTableOrderId = databaseConnection.prepareStatement(FIND_PERSONALORDERS_BY_TABLEORDERID_QUERY);
 
 			// Adds the TableOrderId provided in the method's parameter to the String instead of the placeholder
-			statementFindByTableOrderId.setInt(1, TableOrderId);
+			statementFindByTableOrderId.setInt(1, tableOrderId);
 
 			// Executes the prepared statement and stores the result set
 			ResultSet resultSetPersonalOrder = statementFindByTableOrderId.executeQuery();
@@ -392,10 +415,10 @@ public class PersonalOrderDB implements PersonalOrderImpl
 	/**
 	 * Builds a specific PersonalOrder object from a database resultSetPersonalOrder.
 	 * 
-	 * @param resultSetPersonalOrder
-	 * @return
-	 * @throws SQLException
-	 * @throws DataAccessException
+	 * @param resultSetPersonalOrder 	- the result set containing PersonalOrder data
+	 * @return personalOrders			- a list of PersonalOrder objects
+	 * @throws DataAccessException 		- if an error occurs during data access, such as rollback or connection issues
+	 * @throws SQLException				- if a SQL operation fails
 	 */
 	private List<PersonalOrder> buildPersonalOrderObjects(ResultSet resultSetPersonalOrder) throws SQLException, DataAccessException
 		{
