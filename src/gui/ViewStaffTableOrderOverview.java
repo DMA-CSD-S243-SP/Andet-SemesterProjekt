@@ -15,6 +15,8 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -28,6 +30,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
+
+import database.DataAccessException;
+import model.TableOrder;
 
 
 
@@ -52,7 +57,7 @@ public class ViewStaffTableOrderOverview extends JFrame
 	
 	// Creates a table for use with the staffTableOrderOverviewTableModel
 	private JTable table;
-	private ViewStaffTableOrderOverviewTableModel productViewTableModel;
+	private ViewStaffTableOrderOverviewTableModel orderOverviewModel;
 	
 	
 	
@@ -127,8 +132,8 @@ public class ViewStaffTableOrderOverview extends JFrame
 		panelCenterCenter.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		// JTable with column names
-		productViewTableModel = new ViewStaffTableOrderOverviewTableModel();
-		table = new JTable(productViewTableModel);
+		initTable();
+		updateTable();
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -136,19 +141,20 @@ public class ViewStaffTableOrderOverview extends JFrame
 		panelCenterCenter.add(scrollPane);
 		scrollPane.setViewportView(table);
 		TableColumnModel columnModel = table.getColumnModel();
-		columnModel.getColumn(0).setPreferredWidth(90);
-		columnModel.getColumn(1).setPreferredWidth(110);
+		//columnModel.getColumn().setPreferredWidth(90);
+		columnModel.getColumn(0).setPreferredWidth(110);
+		columnModel.getColumn(1).setPreferredWidth(125);
 		columnModel.getColumn(2).setPreferredWidth(125);
-		columnModel.getColumn(3).setPreferredWidth(125);
-		columnModel.getColumn(4).setPreferredWidth(60);
-		columnModel.getColumn(5).setPreferredWidth(150);
-		columnModel.getColumn(6).setPreferredWidth(480);
+		columnModel.getColumn(3).setPreferredWidth(60);
+		columnModel.getColumn(4).setPreferredWidth(150);
+		columnModel.getColumn(5).setPreferredWidth(480);
 		JTableHeader header = table.getTableHeader();
 		header.setReorderingAllowed(false);
 		header.setBackground(new Color(89, 95, 111));
 		header.setForeground(new Color(255, 255, 255));
-		initTable();
-		updateTable();
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        header.setBackground(new Color(89, 95, 111));
+        header.setForeground(new Color(255, 255, 255));
 
 
 		// Button - Preparation Finished
@@ -157,7 +163,7 @@ public class ViewStaffTableOrderOverview extends JFrame
 		{
 			public void actionPerformed(ActionEvent event)
 			{
-				clickedDelete();
+				// TODO: Make this work
 			}
 		});
 		panelCenterSouth.add(btnDelete);
@@ -182,58 +188,6 @@ public class ViewStaffTableOrderOverview extends JFrame
 		panelCenterNorthNorth.add(lblViewHeading);
 	}
 	
-	
-	/**
-	 * deletes the currently selected Product
-	 */
-	private void clickedDelete()
-	{
-		// Returns the index of the selected row and stores it within the selectedRow variable
-		int selectedRow = table.getSelectedRow();
-		
-		// If no row is selected then execute this section
-		if (selectedRow == -1) 
-		{
-			JOptionPane.showMessageDialog(dialogBoxFrame, "Vælg først en bestilling fra tabellen som ønsker at færidggøre, før du trykker på 'færdiggjort' knappen.", "Information", JOptionPane.INFORMATION_MESSAGE);
-		}
-	
-		
-		// If a row is selected then execute this section
-		else 
-		{
-			// Old example code from a previous project to show how
-			// it was done using a container
-			
-			// Retrieves the value from the selected row and stores it within the selectedEmployeeID object variable
-			Object selectedProductID = table.getValueAt(selectedRow, 0);
-			
-		    // Creates an integer which we will use to store our data within
-		    int intSelectedProductID;
-		    
-		    try
-			{
-		    	// Attempts to cast / convert the string value of the selectedEmployeeID variable to an integer and stores it within the stringSelectedEmployeeID variable
-		    	intSelectedProductID = Integer.parseInt((String) selectedProductID);
-			}
-		    
-		    catch (NumberFormatException exception)
-			{
-		    	JOptionPane.showMessageDialog(dialogBoxFrame, "Vælg et produkt fra tabellen igen før du trykker på 'slet' knappen.", "Information", JOptionPane.WARNING_MESSAGE);
-		    	
-		    	return;
-			}
-
-		    
-		    // TODO: Insert the logic for changing the state of the 
-		    // table order object's sent to kitchen status
-		    
-		    
-		    
-		    
-			// Updates the table after changing the status of the chosen table order
-			updateTable();
-		}
-	}
 	
 	
 	/**
@@ -372,11 +326,9 @@ public class ViewStaffTableOrderOverview extends JFrame
 	 */
 	private void initTable()
 	{
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-		JTableHeader header = table.getTableHeader();
-        header.setBackground(new Color(89, 95, 111));
-        header.setForeground(new Color(255, 255, 255));
+		orderOverviewModel = new ViewStaffTableOrderOverviewTableModel();
+		table = new JTable(orderOverviewModel);
+		table.setModel(orderOverviewModel);
 		updateTable();
 	}
 	
@@ -386,11 +338,18 @@ public class ViewStaffTableOrderOverview extends JFrame
 	 */
 	private void updateTable() 
 	{
-		// Old example code from a previous project to show how
-		// it was done using a container, this will need extracted
-		// data from the database
-		
-//		staffTableOrderOverviewTableModel.setData(ProductContainer.getProduct());
+		try
+		{
+			List<TableOrder> data = new application.TableOrderController().findAllVisibleToKitchenTableOrders();
+			orderOverviewModel.setData(data);
+			
+		} catch (SQLException e)
+		{
+			//e.printStackTrace();
+		} catch (DataAccessException e)
+		{
+			//e.printStackTrace();
+		}
 	}
 	
 }
