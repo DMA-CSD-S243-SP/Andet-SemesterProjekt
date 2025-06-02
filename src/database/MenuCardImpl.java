@@ -16,7 +16,7 @@ import model.MenuCard;
  * findMenuCardsByRestaurantCode and findAvailabilityTrackerById.
  * 
  * @author Line Bertelsen
- * @version 13.05.25 - 08.51
+ * @version 02/06/2025 - 16.02
  */
 public interface MenuCardImpl
 {
@@ -24,24 +24,22 @@ public interface MenuCardImpl
 	 * Method creates a list containing a shallow clone of every MenuCard in the
 	 * database with a matching restaurantCode in the MenuCard table. 
 	 * 
-	 * 
-	 * @param restaurantCode, whether the MenuCard is associated with 
-	 * 		  the provide restaurantCode in the database.
-	 * 
-	 * @return A list containing a shallow clone of every MenuCard in the database
-	 * 		   with a matching restaurantCode.
-	 * 
-	 * @throws DataAccessException if there is an issue accessing the data 
+	 * @param restaurantCode  		- whether the MenuCard is associated with 
+	 * 		  						  the provide restaurantCode in the database.
+	 * @return availableMenuCards 	- A list containing a shallow clone of every MenuCard in the database
+	 * 		   						  with a matching restaurantCode.
+	 * @throws DataAccessException 	- if an error occurs during data access, such as rollback or connection issues
+	 * @throws SQLException			- if a SQL operation fails
 	 */
 	List<MenuCard> findMenuCardsByRestaurantCode(String restaurantCode) throws DataAccessException, SQLException;
 	
 	/**
-     * Method creates a shallow clone of the menuCard that has the given unique code. 
+     * Method creates a list of shallow clone of the AvailabilityTrackers that has the given unique id. 
      * If no match is found the method returns null. 
      *
-     * @param restaurantCode the code of the restaurant to be retrieved
-     * @return the Restaurant object that matches the provided code
-     * @throws DataAccessException if there is an issue accessing the data
+     * @param menuCardId	 		- the id of the menuItem to search for
+     * @return availabilityTrackers - the AvailabilityTrackers object that matches the provided id
+	 * @throws DataAccessException 	- if an error occurs during data access, such as rollback or connection issues
      */
-	List<AvailabilityTracker> findAvailabilityTrackersByMenuCardId(int menuCardId) throws DataAccessException,SQLException;
+	List<AvailabilityTracker> findAvailabilityTrackersByMenuCardId(int menuCardId) throws DataAccessException;
 }
