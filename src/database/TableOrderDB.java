@@ -419,10 +419,9 @@ public class TableOrderDB implements TableOrderImpl
 			{
 				tableOrder.addPersonalOrder(order);
 			}
-		} catch (SQLException | DataAccessException e)
+		} catch (DataAccessException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new SQLException("Failed to retrieve Personal Orders.");
 		}
 		
 		return tableOrder;
