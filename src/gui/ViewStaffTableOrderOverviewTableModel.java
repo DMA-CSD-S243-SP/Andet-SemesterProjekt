@@ -131,6 +131,8 @@ public class ViewStaffTableOrderOverviewTableModel extends AbstractTableModel
 					tableContent.add(new String[]{"", "", "", ""+1, ""+personLine.getMenuItem().getName(), ""+personLine.getNotes(),});
 				}
 			}
+			tableContent.add(new String[]{"","","","","",""});
+			tableContent.add(new String[]{"","","","","",""});
 		}
 		
 		updateTableModel();
