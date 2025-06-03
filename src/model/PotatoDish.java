@@ -29,11 +29,16 @@ public class PotatoDish extends MenuItem
      * 
      * @param isPremium true if the dish is a premium potato based dish, else false if it is a regular potato-based dish
      * @param fixedPrice the constant price of that specific potato dish category regardless of the time of day it is
+     * @param menuItemId 
+     * @param preparationTime 
+     * @param name 
+     * @param description 
+     * @param isMadeByKitchenStaff 
      */
-    public PotatoDish(boolean isPremium, double fixedPrice)
+    public PotatoDish(boolean isPremium, double fixedPrice, int menuItemId, int preparationTime, String name, String description, boolean isMadeByKitchenStaff)
     {
         // Calls the superclass constructor (MenuItem) to initialize inherited attributes.
-        super();
+        super(menuItemId, preparationTime, name, description, isMadeByKitchenStaff);
 
         this.isPremium = isPremium;
         this.fixedPrice = fixedPrice;

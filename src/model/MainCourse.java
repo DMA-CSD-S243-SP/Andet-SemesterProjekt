@@ -32,10 +32,15 @@ public class MainCourse extends MenuItem
 	 * @param introductionDescription - a short description of the item
 	 * @param lunchPrice              - the price during lunchtime
 	 * @param eveningPrice            - the price during evening time
+	 * @param menuItemId 
+	 * @param preparationTime 
+	 * @param name 
+	 * @param description 
+	 * @param isMadeByKitchenStaff 
 	 */
-	public MainCourse(String introductionDescription, double lunchPrice, double eveningPrice) 
+	public MainCourse(String introductionDescription, double lunchPrice, double eveningPrice, int menuItemId, int preparationTime, String name, String description, boolean isMadeByKitchenStaff) 
 	{
-		super();
+		super(menuItemId, preparationTime, name, description, isMadeByKitchenStaff);
 		
 		//Set the variables for this instance of mainCourse 
 		this.introductionDescription = introductionDescription;

@@ -29,9 +29,15 @@ public class SelfServiceBar extends MenuItem
 	 * @param barType the type of the self service bar this is, options are SALADBAR or SOFTICEBAR
 	 * @param lunchPrice the price of this item during the specified lunch hours
 	 * @param eveningPrice the price of this item during the specified evening hours
+	 * @param menuItemId 
+	 * @param preparationTime 
+	 * @param name 
+	 * @param description 
+	 * @param isMadeByKitchenStaff 
 	 */
-    public SelfServiceBar(EnumBarType barType, double lunchPrice, double eveningPrice)
+    public SelfServiceBar(EnumBarType barType, double lunchPrice, double eveningPrice, int menuItemId, int preparationTime, String name, String description, boolean isMadeByKitchenStaff)
     {
+    	super(menuItemId, preparationTime, name, description, isMadeByKitchenStaff);
         // Calls the constructor of its' super-class / parent class, MenuItem.
         // Although MenuItem doesn't take any parameters and cannot be directly instantiated,
     	// this makes it so everything defined in the MenuItem class is initialized before this class' values are set.

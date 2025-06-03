@@ -27,11 +27,16 @@ public class SideDish extends MenuItem
 	 * 
      * @param fixedPrice the constant price of that specific side dish category regardless of the time of day it is.
      * @param quantiyPerServing the quantity per serving to assign to this instance of SideDish 
+	 * @param menuItemId 
+	 * @param preparationTime 
+	 * @param name 
+	 * @param description 
+	 * @param isMadeByKitchenStaff 
      */
-	public SideDish(int quantiyPerServing, double fixedPrice)
+	public SideDish(int quantiyPerServing, double fixedPrice, int menuItemId, int preparationTime, String name, String description, boolean isMadeByKitchenStaff)
 	{
 		// Calls the superclass constructor (MenuItem) to initialize the inherited attributes.
-        super();
+        super(menuItemId, preparationTime, name, description, isMadeByKitchenStaff);
 		
         // Changes the quantity per serving instance variable to what is specified the parameter list
 		this.quantiyPerServing = quantiyPerServing;
