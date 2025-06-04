@@ -33,15 +33,15 @@ class TestPersonalOrderline
 	void setUp()
 	{
 	
-		potatoDish = new PotatoDish(true, 20);
+		potatoDish = new PotatoDish(true, 20, 2, 69, "Special fries", null, true);
 		personalOrderLinePotatoDish = new PersonalOrderLine(potatoDish);
 		System.out.println("A PersonalOrderLine has been created with a potatoDish item");
 	
-		mainCourse1 = new MainCourse("Ribeye, kødkvæg fra Uruguary", 239, 299);
+		mainCourse1 = new MainCourse("Ribeye, kødkvæg fra Uruguary", 239, 299, 14, 30, "285g ribeye", "ribeye lavet på kødkvæg fra Uruguary", true);
 		personalOrderLineMainCourse1 = new PersonalOrderLine(mainCourse1);
 		System.out.println("A PersonalOrderLine1 has been created with a mainCourse1 item");
 		
-		mainCourse2 = new MainCourse("Ribs, Bone's Original Sparibs", 129, 189);
+		mainCourse2 = new MainCourse("Ribs, Bone's Original Sparibs", 129, 189, 11, 900, "Sparibs", "Ribs, Bone's Orignal Sparibs", true);
 		personalOrderLineMainCourse2 = new PersonalOrderLine(mainCourse2);
 		System.out.println("A PersonalOrderLine2 has been created with a mainCourse2 item");
 		

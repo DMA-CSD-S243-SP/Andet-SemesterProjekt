@@ -64,30 +64,33 @@ public class TestPersonalOrder
 	{
 
 		// Create food items used for test 1-5
-		mainCourseSmallSparerib = new MainCourse("'Spareribs', 'Small', 'Bone’s Original Spareribs – gæsternes absolutte favorit.' ", 129.0, 189.0);
-		mainCourseMediumSparerib = new MainCourse("'Spareribs' 'Medium', 'Bone’s Original Spareribs – gæsternes absolutte favorit.' ", 178.0, 299.0);
-		mainCourseLargeSparerib = new MainCourse("'Spareribs' 'Large', 'Bone’s Original Spareribs – gæsternes absolutte favorit.'", 198.0, 329.0);
+		mainCourseSmallSparerib = new MainCourse("'Spareribs', 'Small', 'Bone’s Original Spareribs – gæsternes absolutte favorit.' ", 129.0, 189.0, 11, 900, 
+				"Spareribs lille", null, true);
+		mainCourseMediumSparerib = new MainCourse("'Spareribs' 'Medium', 'Bone’s Original Spareribs – gæsternes absolutte favorit.' ", 178.0, 299.0, 11, 900, 
+				"Spareribs medium", null, true);
+		mainCourseLargeSparerib = new MainCourse("'Spareribs' 'Large', 'Bone’s Original Spareribs – gæsternes absolutte favorit.'", 198.0, 329.0, 11, 900, 
+				"Spareribs stor", null, true);
 		
 		//PotatoDish
-		bakedPotatoDishWithGarliceButter = new PotatoDish(false, 0); 
-		bakedPotatoDishWithButter = new PotatoDish (false, 0);
-		specialFriesPotatoDish = new PotatoDish(true, 0);
-		friesPotatoDish = new PotatoDish(false, 0); 
-		sweetPotatoDish = new PotatoDish(true, 0);
+		bakedPotatoDishWithGarliceButter = new PotatoDish(false, 0, 22, 50, "bagt kartofle med hvidløgssmør", null, true); 
+		bakedPotatoDishWithButter = new PotatoDish (false, 0, 23, 50, "bagt kartofle med smør", null, true);
+		specialFriesPotatoDish = new PotatoDish(true, 0, 2, 69, "Special fries", null, true);
+		friesPotatoDish = new PotatoDish(false, 0, 1, 0, "pommes frittes", null, true); 
+		sweetPotatoDish = new PotatoDish(true, 0, 24, 45, "sweet potato pommes frittes", null, true);
 		
 		//SideOrder
-		spareribsSauce = new DipsAndSauces(true, 20.0);
-		salatBar = new SelfServiceBar(EnumBarType.SALADBAR, 49, 69);
-		chiliCheeseTops = new SideDish(1, 35.0);
-		aioliDip = new DipsAndSauces(true, 15);
-		softiceBar = new SelfServiceBar(EnumBarType.SOFTICEBAR, 49, 69);
+		spareribsSauce = new DipsAndSauces(true, 20.0, 25, 0, "Bone's Sparerib sauce", null, true);
+		salatBar = new SelfServiceBar(EnumBarType.SALADBAR, 49, 69, 4, 0, "tag-Selv saladbar", null, false);
+		chiliCheeseTops = new SideDish(1, 35.0, 7, 2, "chill cheese tops", "hjemmelavet chill cheese tops", true);
+		aioliDip = new DipsAndSauces(true, 15, 10, 0, "hvidløgs aioli", null, false);
+		softiceBar = new SelfServiceBar(EnumBarType.SOFTICEBAR, 49, 69, 3, 0, "tag-Selv softice", null, false);
 		
 		//Drinks
-		smallGlassSoda = new Drink(false, false, 49.0);
-		royalClassic = new Drink(true, false, 69.0);
-		sodaAllYouCanDrink = new Drink(false, true, 69.0);
-		glassRosevin = new Drink(true, false, 69.0);
-		cappucino = new Drink(false, false, 39.0);
+		smallGlassSoda = new Drink(false, false, 49.0, 25, 0, "lille glas sodavand", null, false);
+		royalClassic = new Drink(true, false, 69.0, 26, 0, "royal Classic", null, false);
+		sodaAllYouCanDrink = new Drink(false, true, 69.0, 5, 0, "tag-Selv sodavand", null, false);
+		glassRosevin = new Drink(true, false, 69.0, 27, 0, "glas rødvin", null, false);
+		cappucino = new Drink(false, false, 39.0, 28, 0, "cappucino lavet i hus", null, true);
 		
 
 	}
@@ -125,10 +128,10 @@ public class TestPersonalOrder
 	@Test
     void testGetTotalPersonalOrderLunchAndEveningPrice() {
 		//ACT
-		SelfServiceBar salad = new SelfServiceBar(EnumBarType.SALADBAR, 50, 75);
-		SelfServiceBar softice = new SelfServiceBar(EnumBarType.SOFTICEBAR, 50, 75);
-		MainCourse burger = new MainCourse("big fat burger", 100, 150);
-		MainCourse ribeye = new MainCourse("biggest rare steak", 150, 205);
+		SelfServiceBar salad = new SelfServiceBar(EnumBarType.SALADBAR, 50, 75, 4, 0, "tag-Selv saladbar", null, false);
+		SelfServiceBar softice = new SelfServiceBar(EnumBarType.SOFTICEBAR, 50, 75, 3, 0, "tag-Selv softice", null, false);
+		MainCourse burger = new MainCourse("big fat burger", 100, 150, 28, 0, "en giga burger 2kg kød", null, true);
+		MainCourse ribeye = new MainCourse("biggest rare steak", 150, 205, 29, 0, "en næste rå 2 kg ribeye", null, true);
 		
         PersonalOrderLine orderLine1 = new PersonalOrderLine(salad);
         PersonalOrderLine orderLine2 = new PersonalOrderLine(softice);
