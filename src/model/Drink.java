@@ -1,4 +1,6 @@
+// Packages
 package model;
+
 
 /**
  * Represents a drink menu item that can be ordered at a bone's restaurant.
@@ -9,7 +11,7 @@ package model;
  * 
  * 
  * @author Anders Trankjær & Christoffer Søndergaard
- * @version 12-05-2025 - 15:03
+ * @version 05/06/2025 - 13:57
  */
 public class Drink extends MenuItem 
 {
@@ -19,20 +21,22 @@ public class Drink extends MenuItem
 
 
 	/**
-	 * the constructor for this subclass calls the constructor for the superclass to
-	 * initialize it.
+	 * Constructs a new Drink instance, which uses the specified parameters of
+	 * its' super-class / parent class MenuItem, along with its own unique parameters aswell.
 	 * 
-	 * @param isAlcoholic - whether the drink is alcoholic.
-	 * @param isRefill    - whether the drink is allowed to be refilled
-	 * @param price       - the price of the item
-	 * @param menuItemId 
-	 * @param preparationTime 
-	 * @param name 
-	 * @param description 
-	 * @param isMadeByKitchenStaff 
+	 * @param isAlcoholic 			- whether the drink is alcoholic
+	 * @param isRefill    			- whether the drink is allowed to be refilled
+	 * @param price       			- the price of the drink
+	 * @param menuItemId 			- the unique id of the MenuItem
+	 * @param preparationTime 		- the time in seconds it takes to prepare this MenuItem
+	 * @param name 					- the name of the MenuItem
+	 * @param description 			- the description of the MenuItem
+	 * @param isMadeByKitchenStaff	- whether this MenuItem is something the kitchen should handle or not
 	 */
 	public Drink(boolean isAlcoholic, boolean isRefill, double price, int menuItemId, int preparationTime, String name, String description, boolean isMadeByKitchenStaff) 
 	{
+		// Calls the super-class / parent class constructor (MenuItem) to initialize the inherited attributes
+		// which makes it so everything defined in the MenuItem class is initialized before this class' attribute values are set.
 		super(menuItemId, preparationTime, name, description, isMadeByKitchenStaff);
 
 		this.isAlcoholic = isAlcoholic;
@@ -97,6 +101,7 @@ public class Drink extends MenuItem
 	
 	/**
 	 * Gets the lunch price of this Drink instance.
+	 * 
 	 * This method essentially retrieves the value of the instance's price attribute.
 	 *
 	 * @return the price of purchasing this Drink during lunch time hours
@@ -110,6 +115,7 @@ public class Drink extends MenuItem
 
 	/**
 	 * Gets the evening price of this Drink instance.
+	 * 
 	 * This method essentially retrieves the value of the instance's price attribute.
 	 *
 	 * @return the price of purchasing this Drink during evening time hours
