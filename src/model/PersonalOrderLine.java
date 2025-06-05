@@ -1,17 +1,19 @@
+// Packages
 package model;
 
+
 /**
- * Represents a single order line associated with a PersonalOrder. A
- * PersonalOrderLine will typically consist of a quantity, a specific MenuItem,
+ * Represents a single order line associated with a PersonalOrder.
+ * 
+ * A PersonalOrderLine will typically consist of a specific MenuItem,
  * the price of said MenuItem, along with possible additional prices for that
  * item typically for MainCourse instances, along with a collection of notes for
  * the MenuItem and a status of this single PersonalOrderLine instance, to see
  * where in the preparation/serving process this particular MenuItem(s)
  * currently is/are at.
  * 
- * 
  * @author Line Bertelsen & Christoffer Søndergaard
- * @version 12-05-2025 - 15:17
+ * @version 05/06/2025 - 10:14
  */
 public class PersonalOrderLine
 {
@@ -31,8 +33,6 @@ public class PersonalOrderLine
 	private EnumStatusType status;
 
 
-
-	
 	/**
 	 * Constructs a new PersonalOrderLine using the supplied MenuItem in the
 	 * parameter.
@@ -40,8 +40,7 @@ public class PersonalOrderLine
 	 * The additionalPrice, Notes and status must be set separately. The constructor
 	 * associates the PersonalOrderLine with the MenuItem instance.
 	 * 
-	 * @param menuItem the MenuItem object that this PersonalOrderLine is to be
-	 *                 associated with
+	 * @param menuItem the MenuItem object that this PersonalOrderLine is to be associated with
 	 */
 	public PersonalOrderLine(MenuItem menuItem)
 	{
@@ -71,17 +70,29 @@ public class PersonalOrderLine
 	 * receives if any extra option has been chosen in e.g. a MainCourse.
 	 * 
 	 * @return kitchenNotes the kitchen notes that was associated with a MainCourse
-	 *         in the form of addOnOptions of selectionOption notes.
+	 *         in the form of addOnOptions and selectionOption notes.
 	 */
 	public String getNotes()
 	{
 		return this.notes;
 	}
 
+	
+	/**
+	 * Sets the kitchen notes associated with this PersonalOrderLine.
+	 * 
+	 * If a guest has chosen an addOnOption, or selectionOption, the kitchenNotes is
+	 * added to the personalOrderLine. KitchenNotes are the notes that the kitchen
+	 * receives if any extra option has been chosen in e.g. a MainCourse.
+	 * 
+	 * @param kitchenNotes the kitchen notes that was associated with a MainCourse
+	 *         in the form of addOnOptions and selectionOption notes.
+	 */
 	public void setNotes(String notes)
 	{
 		this.notes = notes;
 	}
+
 	
 	/**
 	 * Returns the additional price, that should be applied on top of the associated
@@ -96,10 +107,20 @@ public class PersonalOrderLine
 		return this.additionalPrice;
 	}
 	
+	
+	/**
+	 * Sets the additional price, that should be applied on top of the associated
+	 * MenuItem's base/standard price. The additional price comes from pricing that
+	 * is added on top to reflect upgrades or extras often associated with the
+	 * customization of MainCourse instances.
+	 *
+	 * @param the additional cost to add on top of the MenuItem's base price
+	 */
 	public void setAdditionalPrice(double additionalPrice)
 	{
 		this.additionalPrice = additionalPrice;
 	}
+	
 	
 	/**
 	 * Calculates and returns the total lunch price for this one PersonalOrderLine
@@ -123,7 +144,6 @@ public class PersonalOrderLine
 		return personalOrderLinePrice;
 	}
 
-	
 	
 	/**
 	 * Calculates and returns the total evening price for this one PersonalOrderLine
@@ -181,6 +201,7 @@ public class PersonalOrderLine
 		this.notes = notes + addOnOption.getKitchenNotes() + " ";
 	}
 
+	
 	/**
 	 * Adds an SelectionOption to this PersonalOrderLine object, with the intent of
 	 * mutating the contents of the PersonalOrderLine instance's notes and
@@ -206,7 +227,6 @@ public class PersonalOrderLine
 	}
 
 	
-	
 	/**
 	 * Returns the current status of this/these MenuItems on this PersonalOrderLine.
 	 *
@@ -221,10 +241,18 @@ public class PersonalOrderLine
 		return this.status;
 	}
 
+	
+	/**
+	 * Sets the current status of this/these MenuItems on this PersonalOrderLine.
+	 *
+	 * This is used to track whether the MenuItem has been sent to the kitchen, is
+	 * currently being prepared by kitchen personel, is ready to be picked up and
+	 * served by the waiters, or have already been served.
+	 *
+	 * @param the current status of this particular PersonalOrderLine object.
+	 */
 	public void setStatus(EnumStatusType status)
 	{
 		this.status = status;
 	}
-
-
 }
