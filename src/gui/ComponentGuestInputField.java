@@ -10,12 +10,18 @@ import java.awt.event.FocusListener;
 
 
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
+ * Creates a customized version of Swing's JTextField class, to make it
+ * an individual component and increase the ease-of-use multiple places
+ * in the system.
+ * This GUI component is stylized in the theme colors that Bone's uses
+ * to match their brand identity.
+ * 
+ * The component also allow for easily defining filtering of user inputs
+ * to easily limit the inputs to be either letters only or numbers only.
  * 
  * 
  * @author Christoffer Søndergaard
- * @version 20/05/2025 - 13:19
+ * @version 05/06/2025 - 15:06
  */	
 public class ComponentGuestInputField extends JTextField
 {
@@ -30,7 +36,7 @@ public class ComponentGuestInputField extends JTextField
 	/**
 	 * Constructs the input field with a placeholder and an optional input filter.
 	 *
-	 * @param placeholderText The placeholder text to display when the field is empty.
+	 * @param placeholderText The placeholder text to display when the input field is empty.
 	 * @param filterType The type of input restriction (e.g., "onlyNumbers"), or null for no filter.
 	 */
 	public ComponentGuestInputField(String placeholderText, String filterType)
@@ -41,23 +47,39 @@ public class ComponentGuestInputField extends JTextField
 		// Apply numeric input filter only once, but deactivate it initially
 		if ("onlyNumbers".equals(filterType))
 		{
+			// Creates a new instance of the UtilityInputFilterNumbersOnly class which is a custom subclass of Java Swing's DocumentFilter class
 			onlyNumbersFilter = new UtilityInputFilterNumbersOnly();
 			
-			AbstractDocument doc = (AbstractDocument) getDocument();
-			doc.setDocumentFilter(onlyNumbersFilter);
+			// Creates a new instance of AbstractDocument and stores it within the abstractDocument variable
+			// the reason why casting to an AbstractDocument is being used here is because the getDocument() do not
+			// have built-in support for the setDocumentFilter method
+			AbstractDocument abstractDocument = (AbstractDocument) getDocument();
 			
-			// Initially inactive to allow placeholder
+			// Applies the previously specified onlyLettersFilter as a document filter which makes it so that any
+			// input in form of insertion or replacing is first being filteret and determined to be a valid input
+			// before it is allowed to be added in to the input text field, if it is invalid it is never added to the input field
+			abstractDocument.setDocumentFilter(onlyNumbersFilter);
+			
+			// Sets the active state to initially be inactive to allow placeholder text in the input field without being affected by the regex pattern
 			onlyNumbersFilter.setActive(false);
 		}
 		
 		else if ("onlyLetters".equals(filterType))
 		{
+			// Creates a new instance of the UtilityInputFilterLettersOnly class which is a custom subclass of Java Swing's DocumentFilter class
 			onlyLettersFilter = new UtilityInputFilterLettersOnly();
 			
-			AbstractDocument doc = (AbstractDocument) getDocument();
-			doc.setDocumentFilter(onlyLettersFilter);
+			// Creates a new instance of AbstractDocument and stores it within the abstractDocument variable
+			// the reason why casting to an AbstractDocument is being used here is because the getDocument() do not
+			// have built-in support for the setDocumentFilter method
+			AbstractDocument abstractDocument = (AbstractDocument) getDocument();
 			
-			// Initially inactive to allow placeholder
+			// Applies the previously specified onlyLettersFilter as a document filter which makes it so that any
+			// input in form of insertion or replacing is first being filteret and determined to be a valid input
+			// before it is allowed to be added in to the input text field, if it is invalid it is never added to the input field
+			abstractDocument.setDocumentFilter(onlyLettersFilter);
+			
+			// Sets the active state to initially be inactive to allow placeholder text in the input field without being affected by the regex pattern
 			onlyLettersFilter.setActive(false);
 		}
 		
