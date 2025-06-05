@@ -12,8 +12,8 @@ package model;
  * This class is intended to be extended by concrete menu item types.
  * 
  * 
- * @author Christoffer Søndergaard
- * @version 12-05-2025 - 15:09
+ * @author Christoffer Søndergaard & Lumière Schack
+ * @version 05/06/2025 - 14:20
  */
 public abstract class MenuItem
 {
@@ -27,12 +27,15 @@ public abstract class MenuItem
 
 
     /**
+	 * Constructs a new MenuItem instance, which is a super / parent class to all of the
+	 * sub / child classes that make out dishes and items that can be purchased at Bone's
+	 * restaurants.
      * 
-     * @param menuItemId the id of the MenuItem
-     * @param preparationTime the time in seconds it takes to prepare this MenuItem
-     * @param name the name of the MenuItem
-     * @param description the description of the MenuItem
-     * @param isMadeByKitchenStaff whether this MenuItem is something the kitchen should handle or not.
+     * @param menuItemId 			- the unique id of the MenuItem
+     * @param preparationTime 		- the time in seconds it takes to prepare this MenuItem
+     * @param name 					- the name of the MenuItem
+     * @param description 			- the description of the MenuItem
+     * @param isMadeByKitchenStaff 	- whether this MenuItem is something the kitchen should handle or not.
      */
     public MenuItem(int menuItemId, int preparationTime, String name, String description, boolean isMadeByKitchenStaff)
 	{
