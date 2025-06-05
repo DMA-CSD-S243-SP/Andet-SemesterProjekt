@@ -27,13 +27,18 @@ public class DipsAndSauces extends MenuItem
      * 
      * @param isSauce true if this item is a sauce, else false if the item is a dip
      * @param fixedPrice the constant price of the item regardless of which type of dip, sauce or time of day it is
+     * @param menuItemId 
+     * @param preparationTime 
+     * @param name 
+     * @param description 
+     * @param isMadeByKitchenStaff 
      */
-    public DipsAndSauces(boolean isSauce, double fixedPrice)
+    public DipsAndSauces(boolean isSauce, double fixedPrice, int menuItemId, int preparationTime, String name, String description, boolean isMadeByKitchenStaff)
     {
         // Calls the constructor of its' super-class / parent class, MenuItem.
         // Although MenuItem doesn't take any parameters and cannot be directly instantiated,
     	// this makes it so everything defined in the MenuItem class is initialized before this class' values are set.
-        super();
+        super(menuItemId, preparationTime, name, description, isMadeByKitchenStaff);
 
         this.isSauce = isSauce;
         this.fixedPrice = fixedPrice;

@@ -34,8 +34,8 @@ public class TestMenuItemSubclasses
 	public void testOfSelfServiceBar() 
 	{
 		//ARRANGE
-		SelfServiceBar salad = new SelfServiceBar(EnumBarType.SALADBAR, 15, 30);
-		SelfServiceBar softice = new SelfServiceBar(EnumBarType.SOFTICEBAR, 30, 60);
+		SelfServiceBar salad = new SelfServiceBar(EnumBarType.SALADBAR, 15, 30, 4, 0, "tag-Selv saladbar", null, false);
+		SelfServiceBar softice = new SelfServiceBar(EnumBarType.SOFTICEBAR, 30, 60, 3, 0, "tag-Selv softice", null, false);
 		
         // Act
         EnumBarType saladType = salad.getBarType();
@@ -56,8 +56,8 @@ public class TestMenuItemSubclasses
 	public void testOfSauceAndDips()
 	{
 		//ARRANGE
-		DipsAndSauces garlicDip = new DipsAndSauces(false, 20);
-		DipsAndSauces whiskeySauce = new DipsAndSauces(true, 30);
+		DipsAndSauces garlicDip = new DipsAndSauces(false, 20, 10, 0, "hvidløgs aioli", null, false);
+		DipsAndSauces whiskeySauce = new DipsAndSauces(true, 30, 9, 0, "bone's hjemmelavet whiskey Sauce", null, true);
 		
 		
 		//ACT & ASSERT
@@ -74,8 +74,8 @@ public class TestMenuItemSubclasses
 	public void testOfPotatoDish()
 	{
 		//ARRANGE
-		PotatoDish premiumPotato = new PotatoDish(true, 20);
-		PotatoDish regularPotato = new PotatoDish(false, 0);
+		PotatoDish premiumPotato = new PotatoDish(true, 20, 2, 69, "Special fries", null, true);
+		PotatoDish regularPotato = new PotatoDish(false, 0, 1, 30, "pommes frittes", null, true);
 		
 		//ACT & ASSERT
 		// test of the boolean within the class
@@ -90,8 +90,8 @@ public class TestMenuItemSubclasses
 	public void testOfSideDish()
 	{
 		//ARRANGE
-		SideDish chickenTender = new SideDish(3, 20);
-		SideDish cheeseBall = new SideDish(1, 20);
+		SideDish chickenTender = new SideDish(3, 20, 8, 2, "Chicken Tender", "bone's hjemmelavet crispy kylling", true);
+		SideDish cheeseBall = new SideDish(1, 20, 7, 2, "Chill Cheese Tops", null, true);
 		
 		//ACT
 		double chickenTenderLunchPrice = chickenTender.getLunchPrice();
@@ -111,9 +111,9 @@ public class TestMenuItemSubclasses
 	public void testOfDrink()
 	{
 		//ARRANGE
-		Drink beer = new Drink(true, false, 50);
-		Drink softDrink = new Drink(false, true, 30);
-		Drink wine = new Drink(true, true, 100);
+		Drink beer = new Drink(true, false, 50, 16, 0, "høker øl", null, false);
+		Drink softDrink = new Drink(false, true, 30, 5, 0, "tag-Selv sodavand", null, false);
+		Drink wine = new Drink(true, true, 100, 6, 0, "hvidvin", null, false);
 		
 		//ACT & ASSERT
 		//tests of the booleans in the class
@@ -127,8 +127,8 @@ public class TestMenuItemSubclasses
 	public void testOfMainCourse()
 	{
 		//ARRANGE
-		MainCourse ribeye = new MainCourse("a delicious martian ribeye", 50, 75);
-		MainCourse pasta = new MainCourse("charcoal pasta", 30, 45);
+		MainCourse ribeye = new MainCourse("a delicious martian ribeye", 50, 75, 20, 750, "ribeye fra Mars", "Lækker ribeye lavet på kødkvæg fra Mars", true);
+		MainCourse pasta = new MainCourse("charcoal pasta", 30, 45, 21, 500, "hjemmelavet pasta lavet på kul", "bone's hemmelige kul pasta opskrift", true);
 		
 		//ACT & ASSERT
 		//test of the introductiondescription
@@ -143,7 +143,7 @@ public class TestMenuItemSubclasses
 	public void testAddOnOptionForMainCourse()
 	{
 		//ARRANGE
-		MainCourse ribeye = new MainCourse("a delicious martian ribeye", 50, 75);
+		MainCourse ribeye = new MainCourse("a delicious martian ribeye", 50, 75, 20, 750, "ribeye fra Mars", "lækker ribeye lavet på kødkvæg fra Mars", true);
 		AddOnOption option1 = new AddOnOption("add garlicbutter", "with garlic butter", 5);
 		AddOnOption option2 = new AddOnOption("285 gram steak", "use larger steak", 15);
 		
@@ -169,7 +169,7 @@ public class TestMenuItemSubclasses
 	public void testMultipleChoiceMenuForMainCourse()
 	{
 		//ARRANGE
-		MainCourse pastaDish = new MainCourse("charcoal pasta", 30, 45);
+		MainCourse pastaDish = new MainCourse("charcoal pasta", 30, 45, 21, 500, "hjemmelavet pasta lavet på kul", "bone's hemmelige kul pasta opskrift", true);
 		MultipleChoiceMenu cheeseTopping = new MultipleChoiceMenu("which cheese goes on your pasta?");
 		
 		SelectionOption parmasanCheese = new SelectionOption("parmasan Cheese", "add paramasan", 10);

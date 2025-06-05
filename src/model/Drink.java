@@ -25,10 +25,15 @@ public class Drink extends MenuItem
 	 * @param isAlcoholic - whether the drink is alcoholic.
 	 * @param isRefill    - whether the drink is allowed to be refilled
 	 * @param price       - the price of the item
+	 * @param menuItemId 
+	 * @param preparationTime 
+	 * @param name 
+	 * @param description 
+	 * @param isMadeByKitchenStaff 
 	 */
-	public Drink(boolean isAlcoholic, boolean isRefill, double price) 
+	public Drink(boolean isAlcoholic, boolean isRefill, double price, int menuItemId, int preparationTime, String name, String description, boolean isMadeByKitchenStaff) 
 	{
-		super();
+		super(menuItemId, preparationTime, name, description, isMadeByKitchenStaff);
 
 		this.isAlcoholic = isAlcoholic;
 		this.isRefill = isRefill;

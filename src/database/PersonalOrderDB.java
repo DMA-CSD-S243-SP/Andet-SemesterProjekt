@@ -252,8 +252,8 @@ public class PersonalOrderDB implements PersonalOrderImpl
 			// When turned off multiple SQL statements is grouped into one transaction.
 			databaseConnection.setAutoCommit(false);
 
-			// Prevent data from changing between reads, to ensure stable views of the data in multi-user environments
-			// Once a row had been read, it can be changed during the transaction
+			// Insertion only really needs to read to know whether a value can be inserted into the database.
+			// Hence there is no issue with dirty reads, as any predicted collision is unlikely to not happen.
 			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
 
 			// Prepares a SQL statement to insert PersonalOrder and return a generated key
@@ -374,7 +374,7 @@ public class PersonalOrderDB implements PersonalOrderImpl
 
 			// Reading tableOrders happens many times per day. However it occurs almost exclusively during business
 			// hours, and updating happens rarely, and can usually be scheduled.
-			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 
 			// Prepare a SQL statement to retrieve all tableOrders
 			statementFindByTableOrderId = databaseConnection.prepareStatement(FIND_PERSONALORDERS_BY_TABLEORDERID_QUERY);

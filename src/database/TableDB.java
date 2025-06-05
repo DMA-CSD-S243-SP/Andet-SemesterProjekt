@@ -55,7 +55,7 @@ public class TableDB implements TableImpl
 			
 			// Reading Tables happens many of times per day. However it occurs almost exclusively during business
 			// hours, and updating happens rarely, and can usually be scheduled.
-			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			
 			// Prepares a SQL statement to find and retrieve a table with a matching tableCode
 			statementFindByTableCode = databaseConnection.prepareStatement(FIND_TABLE_BY_TABLECODE_QUERY);

@@ -15,7 +15,7 @@ import model.TableOrder;
  * this class tests the functionality of personalOrder 
  * 
  * @author Line
- * @version 29/05/25 - 15.12
+ * @version 04/06/25 - 11.40
  */
 public class TestTableOrderDB 
 {
@@ -24,13 +24,17 @@ public class TestTableOrderDB
     @BeforeEach
     public void setup() throws Exception 
     {
-        tableOrderDB = new TableOrderDB(); 
+        tableOrderDB = new TableOrderDB();
     }
 
     @Test
     public void testUpdateTableOrder() throws Exception 
     {
     	//ARRANGE
+    	// Step 0: Change the Test TableOrder such that it shows whether an update actually occurs.
+    	TableOrder tableOrderRefresh = new TableOrder(100009, LocalDateTime.now(), false, "CASH", 0, 150, false, true, 20); 
+        new TableOrderDB().updateTableOrder(tableOrderRefresh);
+    	
     	// Step 1: Create a TableOrder object with known tableId that already exists
         TableOrder tableOrder = new TableOrder(100009, LocalDateTime.now(), true, "CARD", 0, 200, true, false, 15); 
 
@@ -50,6 +54,40 @@ public class TestTableOrderDB
         assertTrue(updated.isSentToKitchen());
         assertFalse(updated.isRequestingService());
         assertEquals(15, updated.getOrderPreparationTime());
+    }
+    
+    
+    @Test
+    public void testFindAllVisibleToKitchenTableOrders() throws Exception
+    {
+    	//ARRANGE
+    	TableOrder tableOrder2 = new TableOrder(100000, LocalDateTime.now(), false, "CARD", 200, 0, true, false, 15); 
+    	tableOrderDB.updateTableOrder(tableOrder2);
+    	
+    	//ACT
+    	var visbleIsSentToKitchen = tableOrderDB.findAllVisibleToKitchenTableOrders();
+    	
+    	//ASSERT
+    	// Ensures that there is a visble tableOrder in the database
+    	assertNotNull(visbleIsSentToKitchen);
+    	
+    	// Looks for the specific tableOrderId 10000
+    	boolean found = false;
+        for (TableOrder tableOrder : visbleIsSentToKitchen) 
+        {
+            // Make sure every order meets the criteria
+            assertTrue(tableOrder.isSentToKitchen());
+            assertFalse(tableOrder.isTableOrderClosed());
+
+            // Look for our specific test object
+            if (tableOrder.getTableOrderId() == 100000) 
+            {
+                found = true;
+            }
+        }
+
+        // Ensure our test object is included in the result
+        assertTrue(found);
     }
 }
 

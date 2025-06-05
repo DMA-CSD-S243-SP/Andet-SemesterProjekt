@@ -27,18 +27,25 @@ public abstract class MenuItem
 
 
     /**
-     * Constructs a new MenuItem with default values.
-     * This constructor is used by the MenuItem's child and sub-classes when initializing
-     * any new specific item.
-     * Since this class is abstract, it cannot be instantiated directly.
+     * 
+     * @param menuItemId the id of the MenuItem
+     * @param preparationTime the time in seconds it takes to prepare this MenuItem
+     * @param name the name of the MenuItem
+     * @param description the description of the MenuItem
+     * @param isMadeByKitchenStaff whether this MenuItem is something the kitchen should handle or not.
      */
-    public MenuItem()
-    {
-        // Default constructor
-    }
+    public MenuItem(int menuItemId, int preparationTime, String name, String description, boolean isMadeByKitchenStaff)
+	{
+		super();
+		this.menuItemId = menuItemId;
+		this.preparationTime = preparationTime;
+		this.name = name;
+		this.description = description;
+		this.isMadeByKitchenStaff = isMadeByKitchenStaff;
+	}
 
 
-    /**
+	/**
      * Returns the unique ID of the MenuItem instance.
      *
      * @return the menu item ID

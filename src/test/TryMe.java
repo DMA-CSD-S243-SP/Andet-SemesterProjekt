@@ -32,8 +32,7 @@ public class TryMe
     	List<Discount> listOfDiscounts = new ArrayList<Discount>();
     		
     	//MainCourse object and its addons
-    	MainCourse ribeye = new MainCourse("Big juicy ribeye", 100, 125);
-    	ribeye.setMenuItemId(1);
+    	MainCourse ribeye = new MainCourse("Big juicy ribeye", 100, 125, 13, 25, "285g ribeye", "en stor ribeye fra Argentinas bedste", false);
     	AddOnOption garlicButter = new AddOnOption("Garlic butter", "with garlic butter", 10);
     	AddOnOption upgradedRibeye = new AddOnOption("285g steak", "285g steak", 45);
     	
@@ -41,16 +40,12 @@ public class TryMe
     	ribeye.addAddOnOption(upgradedRibeye);
     	
     	// Potato
-    	PotatoDish potatoDish = new PotatoDish(true, 0);
-    	potatoDish.setMenuItemId(2);
+    	PotatoDish potatoDish = new PotatoDish(true, 0, 2, 69, "Special Fries", "steak pommefritter", true);
     	
     	//sidedishes
-    	Drink softdrink = new Drink(false, true, 30);
-    	softdrink.setMenuItemId(3);
-    	SelfServiceBar salad = new SelfServiceBar(EnumBarType.SALADBAR, 50, 65);
-    	salad.setMenuItemId(4);
-    	SideDish chickenBall = new SideDish(2, 25);
-    	chickenBall.setMenuItemId(5);
+    	Drink softdrink = new Drink(false, true, 30, 5, 0, "Tag-Selv sodavand", null, false);
+    	SelfServiceBar salad = new SelfServiceBar(EnumBarType.SALADBAR, 50, 65, 4, 0, "Tag-Selv saladbar", null, false);
+    	SideDish chickenBall = new SideDish(2, 25, 15, 7, "kylling formet som en kulge", "lavet på hele kyllinger", true);
     	
     	//controller for making a personalOrder
     	PersonalOrderController controller = new PersonalOrderController();

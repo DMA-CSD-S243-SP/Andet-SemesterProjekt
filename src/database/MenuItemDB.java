@@ -256,7 +256,7 @@ public class MenuItemDB implements MenuItemImpl
 		        double eveningPrice = resultSetSelfServiceBar.getDouble("eveningPrice");
 
 		        // Constructs a new SelfServiceBar object with both shared and specific attributes
-		        menuItem = new SelfServiceBar(barType, lunchPrice, eveningPrice);
+		        menuItem = new SelfServiceBar(barType, lunchPrice, eveningPrice, menuItemId, preparationTime, name, description, isMadeByKitchenStaff);
 		     }
 		}
 		
@@ -280,7 +280,7 @@ public class MenuItemDB implements MenuItemImpl
 		        double fixedPrice = resultSetDipAndSauces.getDouble("fixedPrice");
 
 		        // Constructs a new DipsAndSauces object with both shared and specific attributes
-		        menuItem = new DipsAndSauces(isSauce, fixedPrice);
+		        menuItem = new DipsAndSauces(isSauce, fixedPrice, menuItemId, preparationTime, name, description, isMadeByKitchenStaff);
 		     }
 		}
 		
@@ -303,7 +303,7 @@ public class MenuItemDB implements MenuItemImpl
 		        double fixedPrice = resultSetPotatoDish.getDouble("fixedPrice");
 
 		        // Constructs a new PotatoDish object with both shared and specific attributes
-		        menuItem = new PotatoDish(isPremium, fixedPrice);
+		        menuItem = new PotatoDish(isPremium, fixedPrice, menuItemId, preparationTime, name, description, isMadeByKitchenStaff);
 		     }
 		}
 		
@@ -326,7 +326,7 @@ public class MenuItemDB implements MenuItemImpl
 		        double fixedPrice = resultSetSideDish.getDouble("fixedPrice");
 
 		        // Constructs a new SideDish object with both shared and specific attributes
-				menuItem = new SideDish(quantityPerServing, fixedPrice);
+				menuItem = new SideDish(quantityPerServing, fixedPrice, menuItemId, preparationTime, name, description, isMadeByKitchenStaff);
 		     }
 		 }
 		
@@ -350,7 +350,7 @@ public class MenuItemDB implements MenuItemImpl
 		        double price = resultSetDrink.getDouble("price");
 
 		        // Constructs a new Drink object with both shared and specific attributes
-				menuItem = new Drink(isAlcoholic, isRefill, price);
+				menuItem = new Drink(isAlcoholic, isRefill, price, menuItemId, preparationTime, name, description, isMadeByKitchenStaff);
 			 }
 		 }
 		
@@ -375,7 +375,7 @@ public class MenuItemDB implements MenuItemImpl
 				
 
 				// Constructs a new Drink object with both shared and specific attributes
-				MainCourse mainCourse = new MainCourse(introductionDescription, lunchPrice, eveningPrice);
+				MainCourse mainCourse = new MainCourse(introductionDescription, lunchPrice, eveningPrice, menuItemId, preparationTime, name, description, isMadeByKitchenStaff);
 				try
 				{
 					List<AddOnOption> addOnOptions = findAddOnOptionsByMainCourseId(menuItemId);
@@ -396,19 +396,6 @@ public class MenuItemDB implements MenuItemImpl
 				
 				menuItem = mainCourse;
 			}
-		}
-		
-		// All subclasses of MenuItem (like Drink and MainCourse...) 
-		// only initialize subclass-specific attributes in their constructors (e.g., isAlcoholic, price).
-		// Common attributes (like name, description...) inherited from MenuItem 
-		// are set separately below once the correct subclass instance has been created.
-		if (menuItem != null)
-		{
-			menuItem.setDescription(description);
-			menuItem.setMadeByKitchenStaff(isMadeByKitchenStaff);
-			menuItem.setMenuItemId(menuItemId);
-			menuItem.setName(name);
-			menuItem.setPreparationTime(preparationTime);
 		}
 		
 		// Returns the fully build MenuItem (or subclass) object
