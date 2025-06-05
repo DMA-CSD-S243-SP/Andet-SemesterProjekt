@@ -58,19 +58,17 @@ public class TestTableOrderDB
     
     
     @Test
-    public void testFindAllVisibleToKitchenTableOrders() throws Exception
+    public void testFindAllVisibleToKitchenTableOrdersFound() throws Exception
     {
     	//ARRANGE
-    	TableOrder tableOrder2 = new TableOrder(100000, LocalDateTime.now(), false, "CARD", 200, 0, true, false, 15); 
+    	TableOrder tableOrder2 = new TableOrder(100000, LocalDateTime.now(), 
+    			false, "CARD", 200, 0, true, false, 15); 
     	tableOrderDB.updateTableOrder(tableOrder2);
     	
     	//ACT
     	var visbleIsSentToKitchen = tableOrderDB.findAllVisibleToKitchenTableOrders();
     	
-    	//ASSERT
-    	// Ensures that there is a visble tableOrder in the database
-    	assertNotNull(visbleIsSentToKitchen);
-    	
+    	//ASSERT 	
     	// Looks for the specific tableOrderId 10000
     	boolean found = false;
         for (TableOrder tableOrder : visbleIsSentToKitchen) 
@@ -88,6 +86,36 @@ public class TestTableOrderDB
 
         // Ensure our test object is included in the result
         assertTrue(found);
+    }
+    
+    @Test
+    public void testFindAllVisibleToKitchenTableOrdersNotFound() throws Exception
+    {
+    	//ARRANGE
+    	TableOrder tableOrder3 = new TableOrder(100009, LocalDateTime.now(), false, "CARD", 200, 0, false, false, 15); 
+    	tableOrderDB.updateTableOrder(tableOrder3);
+    	
+    	//ACT
+    	var visbleIsSentToKitchen = tableOrderDB.findAllVisibleToKitchenTableOrders();
+    	
+    	//ASSERT    	
+    	// Looks for the specific tableOrderId 10009
+    	boolean found = false;
+        for (TableOrder tableOrder : visbleIsSentToKitchen) 
+        {
+            // Make sure every order meets the criteria
+            assertTrue(tableOrder.isSentToKitchen());
+            assertFalse(tableOrder.isTableOrderClosed());
+
+            // Look for our specific test object
+            if (tableOrder.getTableOrderId() == 100009) 
+            {
+                found = true;
+            }
+        }
+
+        // Ensure our test object is included in the result
+        assertFalse(found);
     }
 }
 

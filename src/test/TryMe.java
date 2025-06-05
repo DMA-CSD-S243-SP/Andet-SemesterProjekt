@@ -1,7 +1,6 @@
 package test;
 
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +11,6 @@ import model.Discount;
 import model.Drink;
 import model.EnumBarType;
 import model.MainCourse;
-import model.PersonalOrder;
 import model.PotatoDish;
 import model.SelectionOption;
 import model.SelfServiceBar;
