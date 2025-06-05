@@ -229,7 +229,7 @@ public class ViewStaffLogin extends JFrame
 		modifyMainPanel();
 		
 		// Sets a title shown in the top left corner of the window
-		setTitle("Vestbjerg Byggecenter A/S");
+		setTitle("Bone's Personale");
 		
 		// Sets a minimum width and height for the window's dimensions and makes the window launch in this size (500 x 600)
 		adjustWindowSize(500, 600);

@@ -41,8 +41,8 @@ import model.TableOrder;
  * and add a version number containing both date and time, matching the other
  * classes' java documentation.
  * 
- * @author Christoffer Søndergaard & Line Bertelsen & Anders Trankjær
- * @version 01/06/2025 - 22:24
+ * @author Christoffer Søndergaard, Line Bertelsen & Anders Trankjær
+ * @version 05/06/2025 - 14:06
  */
 public class ViewStaffTableOrderOverview extends JFrame
 {
@@ -221,7 +221,7 @@ public class ViewStaffTableOrderOverview extends JFrame
 		modifyMainPanel();
 
 		// Sets a title shown in the top left corner of the window
-		setTitle("Vestbjerg Byggecenter A/S");
+		setTitle("Bone's Personale");
 
 		// Sets a minimum width and height for the window's dimensions and makes the
 		// window launch in this size (1280 x 720)
