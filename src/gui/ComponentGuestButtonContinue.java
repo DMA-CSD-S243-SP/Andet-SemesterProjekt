@@ -40,7 +40,7 @@ public class ComponentGuestButtonContinue extends JButton
 		// Don't use the default button border
 		this.setBorderPainted(false);
 
-		// Set font to Tahoma, plain, size 16
+		// Sets the font to the specified style type and size
 		this.setFont(new Font("Tahoma", Font.PLAIN, 16));
 
 		// Center-align the button in the layout
@@ -81,11 +81,12 @@ public class ComponentGuestButtonContinue extends JButton
 		// Fills out the specified rounded corner triangle
 		graphics2D.fillRoundRect(0, 0, getWidth(), getHeight(), cornerRadius + borderThickness, cornerRadius + borderThickness);
 
-		// MOdifies the fill coloring of the button whenever it is pressed or unpressed
+		// Modifies the fill coloring of the button whenever it is pressed or unpressed
 		if (getModel().isArmed())
 		{
 			graphics2D.setColor(getBackground().darker());
 		}
+		
 		else
 		{
 			graphics2D.setColor(getBackground());
@@ -99,46 +100,5 @@ public class ComponentGuestButtonContinue extends JButton
 
 		// Disposes of the graphics object to free up resources
 		graphics2D.dispose();
-	}
-
-
-	@Override
-	public boolean contains(int xCoordinate, int yCoordinate)
-	{
-		// Creates a rounded shape to the visible button
-		Shape roundedShape = new RoundRectangle2D.Float(borderThickness, borderThickness, getWidth() - (borderThickness * 2), getHeight() - (borderThickness * 2), cornerRadius, cornerRadius);
-		
-		// Returns whether the mouse click is within the shape or not
-		return roundedShape.contains(xCoordinate, yCoordinate);
-	}
-
-
-	public void setCornerRadius(int cornerRadius)
-	{
-		this.cornerRadius = cornerRadius;
-		
-		// Changing the corner radius causes us to have to repaint the button this is why this i being done
-		repaint();
-	}
-
-
-	public int getCornerRadius()
-	{
-		return cornerRadius;
-	}
-	
-	
-	public void setBorderThickness(int borderThickness)
-	{
-		this.borderThickness = borderThickness;
-		
-		// Changing the border thickness causes us to have to repaint the button this is why this i being done
-		repaint();
-	}
-
-
-	public int getBorderThickness()
-	{
-		return borderThickness;
 	}
 }
