@@ -24,13 +24,17 @@ public class TestTableOrderDB
     @BeforeEach
     public void setup() throws Exception 
     {
-        tableOrderDB = new TableOrderDB(); 
+        tableOrderDB = new TableOrderDB();
     }
 
     @Test
     public void testUpdateTableOrder() throws Exception 
     {
     	//ARRANGE
+    	// Step 0: Change the Test TableOrder such that it shows whether an update actually occurs.
+    	TableOrder tableOrderRefresh = new TableOrder(100009, LocalDateTime.now(), false, "CASH", 0, 150, false, true, 20); 
+        new TableOrderDB().updateTableOrder(tableOrderRefresh);
+    	
     	// Step 1: Create a TableOrder object with known tableId that already exists
         TableOrder tableOrder = new TableOrder(100009, LocalDateTime.now(), true, "CARD", 0, 200, true, false, 15); 
 
