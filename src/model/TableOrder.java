@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
  * 
  * 
  * @author Line Bertelsen & Christoffer Søndergaard
- * @version 28/05/2025 - 21:24
+ * @version 03/06/2025 - 09:01
  */
 public class TableOrder
 {
@@ -42,7 +42,6 @@ public class TableOrder
 	/**
 	 * Constructs a new TableOrder instance with tableOrderId as its identifier and
 	 * initializes the personal order list as an empty ArrayList.
-	 *
 	 * 
 	 * @param tableOrderId the unique identifier for this table order
 	 * @param timeOfArrival the time when the first guest arrived
@@ -72,6 +71,8 @@ public class TableOrder
 
 	
 	/**
+	 * Sets whether someone from the table needs service.
+	 * 
 	 * Sets the boolean state which indicates whether the table has requested
 	 * service, and is waiting for a waiter to pay a visit to the table.
 	 *
@@ -100,7 +101,8 @@ public class TableOrder
 	
 	/**
 	 * Sets the closed status of the table order. When the isTableOrderClosed
-	 * boolean is set to true, it means that the table has finished their dining
+	 * 
+	 * The boolean is set to true, it means that the table has finished their dining
 	 * session and no longer wants to order, and are ready to begin the payment
 	 * process of their dining session.
 	 *
@@ -113,8 +115,9 @@ public class TableOrder
 
 	
 	/**
-	 * Sets the estimated preparation time required for the table's full order, this
-	 * is being set in the form of an integer to illustrate seconds, the reason for
+	 * Sets the estimated preparation time required for the table's full order.
+	 * 
+	 * This is being set in the form of an integer to illustrate seconds, the reason for
 	 * this is that seconds level of precision is perceived as a fine enough level
 	 * of estimation for this type of task.
 	 *
@@ -127,8 +130,10 @@ public class TableOrder
 
 
 	/**
-	 * Sets the total price of the table's order, by accumulating the total prices
-	 * of each PersonalOrder object associated with this TableOrder instance.
+	 * Sets the total price of the table's order.
+	 * 
+	 * This is found by accumulating the total prices of each 
+	 * PersonalOrder object associated with this TableOrder instance.
 	 *
 	 * @param totalTableOrderPrice the total price of a full table's order, based on 
 	 * the total pricings of each personal order
@@ -152,8 +157,9 @@ public class TableOrder
 
 	/**
 	 * Sets the payment method that the paying guest has chosen to pay for this
-	 * table order. Representing payment choices such as credit card payment or cash
-	 * payment.
+	 * table order. 
+	 * 
+	 * Representing payment choices such as credit card payment or cash payment.
 	 *
 	 * @param paymentType a string representing the payment method, "Credit Card" or "Cash Payment"
 	 */
@@ -164,7 +170,9 @@ public class TableOrder
 	
 
 	/**
-	 * Sets the time of arrival based on the first guest of the table, to have their
+	 * Sets the time of arrival. 
+	 * 
+	 * This is set based on the first guest of the table, to have their
 	 * personal order associated with the table order.
 	 *
 	 * @param timeOfArrival the LocalDateTime timestamp which indicates when the 
@@ -196,6 +204,8 @@ public class TableOrder
 	
 	
 	/**
+	 * Adds a PersonalOrder object to the listOfPersonalOrders attribute.
+	 * 
 	 * Adds a PersonalOrder object to the list of the individual personal orders,
 	 * that are associated with this TableOrder instance.
 	 *
@@ -208,6 +218,8 @@ public class TableOrder
 
 
 	/**
+	 * Calculates the total table order's price, based on the time of day.
+	 * 
 	 * Uses the timeOfArrival to determine whether or not it should use lunch or
 	 * evening prices. Iterates through and summarizes the total price either by the
 	 * getTotalPersonalOrderLunchPrice method, or by the
@@ -331,7 +343,7 @@ public class TableOrder
 
 
 	/**
-	 * Returns the total estimated preparation time for the order.
+	 * Returns the total estimated preparation time for the order in seconds.
 	 *
 	 * @return preparation time in seconds
 	 */
