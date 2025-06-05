@@ -53,7 +53,7 @@ public class RestaurantDB implements RestaurantImpl
 			
 			// Reading restaurantscodes happens many times per day. However it occurs almost exclusively during business
 			// hours, and updating happens rarely, and can usually be scheduled.
-			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			
 			// Prepares a SQL statement to find and retrieve a restaurant with a matching tableCode
 			statementFindByRestaurantCode = databaseConnection.prepareStatement(FIND_RESTAURANT_BY_RESTAURANTCODE_QUERY);

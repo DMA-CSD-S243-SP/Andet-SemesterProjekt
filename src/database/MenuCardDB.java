@@ -70,7 +70,7 @@ public class MenuCardDB implements MenuCardImpl
 			
 			// Reading MenuCards happens thousands of times per day. However it occurs almost exclusively during
 			// business hours, and updating happens rarely, and can usually be scheduled, which is why we use read uncommitted.
-			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			
 			// Prepare a SQL statement to retrieve all employees
 			statementFindByRestaurantCode = databaseConnection.prepareStatement(FIND_MENUCARDS_BY_RESTAURANTCODE_QUERY);

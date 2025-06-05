@@ -340,7 +340,7 @@ public class TableOrderDB implements TableOrderImpl
 	        
 	    	// Prevent data from changing between reads, to ensure stable views of the data in multi-user environments
 	    	// Once a row had been read, it can be changed during the transaction		
-	        databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+	        databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 
 			// Prepares a SQL statement to find all tableOrder visible to kitchen
 	        statementFindVisibleToKitchenTableOrders = databaseConnection.prepareStatement(FIND_VISIBLE_TO_KITCHEN_TABLE_ORDERS_QUERY);
