@@ -1,5 +1,6 @@
 package gui;
 
+// Imports
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -17,7 +18,6 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -25,6 +25,20 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 
+
+
+/**
+ * The ViewStaffLogin class is responsible for creating the graphical user interface 
+ * that lets bone's employees to log into the staff side of the system.
+ * 
+ * NOTE: This is based off of a previous project's old GUI, and would need updating
+ * in a future iteration, to minimize the time for maintaining the staff GUi in the
+ * long run.
+ * 
+ * 
+ * Author: Christoffer Søndergaard
+ * Version: 08/06/2025 - 15:02
+ */	
 public class ViewStaffLogin extends JFrame
 {
 	// Added in order to suppress the warning that appears in serializable classes where no serialVersionUID is specified
@@ -43,14 +57,19 @@ public class ViewStaffLogin extends JFrame
 
 	
 	/**
-	 * Create the frame.
+	 * Constructs the ViewStaffLogin frame, initializes all GUI components, 
+	 * and sets up the structure, visuals, and behavior of the staff's GUI.
 	 */
 	public ViewStaffLogin()
 	{
 		initGUI();
 	}
 	
-	
+
+	/**
+	 * Initializes and lays out the graphical components of the GUI, including
+	 * panels, buttons, labels, and the table displaying the table orders.
+	 */
 	private void initGUI()
 	{
 		setGeneralBehavior();
@@ -166,38 +185,12 @@ public class ViewStaffLogin extends JFrame
 		mainPanel.getRootPane().setDefaultButton(btnLogin);
 	}
 
-
+	
+	/**
+	 * sends you to the ViewStaffHome window
+	 */
 	private void clickedLogin()
 	{
-		// Takes the data that was added in the text field, trims it thereby removing spaces, and then stores it within a variable
-	    String inputEmployeeID = textFieldUsername.getText().trim();
-	    String inputPassword = passwordField.getText().trim();
-
-		// If one or more of the text fields are missing inputted information then execute this section
-		if (inputEmployeeID.isEmpty() || inputPassword.isEmpty())
-		{	
-			JOptionPane.showMessageDialog(dialogBoxFrame, "Én eller flere felter er ikke udfyldt, udfyld først alle felter før du trykker på 'login' knappen.", "Information", JOptionPane.INFORMATION_MESSAGE);
-			
-			return;
-	    }
-		
-		// Creates a variable to store the Employee object's EmployeeID within 
-		int employeeIDNumber;
-		
-		try
-		{
-			// Converts the string value of the input to an integer value which we can give to the controller to find any existing employee with a matching EmployeID within the container
-			employeeIDNumber = Integer.valueOf(inputEmployeeID);
-		}
-		
-		catch (NumberFormatException exception)
-		{
-			JOptionPane.showMessageDialog(dialogBoxFrame, "Det indtastede medarbejder ID er ugyldigt da det indeholder andet end tal.", "Information", JOptionPane.INFORMATION_MESSAGE);
-
-			return;
-		}
-		
-		
 		// Creates and launches a new staffLoginView window for the user to interact with
 		ViewStaffHome viewStaffHome = new ViewStaffHome();
 		viewStaffHome.setVisible(true);
@@ -206,7 +199,10 @@ public class ViewStaffLogin extends JFrame
 		closeCurrentFrame();
 	}
 	
-	
+
+	/**
+	 * makes this frame invisible and disposes of it
+	 */
 	private void closeCurrentFrame()
 	{
 		this.setVisible(false);
@@ -215,7 +211,10 @@ public class ViewStaffLogin extends JFrame
 	
 
 
-
+	/**
+	 * Sets the general behavior for the frame, including how the application 
+	 * responds when the window is closed, and makes it exit the program
+	 */
 	private void setGeneralBehavior()
 	{
 		// Sets the operation that will occur when the close window button (x) is clicked to exit the application altogether 
@@ -223,6 +222,10 @@ public class ViewStaffLogin extends JFrame
 	}
 	
 	
+	/**
+	 * Sets the general visuals of the frame / window like the title, window size,
+	 * icon, and header panel contents.
+	 */	
 	private void setGeneralVisuals()
 	{
 		// Modifies the visual appearance of the main panel
@@ -241,7 +244,11 @@ public class ViewStaffLogin extends JFrame
 		createPanelHeader("/headerLogo.png");
 	}
 	
-
+	
+	/**
+	 * Configures the main panel that will act as the container for all components
+	 * in the main area.
+	 */
 	private void modifyMainPanel()
 	{
 		// Creates a new panel and stores it as the mainPanel this is the panel that will contain all other panels
@@ -258,6 +265,13 @@ public class ViewStaffLogin extends JFrame
 	}
 
 
+	/**
+	 * Adjusts the size and location of the window.
+	 * Ensures that the window has a minimum size and is centered on the screen.
+	 *
+	 * @param width  the desired width of the window
+	 * @param height the desired height of the window
+	 */
 	private void adjustWindowSize(int width, int height)
 	{
 		// Changes the window's dimensions to be set to the value of width x height when the window is launched
@@ -271,6 +285,11 @@ public class ViewStaffLogin extends JFrame
 	}
 
 	
+	/**
+	 * Sets the window's icon image using the provided path to a resource file.
+	 *
+	 * @param favIconPath the file path to the icon image
+	 */
 	private void setFavIcon(String favIconPath)
 	{
 		// Finds the resource with the name specified in the method's parameter and stores its url destination in the local urlPath variable 
@@ -289,6 +308,12 @@ public class ViewStaffLogin extends JFrame
 	}
 	
 	
+	/**
+	 * Creates and configures the header panel located at the top of the frame and
+	 * sets the logo and applies the appropriate layout and styling.
+	 *
+	 * @param headerLogoPath the file path to the header logo image
+	 */
 	private void createPanelHeader(String headerLogoPath)
 	{
 		// Creates a new panel and stores it as the panelNorth variable
