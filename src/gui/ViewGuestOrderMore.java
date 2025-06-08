@@ -1,22 +1,31 @@
 package gui;
 
+//Imports
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.util.Arrays;
 
-import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
+
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
+ * The ViewGuestOrderMore class represents a graphical interface that allows guests
+ * to select an existing customer profile or choose to create a new one in order to
+ * add more items to an ongoing order, or order for someone else at the table.
  * 
+ * This class extends JFrame and makes use of a variety of custom GUI components.
  * 
- * @author Christoffer Søndergaard
- * @version 21/05/2025 - 02:45
- */	
+ * The class uses a custom frame theme for layout and styling,
+ * and includes navigation buttons for going back, requesting service,
+ * or continuing to the next step in the guest flow.
+ * 
+ * The view includes a dropdown menu with selectable customer names.
+ *
+ *
+ * @author: Christoffer Søndergaard & Lumière Schack  
+ * @version: 08/06/2025 - 21:03
+ */
 public class ViewGuestOrderMore extends JFrame
 {
 	// Added in order to suppress the warning that appears in serializable classes where no serialVersionUID is specified
@@ -35,7 +44,10 @@ public class ViewGuestOrderMore extends JFrame
 	
 	
 	/**
-	 * Create the frame.
+	 * Constructs the ViewGuestOrderMore frame and initializes
+	 * its graphical components and layout.
+	 *
+	 * This constructor assigns the task of GUI setup to the initGUI() method.
 	 */
 	public ViewGuestOrderMore()
 	{
@@ -43,6 +55,18 @@ public class ViewGuestOrderMore extends JFrame
 	}
 	
 	
+	/**
+	 * Initializes the GUI components for this frame.
+	 *
+	 * This includes:
+	 * - Setting up the themed frame layout
+	 * - Displaying navigation buttons (back and request service)
+	 * - Creating a continue button that validates input and proceeds to the next view
+	 * - Creates a dropdown list of selectable existing customers.
+	 * 
+	 * NOTE: Some logic is marked as TODO for future implementation, where
+	 * dynamic user-based routing will be handled.
+	 */
 	private void initGUI()
 	{
 		// Creates a ComponentFrameThemeGuest component
