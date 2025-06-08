@@ -1,5 +1,6 @@
 package gui;
 
+//Imports
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
@@ -9,13 +10,24 @@ import javax.swing.JPanel;
 
 
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
+ * The ViewGuestCustomerInformation class represents a GUI frame
+ * where guests are prompted to enter their personal information,
+ * such as first name and age.
  * 
+ * This class extends JFrame and makes use of a variety of custom GUI components.
  * 
- * @author Christoffer Søndergaard & Lumière Schack
- * @version 21/05/2025 - 13:28
- */	
+ * The class uses a custom frame theme for layout and styling,
+ * and includes navigation buttons for going back, requesting service,
+ * or continuing to the next step in the guest flow.
+ *
+ * It validates user input and stores it via the UtilityGuestInformation class,
+ * that uses a singleton pattern, forwarding it to the underlying application
+ * logic and uses controllers.
+ *
+ *
+ * @author: Christoffer Søndergaard & Lumière Schack  
+ * @version: 08/06/2025 - 19:53
+ */
 public class ViewGuestCustomerInformation extends JFrame
 {
 	// Added in order to suppress the warning that appears in serializable classes where no serialVersionUID is specified
@@ -37,7 +49,10 @@ public class ViewGuestCustomerInformation extends JFrame
 	
 	
 	/**
-	 * Create the frame.
+	 * Constructs the ViewGuestCustomerInformation frame and initializes
+	 * its graphical components and layout.
+	 *
+	 * This constructor assigns the task of GUI setup to the initGUI() method.
 	 */
 	public ViewGuestCustomerInformation()
 	{
@@ -45,6 +60,19 @@ public class ViewGuestCustomerInformation extends JFrame
 	}
 	
 	
+	/**
+	 * Initializes the GUI components for this frame.
+	 *
+	 * This includes:
+	 * - Setting up the themed frame layout
+	 * - Displaying navigation buttons (back and request service)
+	 * - Creating a continue button that validates input and proceeds to the next view
+	 * - Adding input fields for first name and age
+	 *
+	 * Input validation ensures the first name is non-empty and under 30 characters,
+	 * and that age is within a valid range (0–200). Upon successful validation,
+	 * user data is submitted to UtilityGuestInformation for storage.
+	 */
 	private void initGUI()
 	{
 		// Creates a ComponentFrameThemeGuest component
@@ -212,14 +240,17 @@ public class ViewGuestCustomerInformation extends JFrame
 				// Closes the current frame/window
 				this.dispose();
 			}
-			catch (IllegalArgumentException ie)
+			
+			catch (IllegalArgumentException illegalArgumentException)
 			{
+				// Creates a dialog box informing about the action that went wrong
 				new ComponentGuestErrorDialog(this, 
 						"Følgende er ikke udfyldt korrekt:",
 						"Alder",
 						"Alderen skal være over 0 og under 200."
 				);
 			}
+			
 			catch (Exception exception)
 			{
 				exception.printStackTrace();
@@ -227,6 +258,7 @@ public class ViewGuestCustomerInformation extends JFrame
 			
 			finally
 			{
+				// Reenables the button if something goes wrong
 				btnContinue.setEnabled(true);
 			}
 		});
