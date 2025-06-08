@@ -1,23 +1,52 @@
 package gui;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.*;
+// Imports
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Insets;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import model.MenuItem;
 
 
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
+ * A custom GUI component that creates a menu item section for a guest-facing GUI.
+ * 
+ * This component visually presents a menu item's name, description, price,
+ * and a "+" button that allows the user to add the item to their order.
+ * 
+ * This class extends JPanel and includes embedded labels and a button 
+ * to make it fully interactive and suitable for dynamic GUIs.
  * 
  * 
- * @author Christoffer Søndergaard
- * @version 21/05/2025 - 08:45
- */	
+ * Author: Christoffer Søndergaard  
+ * Version: 08/06/2025 - 12:11
+ */
 public class ComponentGuestMenuItem extends JPanel
 {
 	private JButton btnAdd;
 	private model.MenuItem menuItem;
 
+	
+	/**
+	 * Constructs a new ComponentGuestMenuItem with visual representation
+	 * of the supplied MenuItem.
+	 *
+	 * It adds a title, description, price label, and an add button
+	 * to the panel. The right section includes price and button, and the center 
+	 * area contains item title and description.
+	 *
+	 * @param menuItem the MenuItem object to be displayed
+	 */
 	public ComponentGuestMenuItem(model.MenuItem menuItem)
 	{
 		this.menuItem = menuItem;
@@ -146,16 +175,25 @@ public class ComponentGuestMenuItem extends JPanel
 		//this.setBorder(new EmptyBorder(0, 0, 20, 0));
 	}
 
+	
 	/**
-	 * Returns a reference to the add button.
-	 * Allows external classes to register action listeners or modify the button.
+	 * Returns the "+" button component used for adding the item to an order.
+	 * This allows external GUI classes to attach an ActionListener to handle the on-click event.
+	 *
+	 * @return the add button for this menu item component
 	 */
 	public JButton getAddButton()
 	{
 		return btnAdd;
 	}
 	
-	public model.MenuItem getMenuItem()
+	
+	/**
+	 * Returns the MenuItem object associated with the ComponentGuestMenuItem.
+	 *
+	 * @return the MenuItem displayed in the ComponentGuestMenuItem
+	 */
+	public MenuItem getMenuItem()
 	{
 		return menuItem;
 	}
