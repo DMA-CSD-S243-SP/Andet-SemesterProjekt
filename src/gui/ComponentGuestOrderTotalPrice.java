@@ -1,21 +1,38 @@
 package gui;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.List;
+// Imports
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 
+import javax.swing.Box;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
- * 
- * 
- * @author Christoffer Søndergaard
- * @version 21/05/2025 - 01:08
- */	
+ * A custom GUI component that displays a summary of the total price for a guest's PersonalOrder.
+ *
+ * This component shows the guest's name and their total order price on each side.
+ * It is designed for use in guest-facing GUI to highlight the final cost of their PersonalOrder.
+ *
+ *
+ * Author: Christoffer Søndergaard
+ * Version: 08/06/2025 - 13:38
+ */
 public class ComponentGuestOrderTotalPrice extends JPanel
 {
+    /**
+     * Constructs a new ComponentGuestOrderTotalPrice.
+     *
+     * Displays the guest's name on the left and the total price on the right.
+     *
+     * @param guestName the name of the guest/customer who's total price should be shown
+     * @param price the final total amount for the guest's order
+     */
 	public ComponentGuestOrderTotalPrice(String guestName, double price)
 	{
 		super();
@@ -29,14 +46,16 @@ public class ComponentGuestOrderTotalPrice extends JPanel
 		// This line creates vertical spacing but does not add it to the layout – likely a mistake or leftover
 		Box.createRigidArea(new Dimension(0, 35));
 
-		// Set a maximum width of 300px and flexible height
+		// Sets a maximum width of 300px and flexible height honestly using 999 
+		// because i was unable to find something along the lines of dimensions.heightMaxSize
+		// but it works for our purpose, so don't change this for the time being, this is a TODO for later
 		setMaximumSize(new Dimension(300, 999));
 
 		// Center this component horizontally in its parent container
 		setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		
-
+		
 		////////////////////////
 		// - Panel & Labels - //
 		////////////////////////
@@ -75,7 +94,7 @@ public class ComponentGuestOrderTotalPrice extends JPanel
 		// Add the price label to the right side of the top panel
 		topPanel.add(labelPrice, BorderLayout.EAST);
 
-		// Add the top panel to the top (NORTH) section of this component
+		// Add the top panel to the top section of this component
 		add(topPanel, BorderLayout.NORTH);
 	}
 }
