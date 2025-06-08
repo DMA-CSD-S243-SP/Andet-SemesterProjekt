@@ -29,12 +29,17 @@ import javax.swing.border.MatteBorder;
 
 
 /**
- * TODO: Write a relatively detailed description of what this
- * class represents, and add a version number containing both date 
- * and time, matching the other classes' java documentation.
- *
- * @author Christoffer Søndergaard
- * @version 01/06/2025 - 22:24
+ * The ViewStaffHome class is the main home screen for Bone's employees in the staff
+ * side of the system and it serves as the primary navigation which employees can view 
+ * currently placed TableOrders and the service queue as well as log out of the system.
+ * 
+ * NOTE: This is based off of a previous project's old GUI, and would need updating
+ * in a future iteration, to minimize the time for maintaining the staff GUi in the
+ * long run.
+ * 
+ * 
+ * Author: Christoffer Søndergaard
+ * Version: 08/06/2025 - 15:19
  */
 public class ViewStaffHome extends JFrame
 {
@@ -46,7 +51,8 @@ public class ViewStaffHome extends JFrame
 	
 	
 	/**
-	 * Create the frame.
+	 * Constructs the ViewStaffHome frame, initializes all GUI components, 
+	 * and sets up the structure, visuals, and behavior of the staff's GUI.
 	 */
 	public ViewStaffHome()
 	{
@@ -54,6 +60,10 @@ public class ViewStaffHome extends JFrame
 	}
 	
 	
+	/**
+	 * Initializes and lays out the graphical components of the GUI, including
+	 * panels, buttons, labels, and the table displaying the table orders.
+	 */
 	private void initGUI()
 	{
 		setGeneralBehavior();
@@ -180,11 +190,13 @@ public class ViewStaffHome extends JFrame
 		lblUserName.setAlignmentX(0.5f);
 	}
 
-	
+
+	/**
+	 * sends you to the ViewStaffTableOrderOverview frame / window 
+	 */
 	private void clickedTableOrders()
 	{
-		//TODO:
-		// Launches a frame view for either adding or editing an order
+		// Launches a frame view for viewing and editing the states of TableOrder and PersonalOrder contents
 		ViewStaffTableOrderOverview viewStaffTableOrderOverview = new ViewStaffTableOrderOverview();
 		viewStaffTableOrderOverview.setVisible(true);
 
@@ -193,8 +205,14 @@ public class ViewStaffHome extends JFrame
 	}
 	
 	
+	/**
+	 * Currently prompts you with information that this feature is not yet implemented
+	 * 
+	 * TODO: make this work in a coming use case
+	 */
 	private void clickedServiceQueue()
 	{
+		// Creates a dialog box informing about this feature not being fully implemented yet
 		new ComponentGuestErrorDialog(this, 
 				"Følgende funktion",
 				"Service Kø",
@@ -203,6 +221,9 @@ public class ViewStaffHome extends JFrame
 	}
 	
 	
+	/**
+	 * sends you back to the ViewStaffLogin window
+	 */
 	private void clickedLogout()
 	{
 		// Creates and launches a new viewStaffLogin window for the user to interact with
@@ -214,6 +235,9 @@ public class ViewStaffHome extends JFrame
 	}
 	
 	
+	/**
+	 * makes this frame invisible and disposes of it
+	 */
 	private void closeCurrentFrame()
 	{
 		this.setVisible(false);
@@ -221,6 +245,10 @@ public class ViewStaffHome extends JFrame
 	}
 
 
+	/** 
+	 * Changes the layout of the specified JButton element to
+	 * use a darker stylized theme
+	 */
 	private void setDesignSideBarButton(JButton button)
 	{
 		button.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -234,6 +262,10 @@ public class ViewStaffHome extends JFrame
 	}
 	
 	
+	/**
+	 * Sets the general behavior for the frame, including how the application 
+	 * responds when the window is closed, and makes it exit the program
+	 */
 	private void setGeneralBehavior()
 	{
 		// Sets the operation that will occur when the close window button (x) is clicked to exit the application altogether 
@@ -241,6 +273,10 @@ public class ViewStaffHome extends JFrame
 	}
 	
 	
+	/**
+	 * Sets the general visuals of the frame / window like the title, window size,
+	 * icon, and header panel contents.
+	 */	
 	private void setGeneralVisuals()
 	{
 		// Modifies the visual appearance of the main panel
@@ -260,6 +296,10 @@ public class ViewStaffHome extends JFrame
 	}
 	
 
+	/**
+	 * Configures the main panel that will act as the container for all components
+	 * in the main area.
+	 */
 	private void modifyMainPanel()
 	{
 		// Creates a new panel and stores it as the mainPanel this is the panel that will contain all other panels
@@ -276,6 +316,13 @@ public class ViewStaffHome extends JFrame
 	}
 
 
+	/**
+	 * Adjusts the size and location of the window.
+	 * Ensures that the window has a minimum size and is centered on the screen.
+	 *
+	 * @param width  the desired width of the window
+	 * @param height the desired height of the window
+	 */
 	private void adjustWindowSize(int width, int height)
 	{
 		// Changes the window's dimensions to be set to the value of width x height when the window is launched
@@ -288,7 +335,12 @@ public class ViewStaffHome extends JFrame
 		setLocationRelativeTo(null);
 	}
 
-	
+
+	/**
+	 * Sets the window's icon image using the provided path to a resource file.
+	 *
+	 * @param favIconPath the file path to the icon image
+	 */
 	private void setFavIcon(String favIconPath)
 	{
 		// Finds the resource with the name specified in the method's parameter and stores its url destination in the local urlPath variable 
@@ -305,6 +357,12 @@ public class ViewStaffHome extends JFrame
 	}
 	
 	
+	/**
+	 * Creates and configures the header panel located at the top of the frame and
+	 * sets the logo and applies the appropriate layout and styling.
+	 *
+	 * @param headerLogoPath the file path to the header logo image
+	 */
 	private void createPanelHeader(String headerLogoPath)
 	{
 		// Creates a new panel and stores it as the panelNorth variable
