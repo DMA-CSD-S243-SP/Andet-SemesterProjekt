@@ -1,26 +1,28 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.sql.SQLException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
-import javax.swing.Box;
+//Imports
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import application.TableOrderController;
-import database.DataAccessException;
 
 /**
- * TODO: Write a thorough description of this class and also java docs for the
- * constructor and the class' methods
+ * The ViewGuestTableInformation class provides the GUI for guests 
+ * to input their table code. The code is composed of a 3 digit restaurant code
+ * and a 4 digit table number, and is used to identify the restaurant and table
+ * the guest is sitting at and the related TableOrder.
+ *
+ * This class extends JFrame and makes use of a variety of custom GUI components.
  * 
- * 
- * @author Christoffer Søndergaard & Lumière Schack
- * @version 21/05/2025 - 12:09
+ * The class uses a custom frame theme for layout and styling,
+ * and includes navigation buttons for going back, requesting service,
+ * or continuing to the next step in the guest flow.
+ *
+ * Upon valid input, the user is navigated to the next step in the 
+ * dining process where personal customer information is requested.
+ *
+ *
+ * Author: Christoffer Søndergaard & Lumière Schack  
+ * @version: 08/06/2025 - 22:22
  */
 public class ViewGuestTableInformation extends JFrame
 {
@@ -46,7 +48,10 @@ public class ViewGuestTableInformation extends JFrame
     
 
 	/**
-	 * Create the frame.
+	 * Constructs the ViewGuestTableInformation frame and initializes
+	 * its graphical components and layout.
+	 *
+	 * This constructor assigns the task of GUI setup to the initGUI() method.
 	 */
 	public ViewGuestTableInformation()
 	{
@@ -54,7 +59,16 @@ public class ViewGuestTableInformation extends JFrame
 	}
 
 	
-
+    /**
+	 * Initializes the GUI components for this frame.
+	 * 
+	 * This includes:
+	 * - Setting up the themed frame layout
+	 * - Displaying navigation buttons (back and request service)
+	 * - Creating a continue button that validates input and proceeds to the next view
+	 * - An input field restricted to numeric values only to receive the 7 digit table code
+	 * 
+     */
 	private void initGUI()
 	{
 		// Creates a ComponentFrameThemeGuest component
@@ -84,8 +98,10 @@ public class ViewGuestTableInformation extends JFrame
 		//   SHOULD BE INSERTED IN   //
 		///////////////////////////////
 		
-		
+		// Creates an inputField that only accepts numeric values as inputs
 		inputField = new ComponentGuestInputField("Bordnummer", "onlyNumbers");
+		
+		// Adds the inputField to the frameTheme
 		frameTheme.getPrimaryContentPanel().add(inputField);
 		
 		
@@ -150,30 +166,36 @@ public class ViewGuestTableInformation extends JFrame
 				// Closes the current frame/window
 				this.dispose();
 			}
-			catch (IllegalArgumentException ie)
+			
+			catch (IllegalArgumentException illegalArgumentException)
 			{
+				// Creates a dialog box informing about the action that went wrong
 				new ComponentGuestErrorDialog(this, 
 						"Følgende er ikke udfyldt korrekt:",
 						"Bordnummer",
 						"Indtast et gyldigt bordnummer (7 cifre)"
 				);
-				ie.printStackTrace();
+				
+				illegalArgumentException.printStackTrace();
 			}
+			
 			catch (Exception exception)
 			{
+				// Creates a dialog box informing about the action that went wrong
 				new ComponentGuestErrorDialog(this, 
 						"Der skete en uventet fejl:",
 						"",
 						"Prøv igen."
 				);
+				
 				exception.printStackTrace();
 			}
 			
 			finally
 			{
+				// Reenables the button if something goes wrong
 				btnContinue.setEnabled(true);
 			}
-			
 		});
 	}
 }
