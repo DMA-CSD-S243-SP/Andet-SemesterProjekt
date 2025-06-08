@@ -1,34 +1,30 @@
 package gui;
 
+//Imports
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.util.Arrays;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
 
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
+ * The ViewGuestReorderPotato class provides a GUI for reordering a 
+ * potato side dish.
+ * 
+ * This class extends JFrame and makes use of a variety of custom GUI components.
+ * 
+ * The class uses a custom frame theme for layout and styling,
+ * and includes navigation buttons for going back, requesting service,
+ * or continuing to the next step in the guest flow.
+ * 
+ * This frame presents a dropdown menu for the guest to select a potato dish, 
+ * such as baked potatoes.
  * 
  * 
  * @author Christoffer Søndergaard
- * @version 21/05/2025 - 23:53
- */	
+ * @version 08/06/2025 - 22:06
+ */
 public class ViewGuestReorderPotato extends JFrame
 {
 	// Added in order to suppress the warning that appears in serializable classes where no serialVersionUID is specified
@@ -47,7 +43,10 @@ public class ViewGuestReorderPotato extends JFrame
 	
 	
 	/**
-	 * Create the frame.
+	 * Constructs the ViewGuestReorderPotato frame and initializes
+	 * its graphical components and layout.
+	 *
+	 * This constructor assigns the task of GUI setup to the initGUI() method.
 	 */
 	public ViewGuestReorderPotato()
 	{
@@ -55,6 +54,19 @@ public class ViewGuestReorderPotato extends JFrame
 	}
 	
 	
+    /**
+	 * Initializes the GUI components for this frame.
+	 * 
+	 * This includes:
+	 * - Setting up the themed frame layout
+	 * - Displaying navigation buttons (back and request service)
+	 * - Creating a continue button that validates input and proceeds to the next view
+     * - A dropdown menu to select potatoes from
+     * 
+     * It also adds a confirmation button that simulates adding the selected item
+     * but currently this does not work, as it is a future use case that will be implemented
+     * in a future iteration.
+     */
 	private void initGUI()
 	{
 		// Creates a ComponentFrameThemeGuest component
@@ -152,9 +164,7 @@ public class ViewGuestReorderPotato extends JFrame
 	
 		// Adds an action listener for when the button is clicked
 		btnContinue.addActionListener(event ->
-		{
-			System.out.println("Kartoflen blev tilføjet");
-			
+		{	
 			// Creates a new frame that should be opened when pressing the button and closes the current one, taking the user a step back in the ordering process
 			returnToPreviousView();
 		});
