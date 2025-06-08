@@ -26,7 +26,8 @@ public class UtilityInputFilterLettersOnly extends DocumentFilter
 	private boolean isFilterActive = false;
 	
 	// The regex pattern that we use, which only allows matches for the following:
-	// small and capital letters from a to z and also including æ, ø and å
+	// small and capital letters from a to z and also including æ, ø and å and
+	// as the + indicates they are allowed to be repeated multiple times
 	private static final Pattern LETTERS_ONLY_PATTERN = Pattern.compile("[a-zA-ZÆØÅæøå]+");
 
 	// Determines whether or not the filtering is currently active to deactivate it
