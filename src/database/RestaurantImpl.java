@@ -1,13 +1,26 @@
 package database;
 
+// Imports
 import java.sql.SQLException;
 
 import model.Restaurant;
 
+
 /**
+ * An interface that defines a contract for accessing RestaurantDB,
+ * specifically for finding a restaurant by its code.
+ *
+ * This interface is part of the DAO (Data Access Object) design pattern and specifies the methods
+ * required to retrieve data from the underlying data source.
  * 
- * @author Anders Trankjær
-* @version 02/06/2025 - 14:19 
+ * The contract ensures consistency across all classes that implements the interface.
+ * It also guarantees that certain functionality is available and any class that 
+ * implements RestaurantImpl must provide the one method called:
+ * findRestaurantByCode.
+ * 
+ * 
+ * @author Anders Trankjær & Christoffer Søndergaard
+ * @version 07/06/2025 - 16:38
  */
 public interface RestaurantImpl
 {
