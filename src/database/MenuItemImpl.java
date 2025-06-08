@@ -1,5 +1,6 @@
 package database;
 
+// Imports
 import java.sql.SQLException;
 import java.util.List;
 
@@ -8,19 +9,23 @@ import model.MenuItem;
 import model.MultipleChoiceMenu;
 import model.SelectionOption;
 
+
 /**
- * An interface that defines a contract for accessing MenuItemImpl,
+ * An interface that defines a contract for accessing MenuItemDB,
  * specifically for finding a menu item, multiple choice menu, selection option and add on option based on its ID.
+ *
+ * This interface is part of the DAO (Data Access Object) design pattern and specifies the methods
+ * required to retrieve data from the underlying data source.
  * 
- * The contract ensures consistency across all classes that implement the interface. 
- * It guarantees that certain functionality is available 
- * and any class that implements MenuItemImpl must provide a four methods called 
+ * The contract ensures consistency across all classes that implements the interface.
+ * It also guarantees that certain functionality is available and any class that 
+ * implements MenuItemImpl must provide the four methods called:
  * findMenuItemByMenuItemId, findMultipleChoiceMenuByChoiceMenuId, findSelectionOptionByChoiceMenuId and findAddOnOptionByMenuItemId.
  * 
- * @author Line Bertelsen
- * @version 02/06/2025 - 16.00
+ * 
+ * @author Line Bertelsen & Christoffer Søndergaard
+ * @version 07/06/2025 - 15:46
  */
-
 public interface MenuItemImpl
 {
 	/**
@@ -34,6 +39,7 @@ public interface MenuItemImpl
 	 */
 	MenuItem findMenuItemByMenuItemId(int menuItemId) throws DataAccessException, SQLException;
 	
+	
 	/**
      * Method creates a list of shallow clones of the multipleChoiceMenu that has the given unique ID. 
      * If no match is found the method returns null. 
@@ -45,6 +51,7 @@ public interface MenuItemImpl
 	 */
 	List<MultipleChoiceMenu> findMultipleChoiceMenusByMainCourseId(int mainCourseId) throws DataAccessException, SQLException;
 	
+	
 	/**
      * Method creates a list of shallow clones of the selectionOption that has the given unique ID. 
      * If no match is found the method returns null. 
@@ -55,6 +62,7 @@ public interface MenuItemImpl
 	 * @throws SQLException			- if a SQL operation fails
      */
 	List<SelectionOption> findSelectionOptionsByChoiceMenuId(int mainCourseId) throws DataAccessException, SQLException;
+	
 	
 	/**
      * Method creates a list of shallow clones of the addOnOption that has the given unique ID. 
