@@ -1,21 +1,27 @@
 package database;
 
+// Imports
 import java.sql.SQLException;
 import java.util.List;
 
 import model.PersonalOrder;
 
+
 /**
- * An interface that defines a contract for accessing PersonalOrderImpl,
+ * An interface that defines a contract for accessing PersonalOrderDB,
  * specifically for finding a PersonalOrder based on its ID.
  * 
- * The contract ensures consistency across all classes that implement the interface. 
- * It guarantees that certain functionality is available 
- * and any class that implements MenuItemImpl must provide 
- * the methods called findPersonalOrderById .
+ * This interface is part of the DAO (Data Access Object) design pattern and specifies the methods
+ * required to retrieve data from the underlying data source.
  * 
- * @author Line Bertelsen
- * @version 02/06/2025 - 15:08
+ * The contract ensures consistency across all classes that implement the interface. 
+ * It also guarantees that certain functionality is available and any class that 
+ * implements PersonalOrderImpl must provide the methods called:
+ * findPersonalOrderById, insertPersonalOrder, and findPersonalOrdersBytableOrderId.
+ * 
+ * 
+ * @author Line Bertelsen & Christoffer Søndergaard
+ * @version 07/06/2025 - 16:04
  */
 public interface PersonalOrderImpl
 {
@@ -42,6 +48,7 @@ public interface PersonalOrderImpl
 	 * @throws DataAccessException 	- if an error occurs during data access, such as rollback or connection issues
 	 */
 	PersonalOrder insertPersonalOrder(PersonalOrder personalOrder, int tableOrderId) throws DataAccessException;
+	
 	
 	/**
 	 * The method is use in ViewGuesTableOrder in gui layer
