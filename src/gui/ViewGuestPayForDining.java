@@ -1,21 +1,28 @@
 package gui;
 
+//Imports
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 
-import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
+ * The ViewGuestPayForDining class represents the GUI shown to the guest at 
+ * the final screen shown to the guest at the end of the dining experience.
+ * 
+ * This class extends JFrame and makes use of a variety of custom GUI components.
+ * 
+ * The class uses a custom frame theme for layout and styling,
+ * and includes navigation buttons for going back, requesting service,
+ * or continuing to the next step in the guest flow.
+ *
+ * It provides a summary message thanking the guest and informs them that payment is handled at the counter.
  * 
  * 
  * @author Christoffer Søndergaard
- * @version 21/05/2025 - 21:43
- */	
+ * @version: 08/06/2025 - 21:13
+ */
 public class ViewGuestPayForDining extends JFrame
 {
 	// Added in order to suppress the warning that appears in serializable classes where no serialVersionUID is specified
@@ -34,7 +41,10 @@ public class ViewGuestPayForDining extends JFrame
 	
 	
 	/**
-	 * Create the frame.
+	 * Constructs the ViewGuestPayForDining frame and initializes
+	 * its graphical components and layout.
+	 *
+	 * This constructor assigns the task of GUI setup to the initGUI() method.
 	 */
 	public ViewGuestPayForDining()
 	{
@@ -42,6 +52,14 @@ public class ViewGuestPayForDining extends JFrame
 	}
 	
 	
+    /**
+	 * Initializes the GUI components for this frame.
+	 *
+	 * This includes:
+	 * - Setting up the themed frame layout
+	 * - Displaying navigation buttons (back and request service)
+	 * - A continue and close button that closes the window upon being clicked
+     */
 	private void initGUI()
 	{
 		// Creates a ComponentFrameThemeGuest component
@@ -71,22 +89,6 @@ public class ViewGuestPayForDining extends JFrame
 		//   SHOULD BE INSERTED IN   //
 		///////////////////////////////
 		
-		/*
-		// Creates a customized input field object with a placeholder text accepting only numbers in it
-		ComponentGuestInputField inputFieldFirstName = new ComponentGuestInputField("Fornavn", "onlyNumbers");
-		
-		// Adds the first name input field to the primary content panel
-		frameTheme.getPrimaryContentPanel().add(inputFieldFirstName);
-		
-		// Adds some spacing between the component above and below
-		primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-
-		// Creates a customized input field object with a placeholder text accepting only letters in it
-		ComponentGuestInputField inputFieldAge = new ComponentGuestInputField("Alder i antal år", "onlyLetters");
-
-		// Adds the age input field to the primary content panel
-		frameTheme.getPrimaryContentPanel().add(inputFieldAge);
-		*/
 		
 		
 		////////////////////////////////
