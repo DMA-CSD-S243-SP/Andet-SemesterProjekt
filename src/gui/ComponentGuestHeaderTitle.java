@@ -1,33 +1,44 @@
 package gui;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.OverlayLayout;
-import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
-
+// Imports
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
 import java.net.URL;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.OverlayLayout;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
 
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
+ * A custom GUI component that creates a header section for a guest-facing panel.
+ *
+ * This header consists of a logo and a title overlaid on top of one another,
+ * It is added to the top (NORTH) of a parent panel and uses an overlay layout
+ * to render the logo and header title in a layered way.
  * 
  * 
- * @author Christoffer Søndergaard
- * @version 20/05/2025 - 13:14
+ * Author: Christoffer Søndergaard  
+ * Version: 08/06/2025 - 09:22
  */
 public class ComponentGuestHeaderTitle extends JPanel
 {
+    /**
+     * Constructs a header component with an image and title overlay.
+     * 
+     * The header is placed at the top of the given parent panel. The header includes
+     * a background image/logo and a centered title text.
+     *
+     * @param parentPanel the panel this header will be added to
+     * @param headerLogoPath the path to the logo image resource that should be shown
+     * @param headerTitle the text title to be added on top of the logo
+     */
 	public ComponentGuestHeaderTitle(JPanel parentPanel, String headerLogoPath, String headerTitle)
 	{
 		super();
