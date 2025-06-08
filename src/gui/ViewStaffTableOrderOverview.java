@@ -169,8 +169,7 @@ public class ViewStaffTableOrderOverview extends JFrame
 		{
 			public void actionPerformed(ActionEvent event)
 			{
-				// TODO: Make this work
-				
+				clickedPreparationFinished();
 			}
 		});
 		panelCenterSouth.add(btnDelete);
@@ -193,6 +192,22 @@ public class ViewStaffTableOrderOverview extends JFrame
 		panelCenterNorthNorth.add(lblViewHeading);
 	}
 
+	
+	/**
+	 * Currently prompts you with information that this feature is not yet implemented
+	 * 
+	 * TODO: make this work
+	 */
+	private void clickedPreparationFinished()
+	{
+		// Creates a dialog box informing about this feature not being fully implemented yet
+		new ComponentGuestErrorDialog(this, 
+				"Følgende funktion",
+				"Færdiggjort",
+				"Er endnu ikke implementeret"
+		);
+	}
+	
 	
 	/**
 	 * sends you back to the mainMenu
