@@ -1,21 +1,30 @@
 package gui;
 
+//Imports
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 
-import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
+ * The ViewGuestMenuOverview class represents the GUI frame where a guest selects
+ * which menu category to order from e.g. children's menu or the adult menu.
+ *
+ * This class extends JFrame and makes use of a variety of custom GUI components.
  * 
- * 
- * @author Christoffer Søndergaard
- * @version 20/05/2025 - 14:26
- */	
+ * The class uses a custom frame theme for layout and styling,
+ * and includes navigation buttons for going back, requesting service,
+ * or continuing to the next step in the guest flow.
+ *
+ * The class handles basic view transitions but currently does not contain actual logic
+ * for loading a children's menu, which will first be added in future implementations, 
+ * but the class supports dynamically generating of buttons showing the available menu paths.
+ *
+ *
+ * @author: Christoffer Søndergaard & Lumière Schack  
+ * @version: 08/06/2025 - 20:38
+ */
 public class ViewGuestMenuOverview extends JFrame
 {
 	// Added in order to suppress the warning that appears in serializable classes where no serialVersionUID is specified
@@ -34,7 +43,10 @@ public class ViewGuestMenuOverview extends JFrame
 	
 	
 	/**
-	 * Create the frame.
+	 * Constructs the ViewGuestMenuOverview frame and initializes
+	 * its graphical components and layout.
+	 *
+	 * This constructor assigns the task of GUI setup to the initGUI() method.
 	 */
 	public ViewGuestMenuOverview()
 	{
@@ -42,6 +54,17 @@ public class ViewGuestMenuOverview extends JFrame
 	}
 	
 	
+	/**
+	 * Initializes the GUI components for this frame.
+	 *
+	 * Responsibilities of this method include:
+	 * - Setting up the themed frame layout
+	 * - Displaying navigation buttons (back and request service)
+	 * - Creating a continue button that validates input and proceeds to the next view
+	 * - Generating action buttons for selecting a children's or adult menu
+	 *
+	 * The children’s menu path currently throws an error dialog, as it is not yet implemented.
+	 */
 	private void initGUI()
 	{
 		// Creates a ComponentFrameThemeGuest component
@@ -71,22 +94,6 @@ public class ViewGuestMenuOverview extends JFrame
 		//   SHOULD BE INSERTED IN   //
 		///////////////////////////////
 		
-		/*
-		// Creates a customized input field object with a placeholder text accepting only numbers in it
-		ComponentGuestInputField inputFieldFirstName = new ComponentGuestInputField("Fornavn", "onlyNumbers");
-		
-		// Adds the first name input field to the primary content panel
-		frameTheme.getPrimaryContentPanel().add(inputFieldFirstName);
-		
-		// Adds some spacing between the component above and below
-		primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-
-		// Creates a customized input field object with a placeholder text accepting only letters in it
-		ComponentGuestInputField inputFieldAge = new ComponentGuestInputField("Alder i antal år", "onlyLetters");
-
-		// Adds the age input field to the primary content panel
-		frameTheme.getPrimaryContentPanel().add(inputFieldAge);
-		*/
 		
 		
 		////////////////////////////////
@@ -154,14 +161,18 @@ public class ViewGuestMenuOverview extends JFrame
 			try
 			{
 				throw new UnsupportedOperationException("Junior menu not implemented.");
-			} catch (Exception e)
+			} 
+			
+			catch (Exception exception)
 			{
+				// Creates a dialog box informing about the action that went wrong
 				new ComponentGuestErrorDialog(this, 
 						"Følgende menu kort:",
 						"Børnemenu",
 						"Kunne ikke hentes"
 				);
-				e.printStackTrace();
+				
+				exception.printStackTrace();
 			}
 		});
 		
@@ -177,7 +188,9 @@ public class ViewGuestMenuOverview extends JFrame
 		{
 			try
 			{
+				// Temporarily disables the button to make it visible to the user that the interaction was registered
 				btnAdultMenu.setEnabled(false);
+				
 				// Creates the new frame that should be opened when pressing the button
 				ViewGuestMenuAdult nextView = new ViewGuestMenuAdult();
 
@@ -186,16 +199,23 @@ public class ViewGuestMenuOverview extends JFrame
 				
 				// Closes the current frame/window
 				this.dispose();
-			} catch (Exception e)
+			}
+			
+			catch (Exception exception)
 			{
+				// Creates a dialog box informing about the action that went wrong
 				new ComponentGuestErrorDialog(this, 
 						"Følgende menu kort:",
 						"Voksenmenu",
 						"Kunne ikke hentes"
 				);
-				e.printStackTrace();
-			} finally
+				
+				exception.printStackTrace();
+			}
+			
+			finally
 			{
+				// Reenables the button if something goes wrong
 				btnAdultMenu.setEnabled(true);
 			}
 		});
