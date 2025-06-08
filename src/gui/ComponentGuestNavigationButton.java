@@ -1,18 +1,23 @@
 package gui;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.RoundRectangle2D;
+// Imports
+import java.awt.Color;
+import java.awt.Font;
+
+import javax.swing.JButton;
 
 
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
+ * A custom GUI component that creates a button for a guest-facing GUI.
+ * Unlike other buttons the visuals are made to look like a clickable hyperlink.
+ * 
+ * These are currently used for styling Anmod Om Service and Tilbage in the 
+ * navigation section at the top of the GUI.
  * 
  * 
- * @author Christoffer Søndergaard
- * @version 20/05/2025 - 13:32
- */	
+ * Author: Christoffer Søndergaard  
+ * Version: 08/06/2025 - 13:02
+ */
 public class ComponentGuestNavigationButton extends JButton
 {
 	public ComponentGuestNavigationButton(String text)
@@ -40,7 +45,6 @@ public class ComponentGuestNavigationButton extends JButton
 		// Align the button's text to the right within the button
 		this.setHorizontalAlignment(JButton.LEFT);
 
-		
 		// Sets the font to the specified style type and size
 		this.setFont(new Font("SansSerif", Font.PLAIN, 12));
 
