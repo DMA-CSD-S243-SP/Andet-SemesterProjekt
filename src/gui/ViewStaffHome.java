@@ -38,8 +38,8 @@ import javax.swing.border.MatteBorder;
  * long run.
  * 
  * 
- * Author: Christoffer Søndergaard
- * Version: 08/06/2025 - 15:19
+ * @author: Christoffer Søndergaard
+ * @version: 08/06/2025 - 15:19
  */
 public class ViewStaffHome extends JFrame
 {
