@@ -6,15 +6,22 @@ import java.awt.geom.RoundRectangle2D;
 
 
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
+ * A custom GUI JButton component designed for guest users to request service.
+ * 
+ * This button has removed the default borders and background to make it appear
+ * as an interactable hyperlink.
  * 
  * 
- * @author Christoffer Søndergaard
- * @version 20/05/2025 - 13:38
+ * Author: Christoffer Søndergaard
+ * Version: 08/06/2025 - 13:59
  */	
 public class ComponentGuestServiceButton extends JButton
 {
+    /**
+     * Constructs a new service request button with customized styling
+     *
+     * @param text the text to display inside of the button
+     */
 	public ComponentGuestServiceButton(String text)
 	{	
 		super(text);
@@ -40,7 +47,6 @@ public class ComponentGuestServiceButton extends JButton
 		// Align the button's text to the right within the button
 		this.setHorizontalAlignment(JButton.LEFT);
 
-		
 		// Sets the font to the specified style type and size
 		this.setFont(new Font("SansSerif", Font.PLAIN, 12));
 
