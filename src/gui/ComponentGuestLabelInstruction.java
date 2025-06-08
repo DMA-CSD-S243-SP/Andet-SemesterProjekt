@@ -1,5 +1,7 @@
+// Packages
 package gui;
 
+//Imports
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -11,15 +13,26 @@ import javax.swing.SwingConstants;
 
 
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
+ * A custom JLabel used for displaying user instructions within the guest-facing GUI.
+ * 
+ * This component ensures that instruction text is styled consistently and centered
+ * within the associated panel.
+ * 
+ * It also supports automatic layout spacing and constrained width by using HTML code styling.
  * 
  * 
- * @author Christoffer Søndergaard
- * @version 20/05/2025 - 13:25
+ * Author: Christoffer Søndergaard  
+ * Version: 08/06/2025 - 12:11
  */
 public class ComponentGuestLabelInstruction extends JLabel
 {
+    /**
+     * Constructs a new ComponentGuestLabelInstruction with the given instruction text.
+     * It is automatically added to the specified panel.
+     * 
+     * @param instructionText the message to be shown as instructions for the guest user
+     * @param attachedPanel the panel this label will be added to, including vertical spacing logic
+     */
 	public ComponentGuestLabelInstruction(String instructionText, JPanel attachedPanel)
 	{
 		super();
