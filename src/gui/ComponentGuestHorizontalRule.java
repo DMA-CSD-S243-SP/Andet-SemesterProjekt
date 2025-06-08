@@ -1,23 +1,33 @@
 package gui;
 
-import javax.swing.JPanel;
-import javax.swing.JSeparator;
 
+// Imports
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+
 
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
+ * A custom horizontal rule component used to visually separate sections in the guest-facing GUI.
+ *
+ * This class creates a horizontal red line (using a Swing JSeparator) and wraps it inside
+ * a transparent JPanel with a centered layout.
  * 
  * 
- * @author Christoffer Søndergaard
- * @version 20/05/2025 - 13:14
+ * Author: Christoffer Søndergaard  
+ * Version: 08/06/2025 - 09:49
  */
 public class ComponentGuestHorizontalRule extends JPanel
 {
+    /**
+     * Constructs a horizontal rule styled as a red line separator.
+     * 
+     * The separator is centered within a transparent container, with a fixed width
+     * and height to ensure a consistent appearance across different views.
+     */
 	public ComponentGuestHorizontalRule()
 	{
 		super();
