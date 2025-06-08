@@ -1,7 +1,10 @@
+// Packages
 package model;
 
+// Imports
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Represents a MainCourse menu item that can be ordered at a bone's restaurant.
@@ -11,8 +14,8 @@ import java.util.List;
  * description, a lunch- and evening price and a list of their options.
  * 
  * 
- * @author Anders Trankjær
- * @version 09-05-2025 - 10:30
+ * @author Anders Trankjær & Christoffer Søndergaard
+ * @version 05/06/2025 - 14:03
  */
 public class MainCourse extends MenuItem
 {
@@ -26,20 +29,24 @@ public class MainCourse extends MenuItem
 	private List<AddOnOption> listOfAddOnOptions;
 
 	/**
-	 * the constructor for this subclass calls the constructor for the superclass to
-	 * initialize it
+	 * Constructs a new MainCourse instance, which uses the specified parameters of
+	 * its' super-class / parent class MenuItem, along with its own unique parameters aswell.
+	 * Unlike other MenuItems the MainCourse also contains SelectionOptions and MultipleChoiceMenu
+	 * objects to help manage the add-ons that customers can set for their main courses.
 	 * 
-	 * @param introductionDescription - a short description of the item
-	 * @param lunchPrice              - the price during lunchtime
-	 * @param eveningPrice            - the price during evening time
-	 * @param menuItemId 
-	 * @param preparationTime 
-	 * @param name 
-	 * @param description 
-	 * @param isMadeByKitchenStaff 
+	 * @param introductionDescription 	- a short description of the item
+	 * @param lunchPrice              	- the price during lunchtime
+	 * @param eveningPrice            	- the price during evening time
+	 * @param menuItemId 				- the unique id of the MenuItem
+	 * @param preparationTime 			- the time in seconds it takes to prepare this MenuItem
+	 * @param name 						- the name of the MenuItem
+	 * @param description 				- the description of the MenuItem
+	 * @param isMadeByKitchenStaff		- whether this MenuItem is something the kitchen should handle or not
 	 */
 	public MainCourse(String introductionDescription, double lunchPrice, double eveningPrice, int menuItemId, int preparationTime, String name, String description, boolean isMadeByKitchenStaff) 
 	{
+		// Calls the super-class / parent class constructor (MenuItem) to initialize the inherited attributes
+		// which makes it so everything defined in the MenuItem class is initialized before this class' attribute values are set.
 		super(menuItemId, preparationTime, name, description, isMadeByKitchenStaff);
 		
 		//Set the variables for this instance of mainCourse 
@@ -52,6 +59,7 @@ public class MainCourse extends MenuItem
 		listOfAddOnOptions = new ArrayList<AddOnOption>();
 	}
 
+	
 	/**
 	 * The get method returns the value of the variable introductionDescription 
 	 * 
@@ -65,6 +73,7 @@ public class MainCourse extends MenuItem
 	{
 		return introductionDescription;
 	}
+	
 
 	/**
 	 * The set method takes a parameter introductionDescription and assigns it to the 
@@ -77,6 +86,7 @@ public class MainCourse extends MenuItem
 		this.introductionDescription = introductionDescription;
 	}
 
+	
 	/**
 	 * The get method returns the value of the variable lunchPrice
 	 * 
@@ -90,6 +100,7 @@ public class MainCourse extends MenuItem
 		return lunchPrice;
 	}
 
+	
 	/**
 	 * The set method takes a parameter lunchPrice and assigns it to the 
 	 * this.lunchPrice variable
@@ -101,6 +112,7 @@ public class MainCourse extends MenuItem
 		this.lunchPrice = lunchPrice;
 	}
 
+	
 	/**
 	 * The get method returns the value of the variable eveningPrice
 	 * 
@@ -114,6 +126,7 @@ public class MainCourse extends MenuItem
 		return eveningPrice;
 	}
 
+	
 	/**
 	 * The set method takes a parameter eveningPrice and assigns it to the 
 	 * this.eveningPrice variable
@@ -125,6 +138,7 @@ public class MainCourse extends MenuItem
 		this.eveningPrice = eveningPrice;
 	}
 
+	
 	/**
 	 * adds a multipleChoiceMenu object to the list of MultipleChoiceMenu
 	 * 
@@ -136,6 +150,7 @@ public class MainCourse extends MenuItem
 		listOfMultipleChoiceMenus.add(multipleChoiceMenu);
 	}
 
+	
 	/**
 	 * removes a multipleChoiceMenu object from the list of MultipleChoiceMenus
 	 * 
@@ -146,6 +161,7 @@ public class MainCourse extends MenuItem
 		listOfMultipleChoiceMenus.remove(multipleChoiceMenu);
 	}
 
+	
 	/**
 	 * gets the list of MultipleChoicMenus
 	 * 
@@ -163,6 +179,7 @@ public class MainCourse extends MenuItem
 		return returnList;
 	}
 
+	
 	/**
 	 * adds a AddOnOption object to the list of AddOnOptions
 	 * 
@@ -172,6 +189,7 @@ public class MainCourse extends MenuItem
 	{
 		listOfAddOnOptions.add(addOnOption);
 	}
+	
 
 	/**
 	 * removes a AddOnOption object from the list of AddOnOptions
@@ -183,6 +201,7 @@ public class MainCourse extends MenuItem
 		listOfAddOnOptions.remove(addOnOption);
 	}
 
+	
 	/**
 	 * @return a list of all the objects inside ListOfAddOnOptions
 	 */
