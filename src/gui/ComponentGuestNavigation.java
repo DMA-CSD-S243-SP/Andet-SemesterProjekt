@@ -1,31 +1,36 @@
 package gui;
 
+// Imports
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
+ * A custom GUI component that creates an area that serves as a navigation bar which
+ * will be displayed at the upper part of the guest-facing view in the application.
+ * 
+ * The component is flexible and can optionally include or exclude a Tilbage button
+ * and/or a Anmod Om Service button depending on the needs for the current window.
+ * 
+ * It is typically used to allow users to return to the previous screen or
+ * request service.
  * 
  * 
- * @author Christoffer Søndergaard
- * @version 20/05/2025 - 13:29
+ * Author: Christoffer Søndergaard  
+ * Version: 08/06/2025 - 12:28
  */
 public class ComponentGuestNavigation extends JPanel
 {
     /**
      * Constructs the guest navigation bar with optional "Back" and "Request Service" buttons.
      *
-     * @param parentPanel     		The panel this navigation component should be added to.
-     * @param currentFrame    		The currently displayed JFrame that should be closed when navigating back.
-     * @param showServiceButton 	Whether or not to display the "Anmod Om Service" button.
+     * @param parentPanel the panel this navigation component should be added to.
+     * @param currentFrame the currently displayed JFrame that should be closed when navigating back.
+     * @param showServiceButton determines whether the "Anmod Om Service" button is shown.
      */
 	public ComponentGuestNavigation(JPanel parentPanel, JFrame currentFrame, boolean showServiceButton)
 	{
