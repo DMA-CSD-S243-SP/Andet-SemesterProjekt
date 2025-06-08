@@ -1,21 +1,28 @@
 package gui;
 
+//Imports
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 
-import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
+ * The ViewGuestTipping class displays the user interface for entering a tip amount.
+ * 
+ * This class extends JFrame and makes use of a variety of custom GUI components.
+ * 
+ * The class uses a custom frame theme for layout and styling,
+ * and includes navigation buttons for going back, requesting service,
+ * or continuing to the next step in the guest flow.
+ * 
+ * This view allows the guest to manually specify a tip in DKK, 
+ * which will be given to the serving staff. 
  * 
  * 
- * @author Christoffer Søndergaard
- * @version 20/05/2025 - 22:21
- */	
+ * @author: Christoffer Søndergaard  
+ * @version: 08/06/2025 - 21:18
+ */
 public class ViewGuestTipping extends JFrame
 {
 	// Added in order to suppress the warning that appears in serializable classes where no serialVersionUID is specified
@@ -34,7 +41,10 @@ public class ViewGuestTipping extends JFrame
 	
 	
 	/**
-	 * Create the frame.
+	 * Constructs the ViewGuestTipping frame and initializes
+	 * its graphical components and layout.
+	 *
+	 * This constructor assigns the task of GUI setup to the initGUI() method.
 	 */
 	public ViewGuestTipping()
 	{
@@ -42,6 +52,15 @@ public class ViewGuestTipping extends JFrame
 	}
 	
 	
+    /**
+	 * Initializes the GUI components for this frame.
+	 *
+	 * This includes:
+	 * - Setting up the themed frame layout
+	 * - Displaying navigation buttons (back and request service)
+	 * - A numeric-only input field for entering the tip amount in dkk
+	 * 
+     */
 	private void initGUI()
 	{
 		// Creates a ComponentFrameThemeGuest component
