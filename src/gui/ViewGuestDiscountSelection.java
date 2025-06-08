@@ -1,12 +1,9 @@
 package gui;
 
+//Imports
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
 import java.util.ArrayList;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -14,13 +11,23 @@ import model.Discount;
 
 
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
+ * The ViewGuestDiscountSelection class represents a GUI frame where guests 
+ * can select discounts that are applicable to them, e.g. student or pensionist.
  * 
+ * This class extends JFrame and makes use of a variety of custom GUI components.
  * 
- * @author Christoffer Søndergaard & Lumière Schack
- * @version 21/05/2025 - 13:31
- */	
+ * The class uses a custom frame theme for layout and styling,
+ * and includes navigation buttons for going back, requesting service,
+ * or continuing to the next step in the guest flow.
+ * 
+ * This view is part of the customer ordering flow and allows the user to check one or more
+ * predefined discount options. These will later be validated and used to apply pricing logic
+ * to the personal order, once the functionality is developed in a future use case.
+ * 
+ *
+ * @author: Christoffer Søndergaard & Lumière Schack  
+ * @version: 08/06/2025 - 20:26
+ */
 public class ViewGuestDiscountSelection extends JFrame
 {
 	// Added in order to suppress the warning that appears in serializable classes where no serialVersionUID is specified
@@ -39,14 +46,29 @@ public class ViewGuestDiscountSelection extends JFrame
 	
 	
 	/**
-	 * Create the frame.
+	 * Constructs the ViewGuestDiscountSelection frame and initializes
+	 * its graphical components and layout.
+	 *
+	 * This constructor assigns the task of GUI setup to the initGUI() method.
 	 */
 	public ViewGuestDiscountSelection()
 	{
 		initGUI();
 	}
 	
-	
+
+	/**
+	 * Initializes the GUI components for this frame.
+	 *
+	 * This includes:
+	 * - Setting up the themed frame layout
+	 * - Displaying navigation buttons (back and request service)
+	 * - Creating a continue button that validates input and proceeds to the next view
+	 * - Creating checkboxes for each available discount category
+	 *
+	 * Currently, the actual selection of discount checkboxes is not captured or passed forward,
+	 * but the structure allows for future implementation of applying discounts.
+	 */
 	private void initGUI()
 	{
 		// Creates a ComponentFrameThemeGuest component
@@ -166,7 +188,6 @@ public class ViewGuestDiscountSelection extends JFrame
 				// TODO: Make EnterDiscounts actually enter the selected discounts
 				// 		 Note this is in a different use case in a future iteration
 				
-				
 				// Retrieves the singleton instance of the UtilityGuestInformation
 				// and inserts the list of discounts, which are currently empty
 				UtilityGuestInformation.getInstance().enterDiscounts(new ArrayList<Discount>());
@@ -188,9 +209,9 @@ public class ViewGuestDiscountSelection extends JFrame
 			
 			finally
 			{
+				// Reenables the button if something goes wrong
 				btnContinue.setEnabled(true);
 			}
-			
 		});
 	}
 }
