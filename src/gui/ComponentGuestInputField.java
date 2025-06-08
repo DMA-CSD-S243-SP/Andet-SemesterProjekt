@@ -21,7 +21,7 @@ import java.awt.event.FocusListener;
  * 
  * 
  * @author Christoffer Søndergaard
- * @version 05/06/2025 - 15:06
+ * Version: 08/06/2025 - 09:48
  */	
 public class ComponentGuestInputField extends JTextField
 {
@@ -37,7 +37,7 @@ public class ComponentGuestInputField extends JTextField
 	 * Constructs the input field with a placeholder and an optional input filter.
 	 *
 	 * @param placeholderText The placeholder text to display when the input field is empty.
-	 * @param filterType The type of input restriction (e.g., "onlyNumbers"), or null for no filter.
+	 * @param filterType The type of input restriction (e.g., "onlyLetters" or "onlyNumbers"), or null for no filter.
 	 */
 	public ComponentGuestInputField(String placeholderText, String filterType)
 	{
