@@ -1,20 +1,29 @@
 package gui;
 
+//Imports
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 
-import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
+ * ViewGuestOrderOverview is responsible for displaying the order confirmation
+ * screen to the guest after their table order has been submitted.
+ *
+ * This class extends JFrame and makes use of a variety of custom GUI components.
+ * 
+ * The class uses a custom frame theme for layout and styling,
+ * and includes navigation buttons for going back, requesting service,
+ * or continuing to the next step in the guest flow.
+ *
+ * This screen informs the guest of the estimated preparation time and offers
+ * follow-up actions such as creating a new order, reordering a potato dish, or
+ * proceeding to payment.
  * 
  * 
  * @author Christoffer Søndergaard
- * @version 23/05/2025 - 09:10
+ * @version 08/06/2025 - 21:07
  */	
 public class ViewGuestOrderOverview extends JFrame
 {
@@ -34,7 +43,10 @@ public class ViewGuestOrderOverview extends JFrame
 	
 	
 	/**
-	 * Create the frame.
+	 * Constructs the ViewGuestOrderOverview frame and initializes
+	 * its graphical components and layout.
+	 *
+	 * This constructor assigns the task of GUI setup to the initGUI() method.
 	 */
 	public ViewGuestOrderOverview()
 	{
@@ -42,6 +54,18 @@ public class ViewGuestOrderOverview extends JFrame
 	}
 	
 	
+    /**
+	 * Initializes the GUI components for this frame.
+	 *
+	 * This includes:
+	 * - Setting up the themed frame layout
+	 * - Displaying navigation buttons (back and request service)
+	 * - Creating a continue button that validates input and proceeds to the next view
+     * - Options for creating a new order, reordering a potato dish and proceeding to payment
+     *
+     * Each button is tied to an action listener that opens the relevant view
+     * and closes the current frame.
+     */
 	private void initGUI()
 	{
 		// Creates a ComponentFrameThemeGuest component
@@ -71,22 +95,6 @@ public class ViewGuestOrderOverview extends JFrame
 		//   SHOULD BE INSERTED IN   //
 		///////////////////////////////
 		
-		/*
-		// Creates a customized input field object with a placeholder text accepting only numbers in it
-		ComponentGuestInputField inputFieldFirstName = new ComponentGuestInputField("Fornavn", "onlyNumbers");
-		
-		// Adds the first name input field to the primary content panel
-		frameTheme.getPrimaryContentPanel().add(inputFieldFirstName);
-		
-		// Adds some spacing between the component above and below
-		primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-
-		// Creates a customized input field object with a placeholder text accepting only letters in it
-		ComponentGuestInputField inputFieldAge = new ComponentGuestInputField("Alder i antal år", "onlyLetters");
-
-		// Adds the age input field to the primary content panel
-		frameTheme.getPrimaryContentPanel().add(inputFieldAge);
-		*/
 		
 		
 		////////////////////////////////
