@@ -27,7 +27,8 @@ public class UtilityInputFilterNumbersOnly extends DocumentFilter
 	private boolean isFilterActive = false;
 
 	// The regex pattern that we use, which only allows matches for the following:
-	// small and capital letters from a to z and also including æ, ø and å
+	// numbers from and including 0 to and including 9 and as the + indicates they are
+	// allowed to be repeated multiple times 
 	private static final Pattern NUMBERS_ONLY_PATTERN = Pattern.compile("[0-9]+");
 
 	
