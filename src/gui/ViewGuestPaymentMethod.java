@@ -1,21 +1,29 @@
 package gui;
 
+//Imports
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 
-import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
+ * The ViewGuestPaymentMethod class displays the GUI where guests can select their
+ * preferred method of payment for the current table order.
+ * 
+ * This class extends JFrame and makes use of a variety of custom GUI components.
+ * 
+ * The class uses a custom frame theme for layout and styling,
+ * and includes navigation buttons for going back, requesting service,
+ * or continuing to the next step in the guest flow.
+ * 
+ * This view allows the user to choose between different payment options such as
+ * cash or credit card. Once selected, the user proceeds to a tipping screen.
  * 
  * 
- * @author Christoffer Søndergaard
- * @version 21/05/2025 - 01:59
- */	
+ * @author: Christoffer Søndergaard
+ * @version: 08/06/2025 - 21:48
+ */
 public class ViewGuestPaymentMethod extends JFrame
 {
 	// Added in order to suppress the warning that appears in serializable classes where no serialVersionUID is specified
@@ -34,7 +42,10 @@ public class ViewGuestPaymentMethod extends JFrame
 	
 	
 	/**
-	 * Create the frame.
+	 * Constructs the ViewGuestPaymentMethod frame and initializes
+	 * its graphical components and layout.
+	 *
+	 * This constructor assigns the task of GUI setup to the initGUI() method.
 	 */
 	public ViewGuestPaymentMethod()
 	{
@@ -42,6 +53,15 @@ public class ViewGuestPaymentMethod extends JFrame
 	}
 	
 	
+    /**
+	 * Initializes the GUI components for this frame.
+	 * 
+	 * This includes:
+	 * - Setting up the themed frame layout
+	 * - Displaying navigation buttons (back and request service)
+	 * - Creating a continue button that validates input and proceeds to the next view
+	 * - Buttons for selecting the preferred payment method.
+     */
 	private void initGUI()
 	{
 		// Creates a ComponentFrameThemeGuest component
@@ -71,22 +91,6 @@ public class ViewGuestPaymentMethod extends JFrame
 		//   SHOULD BE INSERTED IN   //
 		///////////////////////////////
 		
-		/*
-		// Creates a customized input field object with a placeholder text accepting only numbers in it
-		ComponentGuestInputField inputFieldFirstName = new ComponentGuestInputField("Fornavn", "onlyNumbers");
-		
-		// Adds the first name input field to the primary content panel
-		frameTheme.getPrimaryContentPanel().add(inputFieldFirstName);
-		
-		// Adds some spacing between the component above and below
-		primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-
-		// Creates a customized input field object with a placeholder text accepting only letters in it
-		ComponentGuestInputField inputFieldAge = new ComponentGuestInputField("Alder i antal år", "onlyLetters");
-
-		// Adds the age input field to the primary content panel
-		frameTheme.getPrimaryContentPanel().add(inputFieldAge);
-		*/
 		
 		
 		////////////////////////////////
@@ -172,7 +176,12 @@ public class ViewGuestPaymentMethod extends JFrame
 	}
 	
 	
-	// Launches the frame / window where the customer is prompted to tip and closes the current window
+    /**
+     * Launches the tipping view and closes the current frame.
+     * 
+     * This method is called when the user has selected a payment method and is ready
+     * to proceed to tipping.
+     */
 	private void continueToNextView()
 	{
 		// Creates the new frame that should be opened when pressing the button
