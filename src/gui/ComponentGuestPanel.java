@@ -1,19 +1,26 @@
 package gui;
 
-import javax.swing.JPanel;
+// Imports
 import java.awt.Color;
+
+import javax.swing.JPanel;
 
 
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
- * 
- * 
- * @author Christoffer Søndergaard
- * @version 20/05/2025 - 13:35
- */	
+ * A custom JPanel GUI component used to hold contents with an already
+ * predefined background color that is off-white or beige. 
+ *
+ *
+ * Author: Christoffer Søndergaard
+ * Version: 08/06/2025 - 13:48
+ */
 public class ComponentGuestPanel extends JPanel
 {
+    /**
+     * Constructs a new ComponentGuestPanel.
+     *
+     * The panel is initialized with a predefined off-white /beige-ish background color.
+     */
 	public ComponentGuestPanel()
 	{
 		super();
