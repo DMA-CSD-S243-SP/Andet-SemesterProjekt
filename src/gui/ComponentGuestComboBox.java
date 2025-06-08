@@ -1,24 +1,43 @@
 package gui;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-
-import java.awt.*;
+// Imports
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.util.List;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
+ * A custom-styled combo box component for guest-facing UI in Bone's restaurant system.
+ * 
+ * The component is intended for use in MainCourses to select Doneness and sizes,
+ * in the form of a dropdown-based menu selection.
  * 
  * 
- * @author Christoffer Søndergaard
- * @version 21/05/2025 - 02:33
+ * Author: Christoffer Søndergaard  
+ * @version 07/06/2025 - 21:01
  */
 public class ComponentGuestComboBox extends JPanel
 {
 	private JComboBox<String> comboBox;
 	
+	
+	/**
+	 * Constructs a customized combo box component with label heading and styled dropdown.
+	 * 
+	 * The constructor takes a descriptive label to display above the combo box and a list of
+	 * options that the user can choose from. Styling is applied to both the label and combo box.
+	 * 
+	 * @param labelHeadingText the text to show as a heading above the combo box
+	 * @param options the list of string options to populate the combo box with
+	 */
 	public ComponentGuestComboBox(String labelHeadingText, List<String> options)
 	{
 		super();
@@ -100,6 +119,12 @@ public class ComponentGuestComboBox extends JPanel
 		return (String) comboBox.getSelectedItem();
 	}
 	
+	
+	/**
+	 * Returns the index of the currently selected item.
+	 *
+	 * @return the index position of the selected item
+	 */
 	public int getIndex()
 	{
 		return comboBox.getSelectedIndex();
