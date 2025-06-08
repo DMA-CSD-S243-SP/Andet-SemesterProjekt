@@ -1,20 +1,43 @@
 package gui;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.List;
+// Imports
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Frame;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
+ * A modal error dialog used to inform the guest that an attempted action is invalid.
  * 
+ * This custom dialog displays a structured error message, including a heading, explanation,
+ * the name of the component with the issue, and a suggested solution and includes a 
+ * "Continue" button to dismiss the message.
+ *
  * 
  * @author Christoffer Søndergaard
- * @version 21/05/2025 - 11:12
+ * @version 07/06/2025 - 21:06
  */
 public class ComponentGuestErrorDialog extends JDialog
 {
+    /**
+     * Constructs a modal error dialog showing a formatted message about a form input mistake.
+     *
+     * The dialog includes a heading, a description of the issue, the name of the component
+     * that caused the issue, and a proposed solution.
+     *
+     * @param parentFrame the main GUI frame this dialog is modal to
+     * @param explanationText a short description of waht went wrong
+     * @param nameOfComponentText the name or description of the component that was used wrong
+     * @param suggestedSolutionText a helpful suggestion to resolve the issue
+     */
     public ComponentGuestErrorDialog(Frame parentFrame, String explanationText, String nameOfComponentText, String suggestedSolutionText)
     {
     	// Modal dialog window and not a Jframe like the other views
@@ -148,6 +171,11 @@ public class ComponentGuestErrorDialog extends JDialog
     }
     
     
+    /**
+     * Applies the same styling to the different labels.
+     * 
+     * @param label the JLabel object to apply styling to
+     */
     private void setLabelDesign(JLabel label)
     {
     	// Sets the font to the specified style type and size
