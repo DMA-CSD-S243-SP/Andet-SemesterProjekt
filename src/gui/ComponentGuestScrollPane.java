@@ -1,29 +1,35 @@
 package gui;
 
-import java.awt.BorderLayout;
+// Imports
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
 
-import javax.swing.Box;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
+ * A custom JScrollPane component used in the guest-facing GUI to display content
+ * that requires scrollable.
+ * 
+ * This scroll pane removes its default border and disables horizontal scrolling,
+ * and changes the vertical scroll speed, and applies padding to the attached panel'
+ * to avoid the content from overlapping with the edges.
  * 
  * 
- * @author Christoffer Søndergaard
- * @version 20/05/2025 - 13:37
- */	
+ * Author: Christoffer Søndergaard
+ * Version: 08/06/2025 - 13:53
+ */
 public class ComponentGuestScrollPane extends JScrollPane
 {
+    /**
+     * Constructs a customized scroll pane for displaying vertically scrollable content
+     * for the guest-facing GUI.
+     *
+     * @param panelContent the content panel to be made scrollable
+     * @param attachedPanel the parent panel that holds this scroll pane
+     */
 	public ComponentGuestScrollPane(JPanel panelContent, JPanel attachedPanel)
 	{
 		super(panelContent);
