@@ -39,16 +39,6 @@ import model.TableOrder;
 
 
 /**
- * TODO: Write a relatively detailed description of what this class represents,
- * and add a version number containing both date and time, matching the other
- * classes' java documentation.
- * 
- * 
- * @author Christoffer Søndergaard, Line Bertelsen & Anders Trankjær
- * Version: 07/06/2025 - 08:49
- */
-
-/**
  * ViewStaffTableOrderOverview is a GUI window designed for staff members to view and
  * manage all active table orders that have been sent to the kitchen. 
  * 
