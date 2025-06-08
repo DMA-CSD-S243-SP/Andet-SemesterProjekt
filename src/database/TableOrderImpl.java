@@ -1,18 +1,24 @@
 package database;
 
+//Imports
 import java.sql.SQLException;
 import java.util.List;
 
 import model.TableOrder;
 
+
 /**
- * /** An interface that defines a contract for accessing TableOrderImpl,
+ * /** An interface that defines a contract for accessing TableOrderDB,
  * specifically for finding a Table Order based on its ID.
  * 
- * The contract ensures consistency across all classes that implement the
- * interface. It guarantees that certain functionality is available and any
- * class that implements TableOrderImpl must provide the methods
- * findAllTableOrders and findTableOrderById
+ * This interface is part of the DAO (Data Access Object) design pattern and specifies the methods
+ * required to retrieve data from the underlying data source.
+ * 
+ * The contract ensures consistency across all classes that implements the interface.
+ * It also guarantees that certain functionality is available and any class that 
+ * implements TableOrderImpl must provide the one method called:
+ * findAllTableOrders and findTableOrderById.
+ * 
  * 
  * @author Line Bertelsen
  * @version 02/06/2025 - 13:54
