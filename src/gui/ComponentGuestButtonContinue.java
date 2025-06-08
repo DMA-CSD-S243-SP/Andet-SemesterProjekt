@@ -1,27 +1,40 @@
 package gui;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.RoundRectangle2D;
+//Imports
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
 
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
- * 
- * 
- * @author Christoffer Søndergaard
- * @version 21/05/2025 - 02:33
+ * A custom JButton component designed for guest interaction in the Bone's restaurant system.
+ *
+ * It extends JButton and overrides the paintComponent method to implement
+ * custom rendering of a rounded button with a shadowed border and color change when pressed.
+ *
+ *
+ * Author: Christoffer Søndergaard  
+ * @version 07/06/2025 - 20:51
  */
 public class ComponentGuestButtonContinue extends JButton
 {
-	// The radius used to round the corners of the button
-	private int cornerRadius = 8;
-
-	// The thickness of the dark outer border drawn behind the button
-	private int borderThickness = 1;
-	
-	
-	// attachedPanel - The panel that this particular button is added to
+	/**
+	 * Constructs a custom continue button with stylized visuals and layout for the
+	 * guest-facing GUI.
+	 * 
+	 *
+	 * @param text the text displayed on the button
+	 * @param attachedPanel the panel this button will be added to
+	 */
 	public ComponentGuestButtonContinue(String text, JPanel attachedPanel)
 	{	
 		super(text);
@@ -66,9 +79,21 @@ public class ComponentGuestButtonContinue extends JButton
 	}
 
 	
+	/**
+	 * Overrides the standard painting behavior to draw a custom rounded button with a
+	 * colored background, border, and dynamic press effects.
+	 *
+	 * @param graphics the Graphics context used for painting
+	 */
 	@Override
 	protected void paintComponent(Graphics graphics)
 	{
+		// The radius used to round the corners of the button
+		int cornerRadius = 8;
+
+		// The thickness of the dark outer border drawn behind the button
+		int borderThickness = 1;
+		
 		// Create a copy of the graphics context for custom drawing
 		Graphics2D graphics2D = (Graphics2D) graphics.create();
 
@@ -84,11 +109,13 @@ public class ComponentGuestButtonContinue extends JButton
 		// Modifies the fill coloring of the button whenever it is pressed or unpressed
 		if (getModel().isArmed())
 		{
+			// Changes the button's background color to a darker version of the color
 			graphics2D.setColor(getBackground().darker());
 		}
 		
 		else
 		{
+			// Changes the button's background color to the normal background color
 			graphics2D.setColor(getBackground());
 		}
 
