@@ -1,20 +1,30 @@
 package gui;
 
+// Imports
 import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.JLabel;
 
+
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
+ * A custom JLabel component used for displaying section headings in the
+ * guest-facing GUI.
+ * 
+ * Simplifies the creation of large, centered text used to describe the essence
+ * of the current frame or window.
  * 
  * 
- * @author Christoffer Søndergaard
- * @version 20/05/2025 - 13:25
+ * Author: Christoffer Søndergaard  
+ * Version: 08/06/2025 - 11:41
  */
 public class ComponentGuestLabelHeading extends JLabel
 {
+    /**
+     * Constructs a new ComponentGuestLabelHeading with a specified heading text.
+     * 
+     * @param heading the text content to display in the label
+     */
 	public ComponentGuestLabelHeading(String heading)
 	{
 		super(heading);
