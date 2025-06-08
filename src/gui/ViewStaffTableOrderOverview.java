@@ -3,6 +3,7 @@
 //Imports
 package gui;
 
+// Imports
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -23,7 +24,6 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -33,16 +33,35 @@ import javax.swing.border.MatteBorder;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
+import application.TableOrderController;
 import database.DataAccessException;
 import model.TableOrder;
+
 
 /**
  * TODO: Write a relatively detailed description of what this class represents,
  * and add a version number containing both date and time, matching the other
  * classes' java documentation.
  * 
+ * 
  * @author Christoffer Søndergaard, Line Bertelsen & Anders Trankjær
- * @version 05/06/2025 - 14:06
+ * Version: 07/06/2025 - 08:49
+ */
+
+/**
+ * ViewStaffTableOrderOverview is a GUI window designed for staff members to view and
+ * manage all active table orders that have been sent to the kitchen. 
+ * 
+ * It displays the order data in a JTable and supports automatic updates every 30 seconds
+ * to ensure a somewhat real-time synchronization with the guest's orders.
+ * 
+ * NOTE: This is based off of a previous project's old GUI, and would need updating
+ * in a future iteration, to minimize the time for maintaining the staff GUi in the
+ * long run.
+ * 
+ *
+ * Version: 07/06/2025 - 08:49
+ * Authors: Christoffer Søndergaard, Line Bertelsen & Anders Trankjær
  */
 public class ViewStaffTableOrderOverview extends JFrame
 {
@@ -59,25 +78,23 @@ public class ViewStaffTableOrderOverview extends JFrame
 
 	// Creates a table for use with the staffTableOrderOverviewTableModel
 	private JTable table;
-	private ViewStaffTableOrderOverviewTableModel orderOverviewModel;
+	private ViewStaffTableOrderOverviewTableModel tableOrderOverviewModel;
 
-	private ScheduledExecutorService scheduler;
-
-	// Old example code from a previous project to show how
-	// it was done using a container
-
-	// Creates an EmployeeUserData object which allows us access to the single
-	// instance of EmployeeUserData holding an Employee object
-//	private EmployeeUserData employeeInstance = EmployeeUserData.getInstance(null);
 
 	/**
-	 * Create the frame.
+	 * Constructs the ViewStaffTableOrderOverview frame, initializes all GUI components, 
+	 * and sets up the structure, visuals, and behavior of the staff's GUI.
 	 */
 	public ViewStaffTableOrderOverview()
 	{
 		initGUI();
 	}
-
+	
+	
+	/**
+	 * Initializes and lays out the graphical components of the GUI, including
+	 * panels, buttons, labels, and the table displaying the table orders.
+	 */
 	private void initGUI()
 	{
 		setGeneralBehavior();
@@ -142,13 +159,12 @@ public class ViewStaffTableOrderOverview extends JFrame
 		panelCenterCenter.add(scrollPane);
 		scrollPane.setViewportView(table);
 		TableColumnModel columnModel = table.getColumnModel();
-		// columnModel.getColumn().setPreferredWidth(90);
 		columnModel.getColumn(0).setPreferredWidth(110);
-		columnModel.getColumn(1).setPreferredWidth(125);
+		columnModel.getColumn(1).setPreferredWidth(160);
 		columnModel.getColumn(2).setPreferredWidth(125);
 		columnModel.getColumn(3).setPreferredWidth(60);
 		columnModel.getColumn(4).setPreferredWidth(150);
-		columnModel.getColumn(5).setPreferredWidth(480);
+		columnModel.getColumn(5).setPreferredWidth(538);
 		JTableHeader header = table.getTableHeader();
 		header.setReorderingAllowed(false);
 		header.setBackground(new Color(89, 95, 111));
@@ -164,6 +180,7 @@ public class ViewStaffTableOrderOverview extends JFrame
 			public void actionPerformed(ActionEvent event)
 			{
 				// TODO: Make this work
+				
 			}
 		});
 		panelCenterSouth.add(btnDelete);
@@ -186,6 +203,7 @@ public class ViewStaffTableOrderOverview extends JFrame
 		panelCenterNorthNorth.add(lblViewHeading);
 	}
 
+	
 	/**
 	 * sends you back to the mainMenu
 	 */
@@ -199,6 +217,7 @@ public class ViewStaffTableOrderOverview extends JFrame
 		closeCurrentFrame();
 	}
 
+	
 	/**
 	 * makes this frame invisible and disposes of it
 	 */
@@ -207,7 +226,12 @@ public class ViewStaffTableOrderOverview extends JFrame
 		this.setVisible(false);
 		this.dispose();
 	}
+	
 
+	/**
+	 * Sets the general behavior for the frame, including how the application 
+	 * responds when the window is closed, and makes it exit the program
+	 */
 	private void setGeneralBehavior()
 	{
 		// Sets the operation that will occur when the close window button (x) is
@@ -215,6 +239,11 @@ public class ViewStaffTableOrderOverview extends JFrame
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
+	
+	/**
+	 * Sets the general visuals of the frame / window like the title, window size,
+	 * icon, and header panel contents.
+	 */	
 	private void setGeneralVisuals()
 	{
 		// Modifies the visual appearance of the main panel
@@ -234,7 +263,12 @@ public class ViewStaffTableOrderOverview extends JFrame
 		// panel
 		createPanelHeader("/headerLogo.png");
 	}
+	
 
+	/**
+	 * Configures the main panel that will act as the container for all components
+	 * in the main area.
+	 */
 	private void modifyMainPanel()
 	{
 		// Creates a new panel and stores it as the mainPanel this is the panel that
@@ -253,6 +287,14 @@ public class ViewStaffTableOrderOverview extends JFrame
 		setContentPane(mainPanel);
 	}
 
+	
+	/**
+	 * Adjusts the size and location of the window.
+	 * Ensures that the window has a minimum size and is centered on the screen.
+	 *
+	 * @param width  the desired width of the window
+	 * @param height the desired height of the window
+	 */
 	private void adjustWindowSize(int width, int height)
 	{
 		// Changes the window's dimensions to be set to the value of width x height when
@@ -268,7 +310,13 @@ public class ViewStaffTableOrderOverview extends JFrame
 		// adjusted
 		setLocationRelativeTo(null);
 	}
+	
 
+	/**
+	 * Sets the window's icon image using the provided path to a resource file.
+	 *
+	 * @param favIconPath the file path to the icon image
+	 */
 	private void setFavIcon(String favIconPath)
 	{
 		// Finds the resource with the name specified in the method's parameter and
@@ -287,6 +335,13 @@ public class ViewStaffTableOrderOverview extends JFrame
 		setIconImage(favoriteIconImage);
 	}
 
+	
+	/**
+	 * Creates and configures the header panel located at the top of the frame and
+	 * sets the logo and applies the appropriate layout and styling.
+	 *
+	 * @param headerLogoPath the file path to the header logo image
+	 */
 	private void createPanelHeader(String headerLogoPath)
 	{
 		// Creates a new panel and stores it as the panelNorth variable
@@ -327,59 +382,104 @@ public class ViewStaffTableOrderOverview extends JFrame
 		panelNorth.add(lblHeaderLogo);
 	}
 
+	
 	/**
-	 * visual elements for the tableModel
+	 * Initializes the table and its data model, and starts the background task
+	 * that updates the table every 30 seconds to reflect new orders.
 	 */
 	private void initTable()
 	{
-		orderOverviewModel = new ViewStaffTableOrderOverviewTableModel();
-		table = new JTable(orderOverviewModel);
-		table.setModel(orderOverviewModel);
+		// instantiates the table model used to display the TableOrder objects
+		tableOrderOverviewModel = new ViewStaffTableOrderOverviewTableModel();
+		
+		// Creates a JTable using the table model
+		table = new JTable(tableOrderOverviewModel);
+		
+		// Set the table model to be used to the tableOrderOverviewModel variable
+		table.setModel(tableOrderOverviewModel);
+		
+		// Loads the initial TableOrder data and inserts it in to the tableModel GUI element
 		updateTable();
+		
+		// Start a background task that updates the tableModel GUI elements data every
+		// 30 seconds
 		startKitchenCall();
 	}
 
+	
 	/**
-	 * updates the Tablemodel with the changes made to the Container.
+	 * Starts a scheduled task in the background that repeatedly updates the table view
+	 * which is shown in the kitchen's graphical user interface.
+	 * 
+	 * The task waits 5 seconds before its first execution, and then continues to run 
+	 * once every 30 seconds. 
+	 * 
+	 * It uses a single-threaded executor allowing for scheduling of commands to run after
+	 * a given delay, and execute periodically. It is being ran asynchronously, which allows 
+	 * the GUI to remain responsive  while the table data is being updated.
+	 * 
+	 * The repeated execution of the task is handled by Java's built-in thread planning, which 
+	 * is handled asynchronously.
+	 */
+	private void startKitchenCall()
+	{
+		// Creates a single-threaded scheduled executor service that allows for execution of
+		// commands to be ran after a delay and periodical execution
+		// This creates a thread that is seperate from Swing's Event Dispatch Thread, which 
+		// results in execution of the code is not blocking the users interaction with the GUI,
+		// and incorporates parallelism
+		ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+
+		// Schedules a recurring task that executes every 30 seconds, starting after an initial 5-second delay
+		// and creates an anonymous class "Runnable"
+		scheduler.scheduleAtFixedRate(new Runnable()
+		{
+			// Overrides the void run() method of the Runnable interface
+			@Override
+			public void run()
+			{
+				// Calls upon the updateTable() method to refresh the data contents within the TableOrder overview GUI
+				updateTable();
+			}
+
+		// 5 is the initial 5 second delay, and 30 is the 30 seconds before the anonymous Runnable method is executed again
+		}, 5, 30, TimeUnit.SECONDS);
+	}
+
+	
+	/**
+	 * This method updates the contents that should be displayed within
+	 * the GUI's tableModel. The contents which are retrieved are the 
+	 * TableOrder data that is retrieved from the database, which is made up
+	 * of TableOrders that have been sent to the kitchen for preparation.
+	 * 
+	 * The startKitchenCall() has created a separate thread, on which this
+	 * method is being called upon every 30 seconds. 
+	 * 
+	 * By running this task on a separate thread, parallelism is utilized to
+	 * allow users to keep interacting with the graphical user interface, while
+	 * the updateTable method occurs. Making the method run parallel with the GUI.
 	 */
 	private void updateTable()
 	{
 		try
 		{
-			List<TableOrder> data = new application.TableOrderController().findAllVisibleToKitchenTableOrders();
-			orderOverviewModel.setData(data);
-
-		} catch (SQLException e)
+			// Returns a list of TableOrder objects which have their isSentToKitchen 
+			// attribute set to true and stores it within the tableModelData variable
+			List<TableOrder> tableModelData = new TableOrderController().findAllVisibleToKitchenTableOrders();
+			
+			// 
+			tableOrderOverviewModel.setData(tableModelData);
+		}
+		
+		catch (SQLException exception)
 		{
-			// e.printStackTrace();
-		} catch (DataAccessException e)
+			// exception.printStackTrace();
+		} 
+		
+		catch (DataAccessException exception)
 		{
-			// e.printStackTrace();
+			// exception.printStackTrace();
 		}
 	}
-
-	/**
-	 * Starts a scheduled task that runs every 30 seconds to fetch table orders
-	 * visible to the kitchen.
-	 */
-	private void startKitchenCall()
-	{
-		// Creates a single thread to run a repeating task
-		scheduler = Executors.newSingleThreadScheduledExecutor();
-
-		// Plans a task, that runs on a async interval
-		// Starts at 30 and afterwards run every 30 sec.
-		scheduler.scheduleAtFixedRate(new Runnable()
-		{
-			// This method runs at a planned interval
-			@Override
-			public void run()
-			{
-
-				updateTable();
-			}
-
-		}, 5, 30, TimeUnit.SECONDS);
-	}
-
 }
