@@ -1,25 +1,41 @@
 package gui;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.RoundRectangle2D;
+// Imports
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
+import javax.swing.JButton;
+import javax.swing.SwingConstants;
 
 
+/**
+ * A custom JButton component designed for the staff-facing side of the GUI.
+ *
+ * It extends JButton and overrides the paintComponent method to implement
+ * color changes when pressed.
+ *
+ *
+ * Author: Christoffer Søndergaard
+ * Version: 08/06/2025 - 14:21
+ */
 public class ComponentStaffButton extends JButton
 {
-	// The radius used to round the corners of the button
-	private int cornerRadius = 8;
-
-	// The thickness of the dark outer border drawn behind the button
-	private int borderThickness = 1;
-	
-	// 
+    /**
+	 * Constructs a custom continue button with stylized visuals and layout for the
+	 * staff-facing GUI.
+	 * 
+     *
+     * @param text The text to display on the button
+     * @param isColored If true, the button uses a red color otherwise it uses a dark grey color
+     */
 	public ComponentStaffButton(String text, boolean isColored)
 	{
 		super(text);
-		setFocusPainted(false);
-		setContentAreaFilled(false);
-		
+
 		// Disable the default focus ring
 		setFocusPainted(false);
 
@@ -28,7 +44,6 @@ public class ComponentStaffButton extends JButton
 		
 		// Don't use the default button border
 		this.setBorderPainted(false);
-		
 		
 		// Set font to the specified settings
 		this.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -65,9 +80,21 @@ public class ComponentStaffButton extends JButton
 	}
 
 	
+	/**
+	 * Overrides the standard painting behavior to draw a custom rounded button with a
+	 * colored background, border, and dynamic press effects.
+	 *
+	 * @param graphics the Graphics context used for painting
+	 */
 	@Override
 	protected void paintComponent(Graphics graphics)
 	{
+		// The radius used to round the corners of the button
+		int cornerRadius = 8;
+
+		// The thickness of the dark outer border drawn behind the button
+		int borderThickness = 1;
+		
 		// Create a copy of the graphics context for custom drawing
 		Graphics2D graphics2D = (Graphics2D) graphics.create();
 
@@ -83,11 +110,13 @@ public class ComponentStaffButton extends JButton
 		// Modifies the fill coloring of the button whenever it is pressed or unpressed
 		if (getModel().isArmed())
 		{
+			// Changes the button's background color to a darker version of the color
 			graphics2D.setColor(getBackground().darker());
 		}
 		
 		else
 		{
+			// Changes the button's background color to the normal background color
 			graphics2D.setColor(getBackground());
 		}
 		
@@ -99,34 +128,5 @@ public class ComponentStaffButton extends JButton
 
 		// Disposes of the graphics object to free up resources
 		graphics2D.dispose();
-	}
-
-
-	@Override
-	public boolean contains(int xCoordinate, int yCoordinate)
-	{
-		// Creates a rounded shape to the visible button
-		Shape roundedShape = new RoundRectangle2D.Float(borderThickness, borderThickness, getWidth() - (borderThickness * 2), getHeight() - (borderThickness * 2), cornerRadius, cornerRadius);
-		
-		// Returns whether the mouse click is within the shape or not
-		return roundedShape.contains(xCoordinate, yCoordinate);
-	}
-
-
-	public void setCornerRadius(int cornerRadius)
-	{
-		this.cornerRadius = cornerRadius;
-
-		// Changing the corner radius causes us to have to repaint the button this is why this i being done
-		repaint();
-	}
-
-	
-	public void setBorderThickness(int borderThickness)
-	{
-		this.borderThickness = borderThickness;
-
-		// Changing the border thickness causes us to have to repaint the button this is why this i being done
-		repaint();
 	}
 }
