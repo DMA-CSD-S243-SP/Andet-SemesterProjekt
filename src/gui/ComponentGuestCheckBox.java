@@ -1,20 +1,40 @@
 package gui;
 
-import javax.swing.*;
+//Imports
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
 
 
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
- * 
- * 
- * @author Christoffer Søndergaard
- * @version 21/05/2025 - 02:33
+ * A custom-styled JCheckBox component for guest-facing interfaces in the Bone's restaurant system.
+ *
+ * The class also includes a method that wraps the checkbox in a pre-styled JPanel to assist with
+ * alignment and layout consistency in the GUI, this is currently useed in teh ViewGuestDiscountSelection
+ * class as well.
+ *
+ *
+ * Author: Christoffer Søndergaard  
+ * @version 07/06/2025 - 20:55
  */
 public class ComponentGuestCheckBox extends JCheckBox
 {
+	/**
+	 * Constructs a customized JCheckBox component with Bone’s styling.
+	 *
+	 * Applies transparent background, custom font, color, padding, and alignment settings
+	 * to match the look and feel used in the guest interface.
+	 *
+	 * @param text the label text shown next to the checkbox
+	 */
 	public ComponentGuestCheckBox(String text)
 	{
 		super(text);
@@ -33,13 +53,17 @@ public class ComponentGuestCheckBox extends JCheckBox
 		
 		// Align text to the left of the checkbox
 		setHorizontalAlignment(SwingConstants.LEFT);
-		
-		// Adds some spacing between the component above and below
-//		this.add(Box.createRigidArea(new Dimension(0, 15)));
 	}
 	
 	
-
+	/**
+	 * Wraps this checkbox inside a styled JPanel with layout and spacing adjustments.
+	 *
+	 * This method is useful for maintaining consistent layout across different UI sections
+	 * where checkboxes need to be centered and evenly spaced.
+	 *
+	 * @return the JPanel that contains the stylized checkbox
+	 */
 	public JPanel applyWrapperStyling()
 	{
 		// Create a new panel to help fix the location of the checkboxes
