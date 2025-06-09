@@ -1,5 +1,6 @@
 package gui;
 
+//Imports
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.sql.SQLException;
@@ -20,12 +21,22 @@ import model.TableOrder;
 
 
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
+ * The ViewGuestTableOrder class displays the full overview of all personal orders 
+ * associated with the current table order.
+ * 
+ * This class extends JFrame and makes use of a variety of custom GUI components.
+ * 
+ * The class uses a custom frame theme for layout and styling,
+ * and includes navigation buttons for going back, requesting service,
+ * or continuing to the next step in the guest flow.
+ * 
+ * The purpose of this view is to give the guests a final look at their entire 
+ * group's order before submitting it for preparation. The interface lists 
+ * each individual's order along with pricing and provides a total for the table.
  * 
  * 
- * @author Christoffer Søndergaard & Anders Trankjær
- * @version 28/05/2025 - 11:00
+ * @author Christoffer Søndergaard & Anders Trankjær 
+ * @version: 08/06/2025 - 21:27
  */	
 public class ViewGuestTableOrder extends JFrame
 {
@@ -53,37 +64,29 @@ public class ViewGuestTableOrder extends JFrame
 	
 	
 	/**
-	 * Create the frame.
+	 * Constructs the ViewGuestTableOrder frame and initializes
+	 * its graphical components and layout.
+	 *
+	 * This constructor assigns the task of GUI setup to the initGUI() method.
 	 */
 	public ViewGuestTableOrder()
 	{
 		personalController = new PersonalOrderController();
 		personalOrderList = new ArrayList<PersonalOrder>();
-		code();
+		
 		initGUI();
 	}
-	
-	
-	private void code() {
-		
-		//tableOrder code
-		currentTableOrder = UtilityGuestInformation.getInstance().getTableOrder();
-		currentTableOrder.setTimeOfArrival(LocalDateTime.of(LocalDate.now(), LocalTime.of(16, 0)));
-		
-		//personalOrder code
-		try {
-			//findPersonalOrderByTableOrderId retrieves a list of all personalOrders in a given tableOrder the return type is List
-			//it then adds it to personalOrderList
-			personalOrderList.addAll(personalController.findPersonalOrdersBytableOrderId(currentTableOrder.getTableOrderId()));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (DataAccessException e) {
-			e.printStackTrace();
-		}
-		
-	}
 
 
+    /**
+	 * Initializes the GUI components for this frame.
+	 * 
+	 * This includes:
+	 * - Setting up the themed frame layout
+	 * - Displaying navigation buttons (back and request service)
+	 * - Creating a continue button that validates input and proceeds to the next view
+	 * - Creates UI components dynamically based on the contents of the personalOrderList
+     */
 	private void initGUI()
 	{
 		// Creates a ComponentFrameThemeGuest component
@@ -113,38 +116,30 @@ public class ViewGuestTableOrder extends JFrame
 		//   SHOULD BE INSERTED IN   //
 		///////////////////////////////
 		
-		/*
-		// Creates a customized input field object with a placeholder text accepting only numbers in it
-		ComponentGuestInputField inputFieldFirstName = new ComponentGuestInputField("Fornavn", "onlyNumbers");
+		// Retrieves the current table order from the UtilityGuestInformation singleton,
+	    // sets the arrival time, and fetches all personal orders associated with the TableOrder
+	    // from the database using the PersonalOrderController.
+		retrieveTableOrderContentsAndSetTimeOfArrival();
 		
-		// Adds the first name input field to the primary content panel
-		frameTheme.getPrimaryContentPanel().add(inputFieldFirstName);
-		
-		// Adds some spacing between the component above and below
-		primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-
-		// Creates a customized input field object with a placeholder text accepting only letters in it
-		ComponentGuestInputField inputFieldAge = new ComponentGuestInputField("Alder i antal år", "onlyLetters");
-
-		// Adds the age input field to the primary content panel
-		frameTheme.getPrimaryContentPanel().add(inputFieldAge);
-		*/
-		
-		// makes a dummyTableOrder which for the purpose of calculating totalPrice 
+		// Makes a dummyTableOrder which for the purpose of calculating totalPrice 
 		TableOrder dummyTableOrder = new TableOrder(currentTableOrder.getTableOrderId(), currentTableOrder.getTimeOfArrival(), false, "not decided", 0, 0, false, false, 0);
-		//this loop displays each personalOrder from the currentTableOrder
-		for (PersonalOrder pO : personalOrderList) 
+		
+		// This loop displays each personalOrder from the currentTableOrder
+		for (PersonalOrder personalOrder : personalOrderList) 
 		{
-			// adds the name of the customer whoes personalOrder it is aswell as the price of the individual personalOrder and a list of each item they have ordered. 
-			primaryContentPanel.add(new ComponentGuestOrderSummary(pO.getCustomerName(), pO.getTotalPersonalOrderEveningPrice(), pO.getNameOfItemsInList()));
+			// Adds the name of the customer whose personalOrder it is aswell as the price of the individual personalOrder and a list of each item they have ordered. 
+			primaryContentPanel.add(new ComponentGuestOrderSummary(personalOrder.getCustomerName(), personalOrder.getTotalPersonalOrderEveningPrice(), personalOrder.getNameOfItemsInList()));
 
 			// Adds the panel that holds the order information
 			primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 45)));
-			//adds the personalOrder to the tableOrder
-			dummyTableOrder.addPersonalOrder(pO);
+			
+			// Adds the personalOrder to the tableOrder
+			dummyTableOrder.addPersonalOrder(personalOrder);
 		}
-			//displays the total price of all the personalOrders within the TableOrder
-			primaryContentPanel.add(new ComponentGuestOrderTotalPrice("Total Pris:", dummyTableOrder.calculateTotalTableOrderPrice()));
+		
+		//displays the total price of all the personalOrders within the TableOrder
+		primaryContentPanel.add(new ComponentGuestOrderTotalPrice("Total Pris:", dummyTableOrder.calculateTotalTableOrderPrice()));
+		
 		
 		
 		////////////////////////////////
@@ -176,7 +171,6 @@ public class ViewGuestTableOrder extends JFrame
 		}
 		
 		
-		
 		///////////////////////////////////
 		// - Navigation Service Button - //
 		///////////////////////////////////
@@ -206,14 +200,15 @@ public class ViewGuestTableOrder extends JFrame
 		// Adds an action listener for when the button is clicked
 		btnOrderMore.addActionListener(event ->
 		{
-			// TODO: Add functionality
 			try
 			{
+				// TODO: Add functionality
 				throw new UnsupportedOperationException("Bestil Mere is not implemented.");
 			}
 			
 			catch (Exception exception)
 			{
+				// Creates a dialog box informing about the action that went wrong
 				new ComponentGuestErrorDialog(this, 
 						"Følgende feature",
 						"Bestil mere",
@@ -226,7 +221,6 @@ public class ViewGuestTableOrder extends JFrame
 			finally
 			{
 				// Creates the new frame that should be opened when pressing the button
-//				ViewGuestOrderMore nextView = new ViewGuestOrderMore();
 				ViewGuestMenuAdult nextView = new ViewGuestMenuAdult();
 
 				// Sets the visibility to true turning the previous view / window visible
@@ -236,7 +230,6 @@ public class ViewGuestTableOrder extends JFrame
 				this.dispose();				
 			}
 		});
-		
 		
 		// Creates a customized button component with the supplied information
 		ComponentGuestButtonContinue btnSendToKitchen = new ComponentGuestButtonContinue("Start Tilberedningen", bottomPanel);
@@ -256,5 +249,41 @@ public class ViewGuestTableOrder extends JFrame
 			// Closes the current frame/window
 			this.dispose();
 		});
+	}
+	
+	
+    /**
+     * Retrieves the current table order from the UtilityGuestInformation singleton,
+     * sets the arrival time, and fetches all personal orders associated with the TableOrder
+     * from the database using the PersonalOrderController.
+     * 
+     * The resulting personal orders are stored in the personalOrderList field
+     * for display and further processing.
+     */
+	private void retrieveTableOrderContentsAndSetTimeOfArrival()
+	{
+		// tableOrder code
+		currentTableOrder = UtilityGuestInformation.getInstance().getTableOrder();
+		
+		// 
+		currentTableOrder.setTimeOfArrival(LocalDateTime.of(LocalDate.now(), LocalTime.of(16, 0)));
+		
+		//personalOrder code
+		try
+		{
+			// findPersonalOrderByTableOrderId retrieves a list of all personalOrders in a given tableOrder the return type is List
+			// it then adds it to personalOrderList
+			personalOrderList.addAll(personalController.findPersonalOrdersBytableOrderId(currentTableOrder.getTableOrderId()));
+		}
+		
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		} 
+		
+		catch (DataAccessException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }
