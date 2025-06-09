@@ -1,25 +1,41 @@
 package gui;
 
+// Imports
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.awt.FlowLayout;
 import java.util.List;
 
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import model.MainCourse;
 import model.MenuCard;
-import model.SelfServiceBar;
+
 
 /**
- * TODO: Write a thorough description of this class and also java docs for the
- * constructor and the class' methods
+ * The ViewGuestMenuAdult class represents the GUI shown to the guest when 
+ * interacting with the adult menu at the restaurant. This view allows users to 
+ * browse through various categories such as main courses, side dishes, drinks, sauces,
+ * and self-service options.
+ * 
+ * This class extends JFrame and makes use of a variety of custom GUI components.
+ * 
+ * The class uses a custom frame theme for layout and styling,
+ * and includes navigation buttons for going back, requesting service,
+ * or continuing to the next step in the guest flow.
+ * 
+ * Users can add items to their order, clear their selections, or proceed to order
+ * confirmation.
+ * 
+ * The class also constructs the UI based on the menu data retrieved through the 
+ * UtilityGuestInformation class.
  * 
  * 
- * @author Christoffer Søndergaard
- * @version 21/05/2025 - 08:54
+ * @author: Christoffer Søndergaard & Lumière Schack  
+ * @version: 08/06/2025 - 20:46
  */
 public class ViewGuestMenuAdult extends JFrame
 {
@@ -41,14 +57,33 @@ public class ViewGuestMenuAdult extends JFrame
 	// navigational panel
 	boolean isServiceEnabled = true;
 
+	
 	/**
-	 * Create the frame.
+	 * Constructs the ViewGuestMenuAdult frame and initializes
+	 * its graphical components and layout.
+	 *
+	 * This constructor assigns the task of GUI setup to the initGUI() method.
 	 */
 	public ViewGuestMenuAdult()
 	{
 		initGUI();
 	}
 
+	
+	/**
+	 * Initializes the GUI components for this frame.
+	 *
+	 * This includes:
+	 * - Setting up the themed frame layout
+	 * - Displaying navigation buttons (back and request service)
+	 * - Creating a continue button that validates input and proceeds to the next view
+	 * - Dynamically populates menu item categories including:
+	 *   Main Courses, Self-Service Bars, Side Dishes, Drinks, and Dips/Sauces.
+	 * - Configures action buttons for clearing the current order or completing it.
+	 * 
+	 * Menu data is fetched from the UtilityGuestInformation class, which uses a singleton
+	 * pattern.
+	 */
 	private void initGUI()
 	{
 		// Creates a ComponentFrameThemeGuest component
@@ -57,101 +92,164 @@ public class ViewGuestMenuAdult extends JFrame
 		// Changes the frame / view's theme to the universal bone's brand theme
 		// - OBS! Since the heading and instruction text utilizes HTML for structuring
 		// you must use the <br> tag to break up the text instead of \n
-		frameTheme.applyGeneralVisuals("VOKSEN MENUKORT", this, "Tilføj Retter",
-				"Vælg alle de retter og drikkevare som du<br>ønsker at tilføje til din ordrebestilling.");
+		frameTheme.applyGeneralVisuals("VOKSEN MENUKORT", this, "Tilføj Retter", "Vælg alle de retter og drikkevare som du<br>ønsker at tilføje til din ordrebestilling.");
 
 		// Retrieves the navigationPanel component from the frameTheme
 		navigationPanel = frameTheme.getNavigationPanel();
 
 		// Retrieves the primary content panel component from the the frameTheme
-		// - This is the panel that we add our varying contents to in the different view
-		// / windows
+		// - This is the panel that we add our varying contents to in the different view / windows
 		primaryContentPanel = frameTheme.getPrimaryContentPanel();
 
+		// Creates a ComponentGuestPanel class to serve as a wrapper panel for the generated contents
+		ComponentGuestPanel centeredWrapperPanel = new ComponentGuestPanel();
+		
+		// Specifies that the boxlayout used should be from top to bottom
+		centeredWrapperPanel.setLayout(new BoxLayout(centeredWrapperPanel, BoxLayout.Y_AXIS));
+
+		// Sets the layout of the primaryContentPanel to use a centered flowlayout
+		primaryContentPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+		
+		// Adds the wrapper panel to the primaryContentPanel ComponentGuestPanel object
+		primaryContentPanel.add(centeredWrapperPanel);
+		
 		// Retrieves the bottomContentPanel component from the frameTheme
 		bottomPanel = frameTheme.getBottomContentPanel();
 
+		
+		
 		///////////////////////////////
 		// - Primary Content Panel - //
 		///////////////////////////////
-		// THIS IS WHERE CONTENT //
-		// SHOULD BE INSERTED IN //
+		//   THIS IS WHERE CONTENT   //
+		//   SHOULD BE INSERTED IN   //
 		///////////////////////////////
 
+		// Retrieves the singleton instance of the UtilityGuestInformation
+		// and inserts the list of discounts, which are currently empty
 		MenuCard adultMenu = UtilityGuestInformation.getInstance().getAdultMenu();
 
+		
 		// Main Courses
-		primaryContentPanel.add(new ComponentGuestLabelHeading("Hovedretter"));
+		centeredWrapperPanel.add(new ComponentGuestLabelHeading("Hovedretter"));
+		centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+		
 		List<MainCourse> listOfMainCourses = UtilityGuestInformation.getInstance().getMainCourses(adultMenu);
 
 		for (MainCourse mainCourse : listOfMainCourses)
 		{
 			ComponentGuestMenuItem menuItemBox = new ComponentGuestMenuItem(mainCourse);
-			primaryContentPanel.add(menuItemBox);
-			primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-			menuItemBox.getAddButton().addActionListener(x -> {
+			centeredWrapperPanel.add(menuItemBox);
+			centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 30)));
+
+			menuItemBox.getAddButton().addActionListener(x ->
+			{
 				UtilityGuestInformation.getInstance().enterMainCourse((model.MainCourse) menuItemBox.getMenuItem());
 				openUniversalMainMenu();
 			});
 		}
 
+		
 		// SelfServiceBars
-		primaryContentPanel.add(new ComponentGuestLabelHeading("Self-Service Bars"));
+		centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 25)));
+		centeredWrapperPanel.add(new ComponentGuestLabelHeading("Self-Service Bars"));
+		centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+		
 		List<model.MenuItem> listOfSelfServiceBars = UtilityGuestInformation.getInstance()
 				.getSelfServiceBars(adultMenu);
 
 		for (model.MenuItem selfService : listOfSelfServiceBars)
 		{
 			ComponentGuestMenuItem menuItemBox = new ComponentGuestMenuItem(selfService);
-			primaryContentPanel.add(menuItemBox);
-			primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-			menuItemBox.getAddButton().addActionListener(x -> {
+			centeredWrapperPanel.add(menuItemBox);
+			centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 30)));
+
+			menuItemBox.getAddButton().addActionListener(x ->
+			{
 				UtilityGuestInformation.getInstance().enterSideOrder(menuItemBox.getMenuItem());
 			});
 		}
 
+		
 		// SideDishes
-		primaryContentPanel.add(new ComponentGuestLabelHeading("Side Retter"));
+		centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 25)));
+		centeredWrapperPanel.add(new ComponentGuestLabelHeading("Side Retter"));
+		centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+		
 		List<model.MenuItem> listOfSideDishes = UtilityGuestInformation.getInstance().getSideDishes(adultMenu);
 
 		for (model.MenuItem sideDish : listOfSideDishes)
 		{
 			ComponentGuestMenuItem menuItemBox = new ComponentGuestMenuItem(sideDish);
-			primaryContentPanel.add(menuItemBox);
-			primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-			menuItemBox.getAddButton().addActionListener(x -> {
+			centeredWrapperPanel.add(menuItemBox);
+			centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 30)));
+
+
+			menuItemBox.getAddButton().addActionListener(x ->
+			{
 				UtilityGuestInformation.getInstance().enterSideOrder(menuItemBox.getMenuItem());
 			});
 		}
 
-		// Drinks
-		primaryContentPanel.add(new ComponentGuestLabelHeading("Drikkevarer"));
+		
+		
+		//////////////////////////
+		// - Drink MenuItems - //
+		/////////////////////////
+		
+		centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 25)));
+		centeredWrapperPanel.add(new ComponentGuestLabelHeading("Drikkevarer"));
+		centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+		
 		List<model.MenuItem> listOfDrinks = UtilityGuestInformation.getInstance().getDrinks(adultMenu);
 
 		for (model.MenuItem drink : listOfDrinks)
 		{
 			ComponentGuestMenuItem menuItemBox = new ComponentGuestMenuItem(drink);
-			primaryContentPanel.add(menuItemBox);
-			primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-			menuItemBox.getAddButton().addActionListener(x -> {
+			centeredWrapperPanel.add(menuItemBox);
+			centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 30)));
+
+
+			menuItemBox.getAddButton().addActionListener(x ->
+			{
 				UtilityGuestInformation.getInstance().enterSideOrder(menuItemBox.getMenuItem());
 			});
 		}
 		
-		// DipsAndSauces
-				primaryContentPanel.add(new ComponentGuestLabelHeading("Dips og Sovse"));
-				List<model.MenuItem> listOfDipsAndSauces = UtilityGuestInformation.getInstance().getDipsAndSauces(adultMenu);
+		
+		
+		////////////////////////////////
+		// - DipsAndSauce MenuItems - //
+		////////////////////////////////
+		
+		centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 25)));
+		centeredWrapperPanel.add(new ComponentGuestLabelHeading("Dips og Sovse"));
+		centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+		
+		List<model.MenuItem> listOfDipsAndSauces = UtilityGuestInformation.getInstance().getDipsAndSauces(adultMenu);
 
-				for (model.MenuItem dipsAndSauces :listOfDipsAndSauces)
-				{
-					ComponentGuestMenuItem menuItemBox = new ComponentGuestMenuItem(dipsAndSauces);
-					primaryContentPanel.add(menuItemBox);
-					primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-					menuItemBox.getAddButton().addActionListener(x -> {
-						UtilityGuestInformation.getInstance().enterSideOrder(menuItemBox.getMenuItem());
-					});
-				}
+		for (model.MenuItem dipsAndSauces :listOfDipsAndSauces)
+		{
+			ComponentGuestMenuItem menuItemBox = new ComponentGuestMenuItem(dipsAndSauces);
+			centeredWrapperPanel.add(menuItemBox);
+			centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 
+
+			menuItemBox.getAddButton().addActionListener(x ->
+			{
+				UtilityGuestInformation.getInstance().enterSideOrder(menuItemBox.getMenuItem());
+			});
+		}
+
+		
+		// Restricts the component's maximum width to the specified pixels, while allowing the height to adapt
+		// to its preferred size this then prevents the component from stretching to the full width 
+		// and thereby maintains its centered appearance
+		centeredWrapperPanel.setPreferredSize(new Dimension(340, centeredWrapperPanel.getPreferredSize().height));
+		centeredWrapperPanel.setMaximumSize(new Dimension(340, getPreferredSize().height));
+		
+		
+		
 		////////////////////////////////
 		// - Navigation Back Button - //
 		////////////////////////////////
@@ -167,7 +265,8 @@ public class ViewGuestMenuAdult extends JFrame
 			navigationPanel.add(btnBack, BorderLayout.WEST);
 
 			// Adds an action listener for when the button is clicked
-			btnBack.addActionListener(event -> {
+			btnBack.addActionListener(event ->
+			{
 				// Create and configure the new frame (you can replace this with your actual
 				// destination window)
 				ViewGuestMenuOverview previouslyOpenFrameView = new ViewGuestMenuOverview();
@@ -188,8 +287,7 @@ public class ViewGuestMenuAdult extends JFrame
 		if (isServiceEnabled == true)
 		{
 			// Creates a button with the specified text
-			ComponentGuestNavigationButton btnRequestService = new ComponentGuestNavigationButton(
-					"Anmod Om Service 🔔");
+			ComponentGuestNavigationButton btnRequestService = new ComponentGuestNavigationButton("Anmod Om Service 🔔");
 
 			// Moves the button to the east side of the panel it is attached to
 			navigationPanel.add(btnRequestService, BorderLayout.EAST);
@@ -206,20 +304,25 @@ public class ViewGuestMenuAdult extends JFrame
 		bottomPanel.add(btnEmptyOrder);
 
 		// Adds an action listener for when the button is clicked
-		btnEmptyOrder.addActionListener(event -> {
+		btnEmptyOrder.addActionListener(event -> 
+		{
 			UtilityGuestInformation.getInstance().clearOrder();
 		});
 
+		
+		
 		// Creates a customized button component with the supplied information
-		ComponentGuestButtonContinue btnCompleteOrder = new ComponentGuestButtonContinue("Færdiggør Bestilling",
-				bottomPanel);
+		ComponentGuestButtonContinue btnCompleteOrder = new ComponentGuestButtonContinue("Færdiggør Bestilling", bottomPanel);
 
 		// Adds the customized button to the panel
 		bottomPanel.add(btnCompleteOrder);
 
 		// Adds an action listener for when the button is clicked
-		btnCompleteOrder.addActionListener(event -> {
+		btnCompleteOrder.addActionListener(event ->
+		{
+			// Gets the instance UtilityGuestInformation singleton's instance and calls upon the finishPersonalOrder method
 			UtilityGuestInformation.getInstance().finishPersonalOrder();
+			
 			// Creates the new frame that should be opened when pressing the button
 			ViewGuestTableOrder nextView = new ViewGuestTableOrder();
 
@@ -229,22 +332,33 @@ public class ViewGuestMenuAdult extends JFrame
 			// Closes the current frame/window
 			this.dispose();
 		});
+		
+		
 
 		// TODO: This is a very dirty fix for displaying the graphical user interface
 		// contents without spending too much time on adjusting them, this
 		// would be added to the backlog and revisited in a later iteration.
-		//
-
-		// Gets the screen size
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-		// Changes the size of the to the specified screen size
-		setSize(screenSize);
+		// This is still the case, but minor changes has made it not as bad as 
+		// in the previous version, but in order to completely fix this, many 
+		// aspects of parent GUI components would have to be adjusted along with
+		// their used components which time simply does not allow for.
+		
+		// Changes the size of the to the specified screen size with the calculated height
+		setSize(500, getHeight());
 
 		// Changes the view / window's position to the middle of the screen
 		setLocationRelativeTo(null);
 	}
 
+	
+	/**
+	 * Launches the ViewGuestUniversalMainMenu frame, which allows the guest to
+	 * select the preparation methods and additional options for their chosen 
+	 * main course.
+	 *
+	 * This method is triggered when a guest selects a main course and chooses to
+	 * configure it further before then finally adding it to their PersonalOrder.
+	 */
 	private void openUniversalMainMenu()
 	{
 		// Creates the new frame that should be opened when pressing the button

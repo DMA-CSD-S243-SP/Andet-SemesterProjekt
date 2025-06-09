@@ -56,9 +56,6 @@ public class ComponentGuestMenuItem extends JPanel
 		// Make the background transparent
 		this.setOpaque(false);
 
-		// Limit the width to 350px and fix height to 70px (adjustable)
-		this.setMaximumSize(new Dimension(350, 70));
-
 		
 		//////////////////////////////
 		// - Title & Descriptions - //
@@ -78,7 +75,7 @@ public class ComponentGuestMenuItem extends JPanel
 		JLabel lblTitle = new JLabel(menuItem.getName().toUpperCase());
 
 		// Set the font style and size for the title
-		lblTitle.setFont(new Font("SansSerif", Font.BOLD, 16));
+		lblTitle.setFont(new Font("SansSerif", Font.BOLD, 14));
 
 		// Set the title text color to a dark gray
 		lblTitle.setForeground(new Color(40, 40, 40));
@@ -87,7 +84,7 @@ public class ComponentGuestMenuItem extends JPanel
 		JLabel lblDescription = new JLabel("<html><i>" + menuItem.getDescription() + "</i></html>");
 
 		// Set the font style and size for the description
-		lblDescription.setFont(new Font("SansSerif", Font.PLAIN, 13));
+		lblDescription.setFont(new Font("SansSerif", Font.PLAIN, 11));
 
 		// Set the description text color to a slightly lighter gray
 		lblDescription.setForeground(new Color(70, 70, 70));
@@ -121,8 +118,13 @@ public class ComponentGuestMenuItem extends JPanel
 			price = menuItem.getLunchPrice();
 		}*/
 		
+		// Creates a label called price that takes the passed price method parameter and adds ,- behind it
 		JLabel lblPrice = new JLabel(price + ",-");
-		lblPrice.setFont(new Font("SansSerif", Font.BOLD, 15));
+		
+		// Changes the font styling to the specified style
+		lblPrice.setFont(new Font("SansSerif", Font.BOLD, 14));
+		
+		// Changes the font color to  black
 		lblPrice.setForeground(Color.BLACK);
 
 		// Create the "+" add button
@@ -149,19 +151,20 @@ public class ComponentGuestMenuItem extends JPanel
 		// Show a hand cursor when hovering over the button
 		btnAdd.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-		// Set the preferred size of the button to 35x35
-		btnAdd.setPreferredSize(new Dimension(35, 35));
+		// Set the preferred size of the button to 30x30
+		btnAdd.setPreferredSize(new Dimension(30, 30));
 
 		// Ensure the button can't grow beyond this size
-		btnAdd.setMaximumSize(new Dimension(35, 35));
+		btnAdd.setMaximumSize(new Dimension(30, 30));
 
 		// Ensure the button doesn't shrink below this size
-		btnAdd.setMinimumSize(new Dimension(35, 35));
+		btnAdd.setMinimumSize(new Dimension(30, 30));
 
 		// Add spacing and then the price and button to right panel
 		rightPanel.add(Box.createRigidArea(new Dimension(10, 0)));
 		rightPanel.add(lblPrice);
 		
+		// Adds spacing and then the + button to the right panel
 		rightPanel.add(Box.createRigidArea(new Dimension(6, 0)));
 		rightPanel.add(btnAdd);
 
@@ -171,8 +174,14 @@ public class ComponentGuestMenuItem extends JPanel
 		// Add right-side panel (price + button) to the right of the layout
 		this.add(rightPanel, BorderLayout.EAST);
 
-		// Add bottom padding to separate from other components
-		//this.setBorder(new EmptyBorder(0, 0, 20, 0));
+		// Ensures that this component is horizontally centered within its parent container when using a BoxLayout
+		this.setAlignmentX(CENTER_ALIGNMENT);
+
+		// Restricts the component's maximum width to the specified pixels, while allowing the height to adapt
+		// to its preferred size this then prevents the component from stretching to the full width 
+		// and thereby maintains its centered appearance
+		this.setPreferredSize(new Dimension(340, getPreferredSize().height));
+		this.setMaximumSize(new Dimension(340, getPreferredSize().height));
 	}
 
 	
