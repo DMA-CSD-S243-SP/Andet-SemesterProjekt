@@ -1,12 +1,10 @@
 package gui;
 
+//Imports
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.Box;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -19,13 +17,23 @@ import model.SelectionOption;
 
 
 /**
- * TODO: Write a thorough description of this class and also java docs
- * for the constructor and the class' methods
+ * The ViewGuestCustomerInformation class represents a GUI frame
+ * where guests are prompted to customize their main course by selecting a 
+ * potato dish, multiple choice options and add-ons.
  * 
+ * This class extends JFrame and makes use of a variety of custom GUI components.
  * 
- * @author Christoffer Søndergaard & Lumière Schack
- * @version 21/05/2025 - 12:47
- */	
+ * The class uses a custom frame theme for layout and styling,
+ * and includes navigation buttons for going back, requesting service,
+ * or continuing to the next step in the guest flow.
+ * 
+ * This class dynamically loads the options available for the current menu and
+ * collects the user's selections for later submission.
+ *
+ *
+ * @author: Christoffer Søndergaard & Lumière Schack  
+ * @version: 08/06/2025 - 20:05
+ */
 public class ViewGuestUniversalMainMenu extends JFrame
 {
 	// Added in order to suppress the warning that appears in serializable classes where no serialVersionUID is specified
@@ -43,16 +51,20 @@ public class ViewGuestUniversalMainMenu extends JFrame
 	boolean isServiceEnabled = true;
 	
 	ComponentGuestComboBox potatoCombo;
-	List<AddOnOption> addOnOptions;
+	List<AddOnOption> listOfAddOnOptions;
 	List<ComponentGuestCheckBox> addOnCheckBoxes;
 	List<PotatoDish> potatoDishes;
 	MainCourse mainCourse;
 	List<MultipleChoiceMenu> multipleChoiceMenus;
 	List<List<SelectionOption>> twodSelectionOptions;
-	List<ComponentGuestComboBox> multipleChoiceBoxes;
+	List<ComponentGuestComboBox> listOfMultipleChoiceBoxes;
 	
+
 	/**
-	 * Create the frame.
+	 * Constructs the ViewGuestUniversalMainMenu frame and initializes
+	 * its graphical components and layout.
+	 *
+	 * This constructor assigns the task of GUI setup to the initGUI() method.
 	 */
 	public ViewGuestUniversalMainMenu()
 	{
@@ -60,6 +72,18 @@ public class ViewGuestUniversalMainMenu extends JFrame
 	}
 	
 	
+	/**
+	 * Initializes the GUI components for this frame.
+	 * 
+	 * This includes:
+	 * - Setting up the themed frame layout
+	 * - Displaying navigation buttons (back and request service)
+	 * - Creating a continue button that validates input and proceeds to the next view
+	 * - Retrieving the menu data from UtilityGuestInformation
+	 * - Populating combo boxes and checkboxes for potato dishes, multiple choice options, and add-ons
+	 *
+	 * This method is automatically called from the constructor.
+	 */
 	private void initGUI()
 	{
 		// Creates a ComponentFrameThemeGuest component
@@ -89,55 +113,126 @@ public class ViewGuestUniversalMainMenu extends JFrame
 		//   SHOULD BE INSERTED IN   //
 		///////////////////////////////
 		
+		// Fetches the active adult menu from the UtilityGuestInformation class
 		MenuCard menu = UtilityGuestInformation.getInstance().getAdultMenu();
+
+		// Gets the list of available potato dishes from the selected menu through the UtilityGuestInformation class
 		potatoDishes = UtilityGuestInformation.getInstance().getPotatoDishes(menu);
+
+		// Retrieves the selected main course from the UtilityGuestInformation class
 		mainCourse = UtilityGuestInformation.getInstance().getMainCourse();
 		
-		// Potato selection
-		List<String> potatoStrings = new ArrayList<>();
-		for (PotatoDish potato: potatoDishes)
+		
+		
+		//////////////////////////////
+		// - Potato Dish Specific - //
+		//////////////////////////////
+		
+		
+		// Instantiates an empty list to contain various potato dish names to show in a combo box
+		List<String> listOfPotatoStrings = new ArrayList<>();
+		
+		// Uses a for-each loop to iterate through the various PotatoDishes
+		for (PotatoDish potatoDish: potatoDishes)
 		{
-			potatoStrings.add(potato.getName());
+			// Adds each potato name to the list of display strings
+			listOfPotatoStrings.add(potatoDish.getName());
 		}
-		potatoCombo = new ComponentGuestComboBox("Vælg kartoffel tilbehør", potatoStrings);
+
+		// Creates a combo box for potato selection with the prepared names
+		potatoCombo = new ComponentGuestComboBox("Vælg kartoffel tilbehør", listOfPotatoStrings);
+
+		// Makes the potato combo box visible
 		potatoCombo.setVisible(true);
+		
+		// Adds the potato combo box to the main content panel
 		primaryContentPanel.add(potatoCombo);
 		
+		
+		
+		///////////////////////////////////
+		// - Multiple Choice  Specific - //
+		///////////////////////////////////
+		
+		
+		// Initializes an empty array list to store combo boxes for multiple choice options
+		listOfMultipleChoiceBoxes = new ArrayList<>();
+		
+		// Gets all multiple choice menus that are associated with the selected MainCourse object
 		multipleChoiceMenus = mainCourse.getListOfMultipleChoiceMenu();
+
+		// Stores the number of multiple choice menus to iterate over
+		int numberOfMultipleChoiceMenus = multipleChoiceMenus.size();
+
 		
-		
-		multipleChoiceBoxes = new ArrayList<>();
-		int size = multipleChoiceMenus.size();
-		// Collection iteration is controlled manually here.
-		// This is because the order in which they are added is important,
-		// as the index is used to fetch later.
-		for (int i = 0; i < size; i++)
+		// Uses a classic for loop to perform the collection iteration
+		// as it is controlled manually here. 
+		// This is because the order in which they are added are important,
+		// as the index is used to fetch the information later on.
+		for (int index = 0; index < numberOfMultipleChoiceMenus; index++)
 		{
-			MultipleChoiceMenu currentMenu = multipleChoiceMenus.get(i);
-			List<SelectionOption> options = currentMenu.getListOfSelectionOptions();
-			List<String> optionStrings = new ArrayList<>();
-			for (SelectionOption option: options)
+			// Retrieves the current MultipleChoiceMenu object
+			MultipleChoiceMenu currentMultipleChoiceMenu = multipleChoiceMenus.get(index);
+
+			// Prepares a list of strings that will include SelectionOption's additionalPrice and description
+			List<String> listOfOptionStrings = new ArrayList<>();
+
+			// Gets the list of SelectionOption objects of the MultipleChoiceMenu object and
+			// stores them within the listOfSelectionOptions variable
+			List<SelectionOption> listOfSelectionOptions = currentMultipleChoiceMenu.getListOfSelectionOptions();
+
+			// Uses a for-each loop to iterate through the list of SelectionOption objects
+			for (SelectionOption selectionOption: listOfSelectionOptions)
 			{
-				optionStrings.add("(+"+option.getAdditionalPrice()+") "+option.getDescription());
+				// Adds the selectionOption's additionalPrice and description to the optionStrings 
+				listOfOptionStrings.add("(+" +selectionOption.getAdditionalPrice() + ") " + selectionOption.getDescription());
 			}
-			ComponentGuestComboBox combobox = new ComponentGuestComboBox(currentMenu.getSelectionDescription(), optionStrings);
-			combobox.setVisible(true);
-			primaryContentPanel.add(combobox);
-			multipleChoiceBoxes.add(combobox);
+			
+			// Creates a ComponentGuestComboBox using the SelectionOption and its listOfOptionStrings
+			ComponentGuestComboBox comboBoxMultipleChoiceMenu = new ComponentGuestComboBox(currentMultipleChoiceMenu.getSelectionDescription(), listOfOptionStrings);
+
+			// Makes the comboBoxMultipleChoiceMenu object visible
+			comboBoxMultipleChoiceMenu.setVisible(true);
+
+			// Adds the comboBoxMultipleChoiceMenu object to the primary content panel
+			primaryContentPanel.add(comboBoxMultipleChoiceMenu);
+
+			// Adds the combo box to the internal listOfMultipleChoiceBoxes to access it later
+			listOfMultipleChoiceBoxes.add(comboBoxMultipleChoiceMenu);
 		}
 		
-		addOnOptions = mainCourse.getListOfAddOnOption();
 		
+		
+		////////////////////////////////
+		// - Add-On Option Specific - //
+		////////////////////////////////
+		
+		
+		// Gets all add-on options that are associated with the selected MainCourse object
+		listOfAddOnOptions = mainCourse.getListOfAddOnOption();
+
+		// Initializes an empty array list to store checkboxes for each add-on option
 		addOnCheckBoxes = new ArrayList<>();
-		for (AddOnOption option: addOnOptions)
+
+		// Uses a for-each loop to iterate through the listOflistOfAddOnOptions
+		for (AddOnOption addOnOption: listOfAddOnOptions)
 		{
-			String optionText = "(+" + option.getAdditionalPrice()+") "+option.getDescription();
-			ComponentGuestCheckBox addOnBox = new ComponentGuestCheckBox(optionText);
-			addOnBox.setVisible(true);
-			addOnCheckBoxes.add(addOnBox);
-			primaryContentPanel.add(addOnBox);
+			// Formats the checkbox's label text with the additionalPrice and description
+			String optionText = "(+" + addOnOption.getAdditionalPrice() + ") " + addOnOption.getDescription();
+
+			// Creates a new checkbox for the add-on option
+			ComponentGuestCheckBox addOnOptionCheckBox = new ComponentGuestCheckBox(optionText);
+
+			// Makes the addOnOptionCheckBox object visible
+			addOnOptionCheckBox.setVisible(true);
+
+			// Adds the comboBoxMultipleChoiceMenu object to the primary content panel
+			primaryContentPanel.add(addOnOptionCheckBox);
+			
+			// Adds the comboBoxMultipleChoiceMenu object to the internal list to access it later
+			addOnCheckBoxes.add(addOnOptionCheckBox);
 		}
-		
+
 		
 		
 		////////////////////////////////
@@ -187,6 +282,7 @@ public class ViewGuestUniversalMainMenu extends JFrame
 		}
 		
 
+		
 		//////////////////////////////
 		// - Bottom Panel Buttons - //
 		//////////////////////////////
@@ -201,6 +297,7 @@ public class ViewGuestUniversalMainMenu extends JFrame
 		// Adds an action listener for when the button is clicked
 		btnContinue.addActionListener(event ->
 		{
+			// Collects the user's selected options and stores them
 			enterBoxInfo();
 			
 			// Creates the new frame that should be opened when pressing the button
@@ -214,30 +311,58 @@ public class ViewGuestUniversalMainMenu extends JFrame
 		});
 	}
 	
+	
+	/**
+	 * Collects the user's selected options for the main course, including:
+	 * - A selected potato dish
+	 * - Any selected add-ons (check boxes)
+	 * - Any selected options from the multiple choice combo boxes
+	 * 
+	 * After collecting the selections, the method passes them to UtilityGuestInformation,
+	 * which then delegates the data to the relevant controllers.
+	 */
 	private void enterBoxInfo()
 	{
-		// The options for the comboboxes are added in ascending index order.
-		// Hence the index of a given option
+		// NOTE:
+		// The options for the comboboxes are added in an ascending index order.
+		// Hence the index of a given option is being used here.
+		
+		// Retrieves the potato dish selected in the combo box
 		PotatoDish potatoDish = potatoDishes.get(potatoCombo.getIndex());
 		
+		// Initializes a list to store the guest's selection option choices
 		List<SelectionOption> listOfSelectionOptionChoices = new ArrayList<>();
-		for (int i = 0; i < multipleChoiceMenus.size(); i++)
+		
+		// Uses a classic for loop to iterate through the multipleChoiceMenus objects
+		for (int index = 0; index < multipleChoiceMenus.size(); index++)
 		{
 			// DO NOT TRY TO LEARN FROM THIS. PLEASE LEAVE. DO NOT LOOK BACK.
-			List<SelectionOption> selectionOptions = multipleChoiceMenus.get(i).getListOfSelectionOptions();
-			ComponentGuestComboBox box = multipleChoiceBoxes.get(i);
-			listOfSelectionOptionChoices.add(selectionOptions.get(box.getIndex()));
+			
+			// Gets the selection options for the current menu
+			List<SelectionOption> selectionOptions = multipleChoiceMenus.get(index).getListOfSelectionOptions();
+
+			// Retrieves the combo box for the current index
+			ComponentGuestComboBox guestComboBox = listOfMultipleChoiceBoxes.get(index);
+			
+			// Adds the selected option, based on its index, to the list
+			listOfSelectionOptionChoices.add(selectionOptions.get(guestComboBox.getIndex()));
 		}
 		
+		// Initializes a list to store the selected add-on options
 		List<AddOnOption> listOfAddOnOptionChoices = new ArrayList<>();
-		for (int i = 0; i < addOnCheckBoxes.size(); i++)
+		
+		// Uses a classic for loop to iterate through the addOnCheckBoxes objects
+		for (int index = 0; index < addOnCheckBoxes.size(); index++)
 		{
-			if (addOnCheckBoxes.get(i).isSelected())
+			// If the particular addOn checkbox is marked then execute this section
+			if (addOnCheckBoxes.get(index).isSelected())
 			{
-				listOfAddOnOptionChoices.add(addOnOptions.get(i));
+				// Adds the selected AddOnOption, based on the current index, to the list of chosen add-ons
+				listOfAddOnOptionChoices.add(listOfAddOnOptions.get(index));
 			}
 		}
 		
+		// Sends the collected user choices to the UtilityGuestInformation class for further handling of them
 		UtilityGuestInformation.getInstance().enterMainCourseOptions(potatoDish, listOfAddOnOptionChoices, listOfSelectionOptionChoices);
 	}
 }
