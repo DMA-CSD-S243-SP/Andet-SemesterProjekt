@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 
 import model.MainCourse;
 import model.MenuCard;
+import model.MenuItem;
 
 
 /**
@@ -130,88 +131,152 @@ public class ViewGuestMenuAdult extends JFrame
 		MenuCard adultMenu = UtilityGuestInformation.getInstance().getAdultMenu();
 
 		
-		// Main Courses
+		//////////////////////////////
+		// - MainCourse MenuItems - //
+		//////////////////////////////
+		
+		// Creates a custom ComponentGuestLabelHeading to make a heading with the specified title
 		centeredWrapperPanel.add(new ComponentGuestLabelHeading("Hovedretter"));
+		
+		// Adds additional vertical space between the heading and the first menu item
 		centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 15)));
 		
+		// Creates a list that contains the retrieved MainCourse objects that are available from the adultMenu
 		List<MainCourse> listOfMainCourses = UtilityGuestInformation.getInstance().getMainCourses(adultMenu);
 
+		// Uses a for-each loop to iterate through all the MainCourse objects within the retrieved list
 		for (MainCourse mainCourse : listOfMainCourses)
 		{
+			// Creates a custom ComponentGuestMenuItem object that visually displays the specified type of menu item
 			ComponentGuestMenuItem menuItemBox = new ComponentGuestMenuItem(mainCourse);
-			centeredWrapperPanel.add(menuItemBox);
+
+		    // Add the created menu item component to the wrapper panel
+		    centeredWrapperPanel.add(menuItemBox);
+		    
+		    // Adds additional vertical space below the menu item to visually separate them from one another
 			centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 
-			menuItemBox.getAddButton().addActionListener(x ->
+			// Adds an action listener for when the "+" button is clicked
+			menuItemBox.getAddButton().addActionListener(event ->
 			{
-				UtilityGuestInformation.getInstance().enterMainCourse((model.MainCourse) menuItemBox.getMenuItem());
-				openUniversalMainMenu();
+				// When the + is clicked the selected menu item is associated with the customer's personal order
+				UtilityGuestInformation.getInstance().enterMainCourse((MainCourse) menuItemBox.getMenuItem());
+				
+		        // Launches the view / window where the user can choose how their main course should be
+		        openUniversalMainMenu();
 			});
 		}
 
 		
-		// SelfServiceBars
+		
+		//////////////////////////////////
+		// - SelfServiceBar MenuItems - //
+		//////////////////////////////////
+		
+		// Adds additional vertical space between the last menu item of the former category and the new heading
 		centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 25)));
+		
+		// Creates a custom ComponentGuestLabelHeading to make a heading with the specified title
 		centeredWrapperPanel.add(new ComponentGuestLabelHeading("Self-Service Bars"));
+		
+		// Adds additional vertical space between the heading and the first menu item
 		centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 15)));
 		
-		List<model.MenuItem> listOfSelfServiceBars = UtilityGuestInformation.getInstance()
-				.getSelfServiceBars(adultMenu);
+		// Creates a list that contains the retrieved SelfServiceBar objects that are available from the adultMenu
+		List<MenuItem> listOfSelfServiceBars = UtilityGuestInformation.getInstance().getSelfServiceBars(adultMenu);
 
-		for (model.MenuItem selfService : listOfSelfServiceBars)
+		// Uses a for-each loop to iterate through all the SelfServiceBar objects within the retrieved list
+		for (MenuItem selfService : listOfSelfServiceBars)
 		{
+			// Creates a custom ComponentGuestMenuItem object that visually displays the specified type of menu item
 			ComponentGuestMenuItem menuItemBox = new ComponentGuestMenuItem(selfService);
+			
+			// Add the created menu item component to the wrapper panel
 			centeredWrapperPanel.add(menuItemBox);
+			
+			// Adds additional vertical space below the menu item to visually separate them from one another
 			centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 
-			menuItemBox.getAddButton().addActionListener(x ->
+			// Adds an action listener for when the "+" button is clicked
+			menuItemBox.getAddButton().addActionListener(event ->
 			{
+				// When the + is clicked the selected menu item is associated with the customer's personal order in the form of a PersonalOrderLine
 				UtilityGuestInformation.getInstance().enterSideOrder(menuItemBox.getMenuItem());
 			});
 		}
 
 		
-		// SideDishes
+		
+		////////////////////////////
+		// - SideDish MenuItems - //
+		////////////////////////////
+		
+		// Adds additional vertical space between the last menu item of the former category and the new heading
 		centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 25)));
+		
+		// Creates a custom ComponentGuestLabelHeading to make a heading with the specified title
 		centeredWrapperPanel.add(new ComponentGuestLabelHeading("Side Retter"));
+		
+		// Adds additional vertical space between the heading and the first menu item
 		centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 15)));
 		
-		List<model.MenuItem> listOfSideDishes = UtilityGuestInformation.getInstance().getSideDishes(adultMenu);
+		// Creates a list that contains the retrieved SideDish objects that are available from the adultMenu
+		List<MenuItem> listOfSideDishes = UtilityGuestInformation.getInstance().getSideDishes(adultMenu);
 
-		for (model.MenuItem sideDish : listOfSideDishes)
+		// Uses a for-each loop to iterate through all the SideDish objects within the retrieved list
+		for (MenuItem sideDish : listOfSideDishes)
 		{
+			// Creates a custom ComponentGuestMenuItem object that visually displays the specified type of menu item
 			ComponentGuestMenuItem menuItemBox = new ComponentGuestMenuItem(sideDish);
+			
+			// Add the created menu item component to the wrapper panel
 			centeredWrapperPanel.add(menuItemBox);
+			
+			// Adds additional vertical space below the menu item to visually separate them from one another
 			centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 
-
-			menuItemBox.getAddButton().addActionListener(x ->
+			// Adds an action listener for when the "+" button is clicked
+			menuItemBox.getAddButton().addActionListener(event ->
 			{
+				// When the + is clicked the selected menu item is associated with the customer's personal order in the form of a PersonalOrderLine
 				UtilityGuestInformation.getInstance().enterSideOrder(menuItemBox.getMenuItem());
 			});
 		}
 
 		
 		
-		//////////////////////////
+		/////////////////////////
 		// - Drink MenuItems - //
 		/////////////////////////
 		
+		// Adds additional vertical space between the last menu item of the former category and the new heading
 		centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 25)));
+		
+		// Creates a custom ComponentGuestLabelHeading to make a heading with the specified title
 		centeredWrapperPanel.add(new ComponentGuestLabelHeading("Drikkevarer"));
+		
+		// Adds additional vertical space between the heading and the first menu item
 		centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 15)));
 		
-		List<model.MenuItem> listOfDrinks = UtilityGuestInformation.getInstance().getDrinks(adultMenu);
+		// Creates a list that contains the retrieved Drink objects that are available from the adultMenu
+		List<MenuItem> listOfDrinks = UtilityGuestInformation.getInstance().getDrinks(adultMenu);
 
-		for (model.MenuItem drink : listOfDrinks)
+		// Uses a for-each loop to iterate through all the Drink objects within the retrieved list
+		for (MenuItem drink : listOfDrinks)
 		{
+			// Creates a custom ComponentGuestMenuItem object that visually displays the specified type of menu item
 			ComponentGuestMenuItem menuItemBox = new ComponentGuestMenuItem(drink);
+
+			// Add the created menu item component to the wrapper panel
 			centeredWrapperPanel.add(menuItemBox);
+			
+			// Adds additional vertical space below the menu item to visually separate them from one another
 			centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 
-
-			menuItemBox.getAddButton().addActionListener(x ->
+			// Adds an action listener for when the "+" button is clicked
+			menuItemBox.getAddButton().addActionListener(event ->
 			{
+				// When the + is clicked the selected menu item is associated with the customer's personal order in the form of a PersonalOrderLine
 				UtilityGuestInformation.getInstance().enterSideOrder(menuItemBox.getMenuItem());
 			});
 		}
@@ -222,21 +287,34 @@ public class ViewGuestMenuAdult extends JFrame
 		// - DipsAndSauce MenuItems - //
 		////////////////////////////////
 		
+		// Adds additional vertical space between the last menu item of the former category and the new heading
 		centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 25)));
+		
+		// Creates a custom ComponentGuestLabelHeading to make a heading with the specified title
 		centeredWrapperPanel.add(new ComponentGuestLabelHeading("Dips og Sovse"));
+		
+		// Adds additional vertical space between the heading and the first menu item
 		centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 15)));
 		
-		List<model.MenuItem> listOfDipsAndSauces = UtilityGuestInformation.getInstance().getDipsAndSauces(adultMenu);
+		// Creates a list that contains the retrieved DipsAndSauces objects that are available from the adultMenu
+		List<MenuItem> listOfDipsAndSauces = UtilityGuestInformation.getInstance().getDipsAndSauces(adultMenu);
 
-		for (model.MenuItem dipsAndSauces :listOfDipsAndSauces)
+		// Uses a for-each loop to iterate through all the DipsAndSauces objects within the retrieved list
+		for (MenuItem dipsAndSauces :listOfDipsAndSauces)
 		{
+			// Creates a custom ComponentGuestMenuItem object that visually displays the specified type of menu item
 			ComponentGuestMenuItem menuItemBox = new ComponentGuestMenuItem(dipsAndSauces);
+			
+			// Add the created menu item component to the wrapper panel
 			centeredWrapperPanel.add(menuItemBox);
+			
+			// Adds additional vertical space below the menu item to visually separate them from one another
 			centeredWrapperPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 
-
-			menuItemBox.getAddButton().addActionListener(x ->
+			// Adds an action listener for when the "+" button is clicked
+			menuItemBox.getAddButton().addActionListener(event ->
 			{
+				// When the + is clicked the selected menu item is associated with the customer's personal order in the form of a PersonalOrderLine
 				UtilityGuestInformation.getInstance().enterSideOrder(menuItemBox.getMenuItem());
 			});
 		}
@@ -257,8 +335,7 @@ public class ViewGuestMenuAdult extends JFrame
 		// Creates a button with the specified text
 		ComponentGuestNavigationButton btnBack = new ComponentGuestNavigationButton("← Tilbage");
 
-		// If the isPreviousViewEnabled variable is set to true then execute this
-		// section
+		// If the isPreviousViewEnabled variable is set to true then execute this section
 		if (isPreviousViewEnabled == true)
 		{
 			// Moves the button to the west side of the panel it is attached to
@@ -334,7 +411,6 @@ public class ViewGuestMenuAdult extends JFrame
 		});
 		
 		
-
 		// TODO: This is a very dirty fix for displaying the graphical user interface
 		// contents without spending too much time on adjusting them, this
 		// would be added to the backlog and revisited in a later iteration.
