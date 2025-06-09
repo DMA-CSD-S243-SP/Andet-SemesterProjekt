@@ -70,8 +70,8 @@ public class TableOrderController
 	 * set to true and the isTableOrderClosed set to false
 	 * 
 	 * @return - a list of all tableOrders that are "sent to kitchen"
-	 * @throws SQLException
-	 * @throws DataAccessException 
+     * @throws DataAccessException if a database access issue occurs somewhere at the DAO level
+     * @throws SQLException if an SQL query execution fails
 	 */
 	public List<TableOrder> findAllVisibleToKitchenTableOrders() throws SQLException, DataAccessException
 	{
