@@ -1,11 +1,9 @@
 package gui;
 
+//Imports
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.lang.reflect.Field;
 import java.sql.SQLException;
 
-import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -45,18 +43,34 @@ public class ViewGuestTableOrderConfirmation extends JFrame
 	
 	private TableOrder currentTableOrder;
 	
+	
 	/**
-	 * Create the frame.
-	 * @param currentTableOrder 
+	 * Constructs the ViewGuestTableOrderConfirmation frame and initializes
+	 * its graphical components and layout.
+	 *
+	 * This constructor assigns the task of GUI setup to the initGUI() method.
 	 */
 	public ViewGuestTableOrderConfirmation()
 	{
+		// Instantiates a new controller for handling table order related tasks
 		tableOrderController = new TableOrderController();
+
+		// Retrieves the current table order from the UtilityGuestInformation singleton and stores it within the currentTableOrder instance variable
 		this.currentTableOrder = UtilityGuestInformation.getInstance().getTableOrder();
+
 		initGUI();
 	}
 	
 	
+	/**
+	 * Initializes the GUI components for this frame.
+	 *
+	 * This includes:
+	 * - Setting up the themed frame layout
+	 * - Displaying navigation buttons (back and request service)
+	 * - Creating a continue button that validates input and proceeds to the next view
+	 * - Finalizing and associating the PersonalOrder the table order
+	 */
 	private void initGUI()
 	{
 		// Creates a ComponentFrameThemeGuest component
@@ -88,22 +102,6 @@ public class ViewGuestTableOrderConfirmation extends JFrame
 		//   SHOULD BE INSERTED IN   //
 		///////////////////////////////
 		
-		/*
-		// Creates a customized input field object with a placeholder text accepting only numbers in it
-		ComponentGuestInputField inputFieldFirstName = new ComponentGuestInputField("Fornavn", "onlyNumbers");
-		
-		// Adds the first name input field to the primary content panel
-		frameTheme.getPrimaryContentPanel().add(inputFieldFirstName);
-		
-		// Adds some spacing between the component above and below
-		primaryContentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-
-		// Creates a customized input field object with a placeholder text accepting only letters in it
-		ComponentGuestInputField inputFieldAge = new ComponentGuestInputField("Alder i antal år", "onlyLetters");
-
-		// Adds the age input field to the primary content panel
-		frameTheme.getPrimaryContentPanel().add(inputFieldAge);
-		*/
 		
 		
 		////////////////////////////////
@@ -159,7 +157,7 @@ public class ViewGuestTableOrderConfirmation extends JFrame
 		// Adds an action listener for when the button is clicked
 		btnConfirm.addActionListener(event ->
 		{
-			//preps the tableOrder for being send to the kitchen 
+			// Prepares the tableOrder for being send to the kitchen 
 			tableOrderController.sendToKitchen(currentTableOrder);
 
 			try
@@ -169,48 +167,38 @@ public class ViewGuestTableOrderConfirmation extends JFrame
 			} 
 			
 			//DataAccessException is thrown in TableOrderController
-			catch (DataAccessException e) 
-			
+			catch (DataAccessException exception)
 			{
-				e.printStackTrace();
+				exception.printStackTrace();
 			} 
 			
 			//SQLException is thrown in TableOrderController
-			catch (SQLException e) 
+			catch (SQLException exception) 
 			{
-				e.printStackTrace();
+				exception.printStackTrace();
 			}
-				
-						
-			for (PersonalOrder personalOrder : currentTableOrder.getPersonalOrders()) 
 			
+			// Uses a for-each loop to iterate through every PersonalOrder object associated with the TableOrder object
+			for (PersonalOrder personalOrder : currentTableOrder.getPersonalOrders())
 			{
 			    try 
 			    {
-			        personalOrderController.setPersonalOrder(personalOrder);
-			        personalOrderController.setTableOrder(currentTableOrder);
-			        personalOrderController.finishPersonalOrder();
+					// Sets the current PersonalOrder object in the PersonalOrderController
+					personalOrderController.setPersonalOrder(personalOrder);
+
+					// Sets the associated TableOrder object in the personalOrderController
+					personalOrderController.setTableOrder(currentTableOrder);
+
+					// Finalizes the PersonalOrder order by inserting it into the database.
+					personalOrderController.finishPersonalOrder();
 			    }
 			    
-			    catch (DataAccessException e) 
+			    catch (DataAccessException exception) 
 			    {
-			        e.printStackTrace();
+			    	exception.printStackTrace();
 			    }
-			 }
+			}
 			
-			/**
-			 * 
-		       try
-		       	{
-		        	personalOrderController.finishPersonalOrder();
-			    }
-			   
-			    catch (DataAccessException e) 
-			    {
-			        e.printStackTrace();
-			    }
-			 }
-			*/
 			
 			// Creates the new frame that should be opened when pressing the button
 			ViewGuestOrderOverview nextView = new ViewGuestOrderOverview();
@@ -250,24 +238,4 @@ public class ViewGuestTableOrderConfirmation extends JFrame
 		// Find and closes the current view / window
 		this.dispose();
 	}
-	
-	private void injectIntoController(PersonalOrderController personalOrderController, PersonalOrder personalOrder, TableOrder tableOrder) 
-	{
-		try 
-		{
-			Field personalOrderField = PersonalOrderController.class.getDeclaredField("personalOrder");
-			personalOrderField.setAccessible(true);
-			personalOrderField.set(personalOrderController, personalOrder);
-
-			Field tableOrderField = PersonalOrderController.class.getDeclaredField("tableOrder");
-			tableOrderField.setAccessible(true);
-			tableOrderField.set(personalOrderController, tableOrder);
-		} 
-		
-		catch (Exception e) 
-		{
-			e.printStackTrace();
-		}
-	}
-
 }
