@@ -37,7 +37,7 @@ public class TestMenuItemSubclasses
 		SelfServiceBar salad = new SelfServiceBar(EnumBarType.SALADBAR, 15, 30, 4, 0, "tag-Selv saladbar", null, false);
 		SelfServiceBar softice = new SelfServiceBar(EnumBarType.SOFTICEBAR, 30, 60, 3, 0, "tag-Selv softice", null, false);
 		
-        // Act
+        // ACT
         EnumBarType saladType = salad.getBarType();
         EnumBarType softiceType = softice.getBarType();
         double saladLunchPrice = salad.getLunchPrice();
@@ -57,7 +57,7 @@ public class TestMenuItemSubclasses
 	{
 		//ARRANGE
 		DipsAndSauces garlicDip = new DipsAndSauces(false, 20, 10, 0, "hvidløgs aioli", null, false);
-		DipsAndSauces whiskeySauce = new DipsAndSauces(true, 30, 9, 0, "bone's hjemmelavet whiskey Sauce", null, true);
+		DipsAndSauces whiskeySauce = new DipsAndSauces(true, 30, 9, 0, "Bone's hjemmelavet whiskey Sauce", null, true);
 		
 		
 		//ACT & ASSERT
@@ -90,7 +90,7 @@ public class TestMenuItemSubclasses
 	public void testOfSideDish()
 	{
 		//ARRANGE
-		SideDish chickenTender = new SideDish(3, 20, 8, 2, "Chicken Tender", "bone's hjemmelavet crispy kylling", true);
+		SideDish chickenTender = new SideDish(3, 20, 8, 2, "Chicken Tender", "Bone's hjemmelavet crispy kylling", true);
 		SideDish cheeseBall = new SideDish(1, 20, 7, 2, "Chill Cheese Tops", null, true);
 		
 		//ACT
@@ -128,7 +128,7 @@ public class TestMenuItemSubclasses
 	{
 		//ARRANGE
 		MainCourse ribeye = new MainCourse("a delicious martian ribeye", 50, 75, 20, 750, "ribeye fra Mars", "Lækker ribeye lavet på kødkvæg fra Mars", true);
-		MainCourse pasta = new MainCourse("charcoal pasta", 30, 45, 21, 500, "hjemmelavet pasta lavet på kul", "bone's hemmelige kul pasta opskrift", true);
+		MainCourse pasta = new MainCourse("charcoal pasta", 30, 45, 21, 500, "hjemmelavet pasta lavet på kul", "Bone's hemmelige kul pasta opskrift", true);
 		
 		//ACT & ASSERT
 		//test of the introductiondescription
@@ -169,7 +169,7 @@ public class TestMenuItemSubclasses
 	public void testMultipleChoiceMenuForMainCourse()
 	{
 		//ARRANGE
-		MainCourse pastaDish = new MainCourse("charcoal pasta", 30, 45, 21, 500, "hjemmelavet pasta lavet på kul", "bone's hemmelige kul pasta opskrift", true);
+		MainCourse pastaDish = new MainCourse("charcoal pasta", 30, 45, 21, 500, "hjemmelavet pasta lavet på kul", "Bone's hemmelige kul pasta opskrift", true);
 		MultipleChoiceMenu cheeseTopping = new MultipleChoiceMenu("which cheese goes on your pasta?");
 		
 		SelectionOption parmasanCheese = new SelectionOption("parmasan Cheese", "add paramasan", 10);

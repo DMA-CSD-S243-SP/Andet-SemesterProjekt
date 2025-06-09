@@ -49,7 +49,7 @@ public class TableOrderDB implements TableOrderImpl
 	// Selects every row from the TableOrder where isSentToKitchen = true and isTableOrderClsoed = false, in the database
 	private static final String FIND_VISIBLE_TO_KITCHEN_TABLE_ORDERS_QUERY =  "SELECT * FROM TableOrder WHERE isSentToKitchen = 1 AND isTableOrderClosed = 0";
 			
-	// PreparedStatement for retrieving a TableOrder based on the tableOrderId
+	// PreparedStatement for retrieving a TableOrder
 	private PreparedStatement statementFindVisibleToKitchenTableOrders;
 	
 	
@@ -336,7 +336,7 @@ public class TableOrderDB implements TableOrderImpl
 	    {
 	    	// Turns off the auto-commit in the database, so it doesn't automatically save changes after each SQL statement.
 	    	// When turned off multiple SQL statements is grouped into one transaction.
-	    	databaseConnection.setAutoCommit(false);;
+	    	databaseConnection.setAutoCommit(false);
 	        
 	    	// Prevent data from changing between reads, to ensure stable views of the data in multi-user environments
 	    	// Once a row had been read, it can be changed during the transaction		
@@ -419,9 +419,9 @@ public class TableOrderDB implements TableOrderImpl
 			{
 				tableOrder.addPersonalOrder(order);
 			}
-		} catch (DataAccessException e)
+		} catch (DataAccessException exception)
 		{
-			throw new SQLException("Failed to retrieve Personal Orders.");
+			throw new SQLException("Failed to retrieve Personal Orders.", exception);
 		}
 		
 		return tableOrder;
