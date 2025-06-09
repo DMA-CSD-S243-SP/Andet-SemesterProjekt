@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,31 +63,34 @@ public class TestTableOrderDB
     {
     	//ARRANGE
     	TableOrder tableOrder2 = new TableOrder(100000, LocalDateTime.now(), 
-    			false, "CARD", 200, 0, true, false, 15); 
+    			false, "CARD", 200, 0, true, false, 15);
+    	
     	tableOrderDB.updateTableOrder(tableOrder2);
     	
     	//ACT
-    	var visbleIsSentToKitchen = tableOrderDB.findAllVisibleToKitchenTableOrders();
+    	List<TableOrder> listOfVisibleTableOrdersSentToKitchen = 
+    			tableOrderDB.findAllVisibleToKitchenTableOrders();
     	
-    	//ASSERT 	
+    	//ASSERT
     	// Looks for the specific tableOrderId 10000
-    	boolean found = false;
-        for (TableOrder tableOrder : visbleIsSentToKitchen) 
+    	boolean isFound = false;
+        for (TableOrder tableOrder : listOfVisibleTableOrdersSentToKitchen) 
         {
-            // Make sure every order meets the criteria
+            // Makes sure that every order meets the criteria
             assertTrue(tableOrder.isSentToKitchen());
             assertFalse(tableOrder.isTableOrderClosed());
 
             // Look for our specific test object
             if (tableOrder.getTableOrderId() == 100000) 
             {
-                found = true;
+            	isFound = true;
             }
         }
 
         // Ensure our test object is included in the result
-        assertTrue(found);
+        assertTrue(isFound);
     }
+    
     
     @Test
     public void testFindAllVisibleToKitchenTableOrdersNotFound() throws Exception
@@ -96,12 +100,14 @@ public class TestTableOrderDB
     	tableOrderDB.updateTableOrder(tableOrder3);
     	
     	//ACT
-    	var visbleIsSentToKitchen = tableOrderDB.findAllVisibleToKitchenTableOrders();
+    	List<TableOrder> listOfVisibleTableOrdersSentToKitchen = tableOrderDB.findAllVisibleToKitchenTableOrders();
     	
     	//ASSERT    	
     	// Looks for the specific tableOrderId 10009
-    	boolean found = false;
-        for (TableOrder tableOrder : visbleIsSentToKitchen) 
+    	boolean isFound = false;
+    	
+    	
+        for (TableOrder tableOrder : listOfVisibleTableOrdersSentToKitchen) 
         {
             // Make sure every order meets the criteria
             assertTrue(tableOrder.isSentToKitchen());
@@ -110,13 +116,11 @@ public class TestTableOrderDB
             // Look for our specific test object
             if (tableOrder.getTableOrderId() == 100009) 
             {
-                found = true;
+            	isFound = true;
             }
         }
 
         // Ensure our test object is included in the result
-        assertFalse(found);
+        assertFalse(isFound);
     }
 }
-
-
