@@ -3,28 +3,36 @@ package gui;
 
 //Imports
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import javax.swing.table.AbstractTableModel;
 
-import model.EnumStatusType;
 import model.PersonalOrder;
 import model.PersonalOrderLine;
 import model.TableOrder;
 
-//import model.SimpleProduct;
 
 /**
- * TODO: Write a relatively detailed description of what this class represents,
- * and add a version number containing both date and time, matching the other
- * classes' java documentation.
- *
- * @author Line Bertelsen & Christoffer Søndergaard & Lumière Schack
- * @version 02/06/2025 - 15:30
+ * The ViewStaffTableOrderOverviewTableModel class serves as a custom table model 
+ * in order to render the staff-facing overviews of all active table orders in the restaurant.
+ * 
+ * Each row in the table represents either a table order, a personal order within that table,
+ * or an individual dish that needs preparation by kitchen staff. 
+ * 
+ * To give the kitchen staff a better overview the table model 
+ * is structured in the following order:
+ * - Order Number
+ * - - Customer's Name
+ * - - - Quantity
+ * - - - Name of Dish
+ * - - - Notes to the dish
+ * 
+ * The class extends AbstractTableModel and overrides the standard table model methods 
+ * for dynamic rendering of data.
+ * 
+ * 
+ * @author: Line Bertelsen & Christoffer Søndergaard & Lumière Schack
+ * @version: 08/06/2025 - 14:03
  */
 public class ViewStaffTableOrderOverviewTableModel extends AbstractTableModel
 {
@@ -33,24 +41,28 @@ public class ViewStaffTableOrderOverviewTableModel extends AbstractTableModel
 	private static final long serialVersionUID = 1L;
 
 	// Array of column names for the table.
-	private static final String[] COLUMN_NAMES =
-	{ "Bestillingsnummer", "Oprettelsestidspunkt", "Personens Navn", "Antal", "Rettens Navn", "Noter" };
+	private static final String[] COLUMN_NAMES = { "Bestillingsnummer", "Oprettelsestidspunkt", "Personens Navn", "Antal", "Rettens Navn", "Noter" };
 
-	private List<String[]> tableContent;
+	private List<String[]> tableModelContent;
 
+	
 	/**
-	 * Initializes the table model with empty lists
+	 * Constructs a new ViewStaffTableOrderOverviewTableModel
+	 * and initializes its internal table data structure to an empty list.
 	 */
 	public ViewStaffTableOrderOverviewTableModel()
 	{
-		tableContent = new ArrayList<>();
+		tableModelContent = new ArrayList<>();
 	}
 
+	
 	/**
-	 * Returns the name of a given column, based on its index.
-	 * 
-	 * @param columnIndex - The column index (starting at 0).
-	 * @return The name of the column as a String.
+	 * Returns the name of a given column at the specified index.
+	 *
+	 * This is used by JTable to label each column header.
+	 *
+	 * @param columnIndex the zero-based index of the column
+	 * @return the column name as a string
 	 */
 	@Override
 	public String getColumnName(int columnIndex)
@@ -59,10 +71,11 @@ public class ViewStaffTableOrderOverviewTableModel extends AbstractTableModel
 		return COLUMN_NAMES[columnIndex];
 	}
 
+	
 	/**
-	 * Returns the number of columns in the table.
+	 * Returns the total number of columns in the table model.
 	 *
-	 * @return the column count
+	 * @return the number of defined column headers
 	 */
 	@Override
 	public int getColumnCount()
@@ -71,79 +84,130 @@ public class ViewStaffTableOrderOverviewTableModel extends AbstractTableModel
 		return COLUMN_NAMES.length;
 	}
 
+	
 	/**
-	 * Returns the number of rows currently displayed in the table.
+	 * Returns the number of rows currently in the table model.
 	 *
-	 * @return the row count
+	 * This depends on how many TableOrders, PersonalOrders, and 
+	 * kitchen-relevant PersonalOrderLines are currently stored.
+	 *
+	 * @return the number of visible rows in the table
 	 */
 	@Override
 	public int getRowCount()
 	{
-		return tableContent.size();
+		return tableModelContent.size();
 	}
 
+	
 	/**
-	 * Gets the value in any given column, at any given row. Each row corresponds to
-	 * one Product. rowIndex matches the list index at which the corresponding
-	 * Product is stored. Each column contains a different type of data, thus each
-	 * column has a unique implementation.
-	 * 
-	 * @param rowIndex    - The index of the row.
-	 * @param columnIndex - The index of the column.
-	 * @return Product - An object that corresponds to the property indicated by the
-	 *         row, of the Order that corresponds to the row.
+	 * Retrieves the value that is stored within the specific cell in the table
+	 * which is identified by the row and column index.
+	 *
+	 * This method provides the visual content for the table display.
+	 *
+	 * @param rowIndex    the zero-based index of the row
+	 * @param columnIndex the zero-based index of the column
+	 * @return the value stored at the specified cell, or an empty string if the value is out of bounds
 	 */
-//TODO	@Override
+	@Override
 	public Object getValueAt(int rowIndex, int columnIndex)
 	{
-		Object value = "";
+		// Initialize a default value as an empty string
+		Object cellValue = "";
+		
 		// Checks if given value is within bounds
-		if (0 <= rowIndex && rowIndex < tableContent.size() && columnIndex < COLUMN_NAMES.length && 0 <= columnIndex)
+		
+		// If both the rowIndex and columnIndex are within valid bounds then execute this section
+		if (0 <= rowIndex && rowIndex < tableModelContent.size() && columnIndex < COLUMN_NAMES.length && 0 <= columnIndex)
 		{
-			String[] row = tableContent.get(rowIndex);
-			value = row[columnIndex];
+			// Retrieves the array of data at the specified row
+			String[] row = tableModelContent.get(rowIndex);
+			
+			// Extracts the value of the cell from the specified column in that row
+			cellValue = row[columnIndex];
 		}
-		return value;
+		
+		// Returns the found cell's value or an empty string if it is out of bounds
+		return cellValue;
 	}
 
-	public void setData(List<TableOrder> data)
+	
+	/**
+	 * Populates the table model with data in the form of a list of TableOrders.
+	 *
+	 * Each TableOrder is divided in to multiple rows:
+	 * - One header row for the TableOrder ID and timestamp
+	 * - One row per PersonalOrder showing the customer's name
+	 * - One row per PersonalOrderLine that needs kitchen preparation
+	 * - Two empty rows used for visual spacing
+	 *
+	 * This method also clears any previously added data to the table model.
+	 *
+	 * @param data a list of TableOrder objects to be displayed within the table
+	 */
+	public void setData(List<TableOrder> listOfData)
 	{
-		tableContent = new ArrayList<>();
-		for (TableOrder order : data)
+		// Reset the internal list that stores the table's row data
+		tableModelContent = new ArrayList<>();
+		
+		// Uses a for-each loop to iterate through each TableOrder provided in the supplied listOfData variable
+		for (TableOrder tableOrder : listOfData)
 		{
-			// Adds header for the TableOrder
-			tableContent.add(new String[]
-			{ "" + order.getTableOrderId(), "" + order.getTimeOfArrival(), "", "", "", "", });
-
-			List<PersonalOrder> listPersonOrders = order.getPersonalOrders();
-			for (PersonalOrder personOrder : listPersonOrders)
+			// Adds a heading row representing the table order's ID and the first guest's time of arrival
+			tableModelContent.add(new String[] 
 			{
-				tableContent.add(new String[]
-				{ "", "", "" + personOrder.getCustomerName(), "", "", "", });
-
-				List<PersonalOrderLine> plines = personOrder.getPersonalOrderLines();
-				for (PersonalOrderLine personLine : plines)
+					"" + tableOrder.getTableOrderId(), "" + tableOrder.getTimeOfArrival(), "", "", "", "", 
+			});
+			
+			// Retrieves the list of PersonalOrders objects associated with this table order and stores it within the listOfPersonalOrders variable
+			List<PersonalOrder> listOfPersonalOrders = tableOrder.getPersonalOrders();
+			
+			// Uses a for-each loop to iterate through each PersonalOrder object within the listOfPersonalOrders
+			for (PersonalOrder personalOrder : listOfPersonalOrders)
+			{
+				// Adds a row with the customer's name within the table order to distinguish the buyer
+				tableModelContent.add(new String[]
 				{
-					if (personLine.getMenuItem().isMadeByKitchenStaff())
+						"", "", "" + personalOrder.getCustomerName(), "", "", "",
+				});
+
+				// Retrieves all individual PersonalOrderLine objects associated with this PersonalOrder
+				List<PersonalOrderLine> listOfPersonalOrderLines = personalOrder.getPersonalOrderLines();
+				
+				// Uses a for-each loop to iterate through each PersonalOrderLine object within the listOfPersonalOrderLines
+				for (PersonalOrderLine personalOrderLine : listOfPersonalOrderLines)
+				{
+					// If the PersonalOrderLine item is required to be made by kitchen staff then execute this section
+					if (personalOrderLine.getMenuItem().isMadeByKitchenStaff())
 					{
-						tableContent.add(new String[]
-						{ "", "", "", "" + 1, "" + personLine.getMenuItem().getName(), "" + personLine.getNotes(), });
+						// Adds a row with the quantity, the menu item's name and any possible additional notes
+						tableModelContent.add(new String[]
+						{
+								"", "", "", "" + 1, "" + personalOrderLine.getMenuItem().getName(), "" + personalOrderLine.getNotes(),
+						});
 
 					}
 				}
 			}
-			tableContent.add(new String[]
-			{ "", "", "", "", "", "" });
-			tableContent.add(new String[]
-			{ "", "", "", "", "", "" });
+			
+			// Adds two rows that are empty to create visual space in the table to make it 
+			// easier for the kitchen personel to distinguish the table orders from each other
+			tableModelContent.add(new String[] { "", "", "", "", "", "" });
+			tableModelContent.add(new String[] { "", "", "", "", "", "" });
 		}
 
+		// Notify all listeners that the table data has changed so the UI can refresh
 		updateTableModel();
 	}
 
+	
 	/**
-	 * Updates the table by notifying all listener that the content in a cell might
-	 * have changed
+	 * Triggers a refresh of the table data.
+	 *
+	 * This actually uses an observer pattern, and therefore triggers all observers like
+	 * the JTable component, informing it that the table model's data has changed and makes it
+	 * request the GUi to re-render the table model.
 	 */
 	private void updateTableModel()
 	{
