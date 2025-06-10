@@ -83,7 +83,7 @@ public class PersonalOrderDB implements PersonalOrderImpl
 			
 			// Prevent data from changing between reads, to ensure stable views of the data in multi-user environments
 			// Once a row had been read, it can be changed during the transaction
-			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			
 			// Prepares a SQL statement to find and retrieve an PersonalOrder with a matching personalOrderId
 			statementFindByPersonalOrderId = databaseConnection.prepareStatement(FIND_PERSONALORDER_BY_PERSONALORDERID_QUERY);
@@ -412,6 +412,7 @@ public class PersonalOrderDB implements PersonalOrderImpl
 		}
 	}
 
+	
 	/**
 	 * Builds a specific PersonalOrder object from a database resultSetPersonalOrder.
 	 * 
@@ -434,6 +435,5 @@ public class PersonalOrderDB implements PersonalOrderImpl
 
 			// Returns the populated list of Employee objects
 			return personalOrders;
-			
 		}
 }
