@@ -156,14 +156,12 @@ public class ViewGuestOrderOverview extends JFrame
 		// Adds an action listener for when the button is clicked
 		btnCreateNewOrder.addActionListener(event ->
 		{
-			// Creates the new frame that should be opened when pressing the button
-			ViewGuestOrderMore nextView = new ViewGuestOrderMore();
-
-			// Sets the visibility to true turning the previous view / window visible
-			nextView.setVisible(true);
-			
-			// Closes the current frame/window
-			this.dispose();
+			// Creates a dialog box informing about the action that went wrong
+			new ComponentGuestErrorDialog(this, 
+					"Følgende feature",
+					"Opret Ny Bestilling",
+					"Er endnu ikke integreret i systemet"
+			);
 		});
 		
 		
