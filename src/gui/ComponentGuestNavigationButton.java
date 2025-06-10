@@ -3,8 +3,11 @@ package gui;
 // Imports
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Frame;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 
 /**
@@ -63,6 +66,25 @@ public class ComponentGuestNavigationButton extends JButton
 			{
 				// Changes the button's text color to the light red bone's color
 				this.setForeground(normalColor);
+			}
+		});
+		
+		
+		// Adds an action listener for when the button is clicked
+		this.getModel().addActionListener(event ->
+		{
+			// If the button that was pressed contains the text "Anmod Om Service" button then execute this section
+			if(this.getText().equals("Anmod Om Service 🔔"))
+			{
+				// Returns the parent window / jframe as a JFrame and stores it within the parentFrame variable
+				JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+				
+				// Creates a dialog box informing about the action that went wrong
+				new ComponentGuestErrorDialog(parentFrame, 
+						"Følgende feature",
+						"Anmod Om Service",
+						"Er endnu ikke integreret i systemet"
+				);
 			}
 		});
 	}
