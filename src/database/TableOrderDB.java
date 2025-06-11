@@ -21,10 +21,8 @@ import model.TableOrder;
  * @author Line Bertelsen
  * @version 02/06/2025 - 13:54
  */
-
 public class TableOrderDB implements TableOrderImpl
 {
-
 	// Selects all the data within tableOrder table in the database
 	private static final String FIND_AllTABLEORDERS_QUERY = "SELECT tableOrderId FROM TableOrder";
 	
@@ -49,23 +47,13 @@ public class TableOrderDB implements TableOrderImpl
 	// Selects every row from the TableOrder where isSentToKitchen = true and isTableOrderClsoed = false, in the database
 	private static final String FIND_VISIBLE_TO_KITCHEN_TABLE_ORDERS_QUERY =  "SELECT * FROM TableOrder WHERE isSentToKitchen = 1 AND isTableOrderClosed = 0";
 			
-	// PreparedStatement for retrieving a TableOrder
+	// PreparedStatement for retrieving a TableOrder based on the tableOrderId
 	private PreparedStatement statementFindVisibleToKitchenTableOrders;
 	
 	
 	public TableOrderDB() throws SQLException
 	{
-		//Prepares the SQL statement for retrieving all TableOrder
-		//statementFindAllTableOrders = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_AllTABLEORDERS_QUERY);
-
-		//Prepares the SQL statement for retrieving a TableOrder by a matching TableOrderId
-		//statementFindTableOrderByTableOrderId = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_TABLEORDER_BY_TABLEORDERID_QUERY);
 		
-		//Prepares the SQL statement for updating TableOrder for the matching tableOrderId
-		//statementUpdateTableOrder = DataBaseConnection.getInstance().getConnection().prepareStatement(UPDATE_TABLEORDER_QUERY);
-		
-		//Prepares the SQL statement for retrieving all TableOrder where isSentToKitchen is true and isTableClosed is false
-		//statementFindVisibleToKitchenTableOrders = DataBaseConnection.getInstance().getConnection().prepareStatement(FIND_VISIBLE_TO_KITCHEN_TABLE_ORDERS_QUERY);
 	}
 	
 	
@@ -135,17 +123,17 @@ public class TableOrderDB implements TableOrderImpl
      */
 	private List<TableOrder> buildTableOrderObjects(ResultSet resultSet) throws SQLException
 	{
-		// Creates an empty list to store Employee objects within
+		// Creates an empty list to store TableOrder objects within
 		List<TableOrder> tableOrder = new ArrayList<>();
 
 		// Iterates through the result set while there are still more rows in the database's table
 		while (resultSet.next())
 		{
-			// Converts each row into a Employee object and add it to the list
+			// Converts each row into a TableOrder object and add it to the list
 			tableOrder.add(buildTableOrderObject(resultSet));
 		}
 
-		// Returns the populated list of Employee objects
+		// Returns the populated list of TableOrder objects
 		return tableOrder;
 		
 	}
@@ -173,7 +161,7 @@ public class TableOrderDB implements TableOrderImpl
 			// hours, and updating happens rarely, and can usually be scheduled.
 			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
 						
-			// Prepares a SQL statement to find and retrieve an MultipleChoiceMenu with a matching employee id
+			// Prepares a SQL statement to find and retrieve an MultipleChoiceMenu with a matching TableOrder id
 			statementFindTableOrderByTableOrderId = databaseConnection.prepareStatement(FIND_TABLEORDER_BY_TABLEORDERID_QUERY);
 
 			// Adds the choiceMenuId provided in the method's parameter to the String instead of the placeholder
@@ -182,7 +170,7 @@ public class TableOrderDB implements TableOrderImpl
 			// Executes the query, and stores the retrieved data in the variable named resultSet, which is a ResultSet object
 			ResultSet resultSet = statementFindTableOrderByTableOrderId.executeQuery();
 
-			// Creates and initializes an MultipleChoiceMenu object as null, which will later be populated with Employee specific data
+			// Creates and initializes a MultipleChoiceMenu object as null, which will later be populated with TableOrderspecific data
 			TableOrder tableOrder = null;
 
 			// Iterates through the resultSet while there are still more rows in the database's table
@@ -328,8 +316,8 @@ public class TableOrderDB implements TableOrderImpl
 	 * @throws SQLException			- if a SQL operation fails
 	 */
 	@Override
-	public List<TableOrder> findAllVisibleToKitchenTableOrders() throws DataAccessException, SQLException {
-	   
+	public List<TableOrder> findAllVisibleToKitchenTableOrders() throws DataAccessException, SQLException
+	{   
 		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
 
 	    try 
@@ -339,10 +327,10 @@ public class TableOrderDB implements TableOrderImpl
 	    	databaseConnection.setAutoCommit(false);
 	        
 	    	// Prevent data from changing between reads, to ensure stable views of the data in multi-user environments
-	    	// Once a row had been read, it can be changed during the transaction		
+	    	// Once a row has been read, it can be changed during the transaction
 	        databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 
-			// Prepares a SQL statement to find all tableOrder visible to kitchen
+			// Prepares a SQL statement to find all tableOrder instances that are visible to the kitchen staff
 	        statementFindVisibleToKitchenTableOrders = databaseConnection.prepareStatement(FIND_VISIBLE_TO_KITCHEN_TABLE_ORDERS_QUERY);
 
 	        // Run query
@@ -374,22 +362,24 @@ public class TableOrderDB implements TableOrderImpl
 		}
 	}
 	
+	
 	private List<TableOrder> buildTableOrderObjectsAssociated(ResultSet resultSet) throws SQLException
 	{
-		// Creates an empty list to store Employee objects within
+		// Creates an empty list to store TableOrder objects within
 		List<TableOrder> tableOrder = new ArrayList<>();
 
 		// Iterates through the result set while there are still more rows in the database's table
 		while (resultSet.next())
 		{
-			// Converts each row into a Employee object and add it to the list
+			// Converts each row into a TableOrder object and add it to the list
 			tableOrder.add(buildTableOrderObjectAssociated(resultSet));
 		}
 
-		// Returns the populated list of Employee objects
+		// Returns the populated list of TableOrder objects
 		return tableOrder;
 		
 	}
+	
 	
 	private TableOrder buildTableOrderObjectAssociated(ResultSet resultSet) throws SQLException
 	{
@@ -419,12 +409,13 @@ public class TableOrderDB implements TableOrderImpl
 			{
 				tableOrder.addPersonalOrder(order);
 			}
-		} catch (DataAccessException exception)
+		}
+		
+		catch (DataAccessException exception)
 		{
 			throw new SQLException("Failed to retrieve Personal Orders.", exception);
 		}
 		
 		return tableOrder;
 	}
-
 }

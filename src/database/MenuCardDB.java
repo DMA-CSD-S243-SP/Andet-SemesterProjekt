@@ -72,14 +72,14 @@ public class MenuCardDB implements MenuCardImpl
 			// business hours, and updating happens rarely, and can usually be scheduled, which is why we use read uncommitted.
 			databaseConnection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			
-			// Prepare a SQL statement to retrieve all employees
+			// Prepare a SQL statement to retrieve all menucards
 			statementFindByRestaurantCode = databaseConnection.prepareStatement(FIND_MENUCARDS_BY_RESTAURANTCODE_QUERY);
 			statementFindByRestaurantCode.setString(1, restaurantCode);
 
 			// Executes the prepared statement and stores the result set
 			ResultSet resultSet = statementFindByRestaurantCode.executeQuery();
 
-			// Converts the result set into a list of Employee objects
+			// Converts the result set into a list of MenuCard objects
 			List<MenuCard> availableMenuCards = buildMenuCardObjects(resultSet);
 
 			//All the changes you've made since setAutoCommit(false), is manually saved into the database
@@ -88,7 +88,7 @@ public class MenuCardDB implements MenuCardImpl
 			//Restores the default behavior and turns on auto-commit
 			databaseConnection.setAutoCommit(true);
 			
-			// Returns the list of Employee objects
+			// Returns the list of MenuCard objects
 			return availableMenuCards;
 		}
 		
