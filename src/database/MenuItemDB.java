@@ -19,16 +19,16 @@ import model.SelectionOption;
 import model.SelfServiceBar;
 import model.SideDish;
 
-/**
- * This class is responsible for accessing and managing employee objects stored
- * in a database.
- * 
- * It implements the employeeDaoImpl, meaning it implements its methods
- * 
- * @author Line Bertelsen
- * @version 02/06/2025 - 16.00
- */
 
+/**
+ * This class is responsible for accessing and managing MenuItem objects and 
+ * it's subclass objects stored in a database.
+ * 
+ * It implements the MenuItemImpl, meaning it implements its methods
+ * 
+ * @author Line Bertelsen & Christoffer Søndergaard
+ * @version 11/06/2025 - 17:13
+ */
 public class MenuItemDB implements MenuItemImpl
 {
 	//MENU ITEM
@@ -162,6 +162,7 @@ public class MenuItemDB implements MenuItemImpl
 	@Override
 	public MenuItem findMenuItemByMenuItemId(int menuItemId) throws DataAccessException, SQLException
 	{
+		// Gets a connection to the database
 		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
 		
 		try
@@ -200,12 +201,14 @@ public class MenuItemDB implements MenuItemImpl
 			// If an SQL error occurs a custom exception is thrown with the specified details
 			throw new DataAccessException("Unable to find an MenuItem object with an menuItem id matching: " + menuItemId, exception);
 		}
+		
 		finally
 		{
 			databaseConnection.setAutoCommit(true);
 		}
 	}	
 
+	
 	/**
      * Builds a specific MenuItem object from a database resultSet.
      * 
@@ -373,25 +376,35 @@ public class MenuItemDB implements MenuItemImpl
 				double lunchPrice = resultSetMainCourse.getDouble("lunchPrice");
 				double eveningPrice = resultSetMainCourse.getDouble("eveningPrice");
 				
-
 				// Constructs a new Drink object with both shared and specific attributes
 				MainCourse mainCourse = new MainCourse(introductionDescription, lunchPrice, eveningPrice, menuItemId, preparationTime, name, description, isMadeByKitchenStaff);
 				try
 				{
-					List<AddOnOption> addOnOptions = findAddOnOptionsByMainCourseId(menuItemId);
-					for (AddOnOption option: addOnOptions)
+					// Finds the AddOnOption objects associated with the specified menuItemId and stores them within the listOfAddOnOptions
+					List<AddOnOption> listOfAddOnOptions = findAddOnOptionsByMainCourseId(menuItemId);
+					
+					// Iterates through all of the AddOnOption objects within the listOfAddOnOptions
+					for (AddOnOption addOnOption: listOfAddOnOptions)
 					{
-						mainCourse.addAddOnOption(option);
+						// Adds the AddOnOption object to the listOfAddOnOptions
+						mainCourse.addAddOnOption(addOnOption);
 					}
-					List<MultipleChoiceMenu> multipleChoiceMenus = findMultipleChoiceMenusByMainCourseId(menuItemId);
-					for (MultipleChoiceMenu menu: multipleChoiceMenus)
+					
+					// Finds the MultipleChoiceMenu objects associated with the specified menuItemId and stores them within the listOfMultipleChoiceMenus
+					List<MultipleChoiceMenu> listOfMultipleChoiceMenus = findMultipleChoiceMenusByMainCourseId(menuItemId);
+					
+					// Iterates through all of the multipleChoiceMenu objects within the listOfMultipleChoiceMenus
+					for (MultipleChoiceMenu multipleChoiceMenu: listOfMultipleChoiceMenus)
 					{
-						mainCourse.addMultipleChoiceMenu(menu);
+						// Adds the MultipleChoiceMenu object to the listOfMultipleChoiceMenus
+						mainCourse.addMultipleChoiceMenu(multipleChoiceMenu);
 					}
-				} catch (Exception e)
+				}
+				
+				catch (Exception exception)
 				{
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					exception.printStackTrace();
 				}
 				
 				menuItem = mainCourse;
@@ -400,8 +413,7 @@ public class MenuItemDB implements MenuItemImpl
 		
 		// Returns the fully build MenuItem (or subclass) object
 		return menuItem; 
-		}
-	
+	}
 	
 
 	/**
@@ -417,11 +429,13 @@ public class MenuItemDB implements MenuItemImpl
 	{
 		// Gets a connection to the database
 		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
-		List<MultipleChoiceMenu> multipleChoiceMenus = new ArrayList<MultipleChoiceMenu>();
+		
+		// Creates an empty list to store MultipleChoiceMenu objects within
+		List<MultipleChoiceMenu> listOfMultipleChoiceMenus = new ArrayList<MultipleChoiceMenu>();
 		
 		try
 		{	
-			// Prepares a SQL statement to find and retrieve an MultipleChoiceMenu with a matching employee id
+			// Prepares a SQL statement to find and retrieve an MultipleChoiceMenu with a matching mainCourseId
 			statementMultipleChoiceMenuByMainCourseId = databaseConnection.prepareStatement(FIND_MULTIPLECHOICEMENUS_BY_MAINCOURSEID_QUERY);
 
 			// Adds the choiceMenuId provided in the method's parameter to the String instead of the placeholder
@@ -434,10 +448,11 @@ public class MenuItemDB implements MenuItemImpl
 			while (resultSet.next())
 			{
 				// Converts the retrieved database row into an MultipleChoiceMenu object using the buildMultipleChoiceMenuObject method
-				multipleChoiceMenus.add(buildMultipleChoiceMenuObject(resultSet));
+				listOfMultipleChoiceMenus.add(buildMultipleChoiceMenuObject(resultSet));
 			}
+			
 			// Returns the MultipleChoiceMenu with a matching choiceMenuId or null if no multipleChoiceMenu has the specified choiceMenuId
-			return multipleChoiceMenus;
+			return listOfMultipleChoiceMenus;
 		}
 
 		catch (SQLException exception)
@@ -445,7 +460,6 @@ public class MenuItemDB implements MenuItemImpl
 			// If an SQL error occurs a custom exception is thrown with the specified details
 			throw new DataAccessException("Unable to find an MultipleChoiceMenu object with an choiceMenuId matching: " + mainCourseId, exception);
 		}
-
 	}
 	
 	
@@ -465,25 +479,26 @@ public class MenuItemDB implements MenuItemImpl
 		try
 		{
 			// Retrieves all SelectionOption objects linked to this MultipleChoiceMenu using its choiceMenuId
-			List<SelectionOption> selectionOptions = findSelectionOptionsByChoiceMenuId(resultSet.getInt("choiceMenuId"));
+			List<SelectionOption> listOfSelectionOptions = findSelectionOptionsByChoiceMenuId(resultSet.getInt("choiceMenuId"));
 			
-			// Adds each SelectionOption to the MultipleChoiceMenu
-			for (SelectionOption option: selectionOptions)
+			// Uses a for-each loop to iterate through the listOfSelectionOptions
+			for (SelectionOption selectionOption: listOfSelectionOptions)
 			{
-				multipleChoiceMenu.addSelectionOption(option);
+				// Adds each the current SelectionOption object to the MultipleChoiceMenu object
+				multipleChoiceMenu.addSelectionOption(selectionOption);
 			}
-		} 
+		}
 		
 		catch (DataAccessException | SQLException exception)
 		{
 			// Prints any database-related exceptions to help with debugging
 			exception.printStackTrace();
 		}
-			
 		
+		// Returns the built MultipleChoiceMenu object
 		return multipleChoiceMenu;
-
 	}
+	
 	
 	/**
 	 * Finds a SelectionOption object whose choiceMenuId is linked to a
@@ -499,11 +514,13 @@ public class MenuItemDB implements MenuItemImpl
 	{
 		// Gets a connection to the database
 		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
-		List<SelectionOption> selectionOptions = new ArrayList<SelectionOption>();
+		
+		// Creates an empty list to store SelectionOption objects within
+		List<SelectionOption> listOfSelectionOptions = new ArrayList<SelectionOption>();
 		
 		try
 		{
-			// Prepares a SQL statement to find and retrieve an SelectionOption with a matching mainCourseId
+			// Prepares a SQL statement to find and retrieve a SelectionOption with a matching mainCourseId
 			statementSelectionOptionChoiceMenuId = databaseConnection.prepareStatement(FIND_SELECTIONOPTIONS_BY_CHOICEMENUID_QUERY);
 
 			// Adds the mainCourseId provided in the method's parameter to the int instead of the placeholder
@@ -516,10 +533,11 @@ public class MenuItemDB implements MenuItemImpl
 			while (resultSet.next())
 			{
 				// Converts the retrieved database row into an SelectionOption object using the buildSelectionOptionObject method
-				selectionOptions.add(buildSelectionOptionObject(resultSet));
+				listOfSelectionOptions.add(buildSelectionOptionObject(resultSet));
 			}
 			
-			return selectionOptions;
+			// Returns the listOfSelectionOptions with a matching choiceMenuId
+			return listOfSelectionOptions;
 		}
 
 		catch (SQLException exception)
@@ -528,7 +546,8 @@ public class MenuItemDB implements MenuItemImpl
 			throw new DataAccessException("Unable to find an MultipleChoiceMenu object with an choiceMenuId matching: " + choiceMenuId, exception);
 		}	
 	}
-	 
+	
+	
 	/**
 	 * Builds a specific SelectionOption object from a database resultSet.
 	 * 
@@ -539,11 +558,7 @@ public class MenuItemDB implements MenuItemImpl
 	private SelectionOption buildSelectionOptionObject(ResultSet resultSet) throws SQLException
 	{
 		// Creates a AddOnOption object stored within the SelectionOption variable based off of the method's provided resultSet
-		SelectionOption selectionOption = new SelectionOption(
-				resultSet.getString("description"),
-				resultSet.getString("kitchenNotes"),
-				resultSet.getDouble("additionalPrice")
-				);		
+		SelectionOption selectionOption = new SelectionOption(resultSet.getString("description"), resultSet.getString("kitchenNotes"), resultSet.getDouble("additionalPrice"));
 
 		return selectionOption;	
 	}
@@ -562,11 +577,13 @@ public class MenuItemDB implements MenuItemImpl
 	{
 		// Gets a connection to the database
 		Connection databaseConnection = DataBaseConnection.getInstance().getConnection();
-		List<AddOnOption> addOnOptions = new ArrayList<>();
+		
+		// Creates an empty list to store AddOnOption objects within
+		List<AddOnOption> listOfAddOnOptions = new ArrayList<>();
 
 		try
 		{	
-			// Prepares a SQL statement to find and retrieve an MultipleChoiceMenu with a matching employee id
+			// Prepares a SQL statement to find and retrieve an AddOnOptions with a matching mainCourseID id
 			statementAddOnOptionByMainCourseId = databaseConnection.prepareStatement(FIND_ADDONOPTIONS_BY_MAINCOURSEID_QUERY);
 
 			// Adds the choiceMenuId provided in the method's parameter to the String instead of the placeholder
@@ -575,28 +592,24 @@ public class MenuItemDB implements MenuItemImpl
 			// Executes the query, and stores the retrieved data in the variable named resultSet, which is a ResultSet object
 			ResultSet resultSet = statementAddOnOptionByMainCourseId.executeQuery();
 
-			// Creates and initializes an MultipleChoiceMenu object as null, which will later be populated with Employee specific data
-
 			// Iterates through the resultSet while there are still more rows in the database's table
 			while (resultSet.next())
 			{
-				// Converts the retrieved database row into an MultipleChoiceMenu object using the buildMultipleChoiceMenuObject method
-				addOnOptions.add(buildAddOnOptionObject(resultSet));
+				// Converts the retrieved database row into an AddOnOption object using the buildAddOnOptionObject method
+				listOfAddOnOptions.add(buildAddOnOptionObject(resultSet));
 			}
 
-			
-			// Returns the MultipleChoiceMenu with a matching choiceMenuId or null if no multipleChoiceMenu has the specified choiceMenuId
-			return addOnOptions;
+			// Returns the listOfAddOnOptions with a matching choiceMenuId
+			return listOfAddOnOptions;
 		}
 
 		catch (SQLException exception)
 		{
-			
 			// If an SQL error occurs a custom exception is thrown with the specified details
 			throw new DataAccessException("Unable to find an AddOnOption object with an menuItemId matching: " + mainCourseId, exception);
 		}
 	}
-	 
+	
 	
 	/**
      * Builds a specific AddOnOption object from a database result set.
@@ -608,11 +621,7 @@ public class MenuItemDB implements MenuItemImpl
 	private AddOnOption buildAddOnOptionObject(ResultSet resultSet) throws SQLException
 	{
 		// Creates a AddOnOption object stored within the addOnOption variable based off of the method's provided resultSet
-		AddOnOption addOnOption = new AddOnOption(
-				resultSet.getString("description"),
-				resultSet.getString("kitchenNotes"),
-				resultSet.getDouble("additionalPrice")
-				);		
+		AddOnOption addOnOption = new AddOnOption(resultSet.getString("description"), resultSet.getString("kitchenNotes"), resultSet.getDouble("additionalPrice"));
 
 		return addOnOption;	
 	}
