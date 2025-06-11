@@ -49,6 +49,9 @@ public class MenuCardDB implements MenuCardImpl
 	
 	
 	/**
+	 * Its being used by UtilityGuestInformation.
+	 * After you have entered your discount a list of menuCard is returned 
+	 * 
 	 * Retrieves all MenuCards from the database.
 	 * 
 	 * @param restaurantCode 			- the code of the MenuCard to search for

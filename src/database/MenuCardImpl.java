@@ -27,6 +27,9 @@ import model.MenuCard;
 public interface MenuCardImpl
 {
 	/**
+	 * Its being used by UtilityGuestInformation.
+	 * After you have entered your discount a list of menuCard is returned 
+	 * 
 	 * Method creates a list containing a shallow clone of every MenuCard in the
 	 * database with a matching restaurantCode in the MenuCard table. 
 	 * 
