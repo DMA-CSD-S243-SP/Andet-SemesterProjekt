@@ -21,22 +21,10 @@ import model.PersonalOrder;
  * 
  * 
  * @author Line Bertelsen & Christoffer Søndergaard
- * @version 07/06/2025 - 16:04
+ * @version 11/06/2025 - 16:19
  */
 public interface PersonalOrderImpl
 {
-	/**
-     * Method creates a shallow clone of the personalOrder that has the given unique ID. 
-     * If no match is found the method returns null. 
-     *
-     * @param personalOrderId  		- the code of the personalOrder to be retrieved
-     * @return personalOrder 		- the PersonalOrder object that matches the provided ID
-     * @throws DataAccessException 	- if an error occurs during data access, such as rollback or connection issues
-     * @throws SQLException			- if a SQL operation fails
-     */
-	PersonalOrder findPersonalOrderById(int personalOrderId) throws DataAccessException, SQLException;
-
-
 	/**
 	 * The method is used in ViewGuesTableOrderConfirmation in gui layer.
 	 * and the method FinishPersonalOrder in PersonalOrderController.
@@ -58,5 +46,20 @@ public interface PersonalOrderImpl
 	 * @throws DataAccessException 	- if an error occurs during data access, such as rollback or connection issues
 	 * @throws SQLException			- if a SQL operation fails
 	 */
-	List<PersonalOrder> findPersonalOrdersBytableOrderId (int TableOrderId) throws SQLException, DataAccessException;
+	List<PersonalOrder> findPersonalOrdersBytableOrderId(int TableOrderId) throws SQLException, DataAccessException;
+	
+	
+	/**
+	 * NOTE: This method is related to a future use case: Read PersonalOrder
+	 * and is currently not being used anywhere in the system.
+	 * 
+     * Method creates a shallow clone of the personalOrder that has the given unique ID. 
+     * If no match is found the method returns null. 
+     *
+     * @param personalOrderId  		- the code of the personalOrder to be retrieved
+     * @return personalOrder 		- the PersonalOrder object that matches the provided ID
+     * @throws DataAccessException 	- if an error occurs during data access, such as rollback or connection issues
+     * @throws SQLException			- if a SQL operation fails
+     */
+	PersonalOrder findPersonalOrderById(int personalOrderId) throws DataAccessException, SQLException;
 }
