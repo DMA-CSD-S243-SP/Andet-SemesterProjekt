@@ -25,7 +25,7 @@ import javax.swing.SwingConstants;
  * Author: Christoffer Søndergaard  
  * @version 07/06/2025 - 20:51
  */
-public class ComponentGuestButtonContinue extends JButton
+//public class ComponentGuestButtonContinue extends JButton
 {
 	/**
 	 * Constructs a custom continue button with stylized visuals and layout for the
